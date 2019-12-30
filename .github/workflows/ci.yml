@@ -1,0 +1,59 @@
+name: CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      db:
+        image: mysql:5.7
+        env:
+          MYSQL_ROOT_PASSWORD: password
+          MYSQL_DATABASE: root
+        ports:
+          - 3306
+
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set up Ruby 2.6
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 2.6.x
+
+      - name: mysql set up
+        run: sudo apt-get install libmysqlclient-dev
+
+      - name: yarn install
+        run: yarn install
+
+      - name: Build and test with rails
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+          bundle exec rails
+          cp config/database.yml.ci config/database.yml
+
+      - name: Cache gems
+        uses: actions/cache@preview
+        with:
+          path: vendor/bundle
+          key: ${{runner.os}}-gem-${{hashFiles('**/Gemfile.lock')}}
+          restore-keys: ${{runner.os}}-gem-
+
+      - name: Cache node_modules
+        uses: actions/cache@preview
+        with:
+          path: ./node_modules
+          key: ${{runner.os}}-node-${{hashFiles('**/yarn.lock')}}
+          restore-keys: ${{runner.os}}-node-
+
+      - name: Create db
+        run: bundle exec rails db:create
+
+      - name: Run rubocop
+        run: bundle exec rubocop
+
+      - name: Run rspec
+        run: bundle exec rspec
