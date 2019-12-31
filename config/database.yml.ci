@@ -19,14 +19,14 @@ default: &default
 
 development:
   <<: *default
-  database: todoApp_development
+  database: tooling_development
 
 # Warning: The database defined as "test" will be erased and
 # re-generated from your development database when you run "rake".
 # Do not set this db to the same as development or production.
 test:
   <<: *default
-  database: todoApp_test
+  database: tooling_test
 
 # As with config/credentials.yml, you never want to store sensitive information,
 # like your database password, in your source code. If your source code is
@@ -49,6 +49,6 @@ test:
 #
 production:
   <<: *default
-  database: todoApp_production
-  username: todoApp
-  password: <%= ENV['TODOAPP_DATABASE_PASSWORD'] %>
+  database: tooling_production
+  username: tooling
+  password: <%= ENV['tooling_DATABASE_PASSWORD'] %>

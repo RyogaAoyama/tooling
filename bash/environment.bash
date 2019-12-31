@@ -1,8 +1,12 @@
+# gem更新
+bundle install
+
 # yarn最新化
 yarn install
 
 # DB作成
 bin/rails db:create
+
 
 # DBマイグレーション
 #bin/rails db:migrate
