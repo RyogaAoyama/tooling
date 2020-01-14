@@ -63,3 +63,13 @@ gem 'gon'
 
 # 複数プロセスを起動する
 gem 'foreman'
+
+# google places API
+gem 'google_places'
+
+# google distance matrix API
+gem 'google_distance_matrix'
+
+# JSで環境変数を使用するためのgem
+gem 'dotenv-rails'
+gem 'gon'

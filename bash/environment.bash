@@ -5,10 +5,10 @@ yarn install
 bin/rails db:create
 
 # DBマイグレーション
-#bin/rails db:migrate
+bin/rails db:migrate
 
 # 初期データ作成
-#bin/rails db:seed
+bin/rails db:seed
 
 # 各種サーバーを起動
 bundle exec foreman start
