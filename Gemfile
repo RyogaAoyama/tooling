@@ -46,7 +46,15 @@ group :development do
     # エラー見やすくする
   gem 'better_errors'
   gem 'binding_of_caller'
+
+  # 整形
   gem 'rubocop-rails'
+
+  # デバックの便利ツール
+  gem 'pry-rails'
+
+  # クラスを見やすくする
+  gem 'awesome_print', require: 'ap'
 end
 
 group :test do
@@ -69,7 +77,3 @@ gem 'google_places'
 
 # google distance matrix API
 gem 'google_distance_matrix'
-
-# JSで環境変数を使用するためのgem
-gem 'dotenv-rails'
-gem 'gon'
