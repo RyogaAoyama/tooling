@@ -1,4 +1,4 @@
-name: CItest
+name: CI
 
 on: [push]
 
@@ -23,7 +23,9 @@ jobs:
           ruby-version: 2.6.x
 
       - name: mysql set up
-        run: sudo apt-get install libmysqlclient-dev
+        run: |
+          sudo apt-get update
+          sudo apt-get install libmysqlclient-dev
 
       - name: yarn install
         run: yarn install
