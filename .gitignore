@@ -34,3 +34,5 @@ yarn-debug.log*
 memo.md
 .env
 test.rb
+/http
+*.svg

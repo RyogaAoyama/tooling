@@ -2,6 +2,7 @@ import "material-design-icons-iconfont/dist/material-design-icons.css";
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/dist/vuetify.min.css";
 import Vue from "vue";
+import * as VueGoogleMaps from "vue2-google-maps";
 import axios from "axios";
 import Vuetify from "vuetify";
 import App from "../app.vue";
@@ -12,6 +13,15 @@ Vue.use(Vuetify, {});
 const vuetify = new Vuetify({
   icon: {
     iconfont: "mdi"
+  }
+});
+
+Vue.use(VueGoogleMaps, {
+  load: {
+    key: gon.GOOGLE_API_KEY,
+    libraries: "places",
+    region: "JP",
+    language: "ja"
   }
 });
 

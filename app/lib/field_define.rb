@@ -7,12 +7,15 @@ class FieldDefine
     "name",
     "place_id",
     "formatted_phone_number", 
-    "rating", 
+    "rating",
     "reference", 
     "reviews", 
-    "destination_addresses", 
+    "address_number",
+    "address",
     "origin_addresses", 
-    "rows"
+    "rows",
+    "photos",
+    "user_ratings_total"
   ]
 
 end

@@ -10,12 +10,15 @@ class OuterApi::HttpRequest
         http.get(uri)
       end
 
+      
       case res
       when Net::HTTPSuccess
         result = JSON.parse(res.body)
+        Rails.logger.info("URL -> #{uri}")
+        Rails.logger.info("GET -> #{res.body}")
         return true, 200, result
       when Net::HTTPRedirection
-        logger.dubug("必要になったら書きまうす")
+        Rails.logger.dubug("必要になったら書きまうす")
       when Net::HTTPClientError
         raise Net::HTTPServerException
       when Net::HTTPServerError
@@ -23,17 +26,17 @@ class OuterApi::HttpRequest
       end
 
     rescue Net::HTTPServerException => e
-      logger.error(e.message)
+      Rails.logger.error(e.message)
       return false, 400, nil
     rescue Net::HTTPServerError => e
-      logger.error(e.message)
+      Rails.logger.error(e.message)
       return false, 500, nil
     rescue JSON::ParserError => e
-      logger.error(e.message)
-      logger.error("There is no json format!")
+      Rails.logger.error(e.message)
+      Rails.logger.error("There is no json format!")
       return false, 400, nil
     rescue TimeoutError => e
-      logger.error(e.message)
+      Rails.logger.error(e.message)
       return false, 504, nil
     end
   end

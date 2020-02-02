@@ -6,7 +6,9 @@
 
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <v-btn text>福田　まさとし</v-btn>
+        <v-btn @click="$router.push('/')">TOP</v-btn>
+        <v-btn @click="$router.push('/sandbox')">サンドボックス</v-btn>
+        <v-btn text>Masayuki</v-btn>
       </v-toolbar-items>
       <v-avatar color="indigo">
         <v-icon dark>account_circle</v-icon>

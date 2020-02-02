@@ -1,8 +1,7 @@
 <template>
-  <!-- TODO: srcをコンポーネント使用側から指定できるようにする -->
   <v-img
     gradient="rgba(0,0,0,.0), rgba(0,0,0,.5)"
-    src="/rasyoumon.jpg"
+    :src="src"
     class="white--text align-end"
     :height="height"
   >
@@ -18,6 +17,7 @@ export default {
       height: ""
     };
   },
+  props: ["src"],
   mixins: [ResponsiveModule]
 };
 </script>

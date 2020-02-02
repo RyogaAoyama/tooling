@@ -4,11 +4,13 @@
       <h1 class="center mb-2">ツーリング先を見つける</h1>
       <form>
         <v-row>
-          <v-col cols="6">
+          <v-col cols="12">
             <div class="sub-header">到着時間</div>
             <v-select label="到着時間を選択" :items="arrivalTimes" v-model="form.search.arrivalTime" solo></v-select>
           </v-col>
-          <v-col cols="6">
+        </v-row>
+        <v-row>
+          <v-col cols="12">
             <div class="sub-header">場所</div>
             <v-select
               label="場所を選択"
@@ -20,13 +22,16 @@
             ></v-select>
           </v-col>
         </v-row>
-        <div class="sub-header">ルート</div>
-        <v-radio-group v-model="form.search.route">
-          <v-radio label="無料区間ルートで検索" value="0"></v-radio>
-          <v-radio label="最短ルートで検索" value="1"></v-radio>
-        </v-radio-group>
         <div class="text-center">
-          <v-btn rounded color="#1FAB89" dark @click="search" :disabled="searchDisable">検索する</v-btn>
+          <v-btn
+            rounded
+            class="white--text"
+            color="#1FAB89"
+            @click="search"
+            :disabled="isLoading"
+            :loading="isLoading"
+            large
+          >検索する</v-btn>
         </div>
       </form>
     </v-card>
@@ -44,11 +49,11 @@ export default {
         search: {
           arrivalTime: "",
           town: "",
-          route: "0",
           position: ""
         }
       },
-      searchDisable: false
+      searchResultMsg: "",
+      isLoading: false
     };
   },
   methods: {
@@ -56,25 +61,19 @@ export default {
       this.form.search.position = await Geolocation.getCurrentPosition();
     },
     async search() {
+      this.$store.commit("changeSearchStatus", 2);
       // 検索中はボタンを無効化
-      this.searchDisable = true;
+      this.isLoading = true;
 
       // 現在地をセット
       await this.setPosition();
       console.log(this.form);
 
       // 検索
-      Repository.post("/search", this.form)
-        .then(res => {
-          // TODO: なんかの処理（まだなんの処理すればええかわからん）
-          console.log(res);
-        })
-        .catch(err => {
-          console.log(err);
-        });
+      await this.$store.dispatch("search", this.form);
 
       // 検索終了後ボタンを有効化
-      this.searchDisable = false;
+      this.isLoading = false;
     }
   }
 };
