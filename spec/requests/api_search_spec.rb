@@ -1,5 +1,4 @@
 require 'rails_helper'
-require "csv"
 
 RSpec.describe 'ApiSearch', type: :request do
   POSITION = { lat: 34.6480862, lng: 133.8974896 }

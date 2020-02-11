@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_01_10_233921) do
+ActiveRecord::Schema.define(version: 2020_02_10_131238) do
 
   create_table "city_places", primary_key: "city_id", id: :string, limit: 6, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "city_name", null: false
@@ -24,6 +24,15 @@ ActiveRecord::Schema.define(version: 2020_01_10_233921) do
 
   create_table "towns", primary_key: "town_id", id: :string, limit: 2, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "town_name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "users", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.string "name", limit: 50, null: false
+    t.string "email", limit: 30, null: false
+    t.string "password_digest", limit: 50, null: false
+    t.integer "live_town", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end
