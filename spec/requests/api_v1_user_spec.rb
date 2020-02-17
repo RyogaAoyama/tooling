@@ -9,7 +9,6 @@ RSpec.describe 'ApiV1User', type: :request do
   describe "POST /api/v1/user/create" do
     it "アカウントが作成されていること" do
       old_user_cnt = User.all.size
-      # TODO: S3のパス
       post api_v1_users_path, params: {
         user: {
           name: "ARHM",
@@ -38,7 +37,6 @@ RSpec.describe 'ApiV1User', type: :request do
       expect(response).to have_http_status(200)
       expect(data["name"]).to eq "test"
       expect(data["email"]).to eq "test@gmail.com"
-      # TODO: ここもしかしたら数値型かも知れん
       expect(data["town_id"]).to eq "33"
     end
   end
