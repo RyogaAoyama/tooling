@@ -77,3 +77,8 @@ gem 'google_places'
 
 # google distance matrix API
 gem 'google_distance_matrix'
+
+gem 'mini_magick'
+gem 'aws-sdk', require: false
+gem 'bcrypt'
+gem 'rails-i18n'

@@ -4,6 +4,7 @@ import Search from "./components/pages/search/index.vue";
 import Sandbox from "./components/pages/sandbox/index.vue";
 import Home from "./components/pages/home/index.vue";
 import AccountNew from "./components/pages/account/new.vue";
+import PageNotFound from "./components/pages/error/404.vue";
 
 Vue.use(VueRouter);
 
@@ -11,7 +12,8 @@ const routes = [
   { path: "/search", component: Search },
   { path: "/sandbox", component: Sandbox },
   { path: "/", component: Home },
-  { path: "/account/new", component: AccountNew }
+  { path: "/account/new", component: AccountNew },
+  { path: "*", component: PageNotFound }
 ];
 
 export default new VueRouter({

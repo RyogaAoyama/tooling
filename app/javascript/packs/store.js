@@ -3,10 +3,17 @@ import Vuex from "vuex";
 import { RepositoryFactory } from "./factories/repositoryFactory.js";
 import Repository from "./repository.js";
 
+import Account from "./store/account.js";
+import Alert from "./store/alert.js";
+
 Vue.use(Vuex);
 
 const TownsRepository = RepositoryFactory.get("towns");
 export default new Vuex.Store({
+  modules: {
+    Account,
+    Alert
+  },
   state: {
     towns: [],
     searchStatus: 1,
@@ -47,7 +54,6 @@ export default new Vuex.Store({
       await Repository.post("/search", payload)
         .then(res => {
           let data = res.data;
-          let is_empty = false;
 
           // 結果が取得できなかったらエラー表示
           if (data.result["name"] == "") {

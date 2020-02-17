@@ -6,17 +6,32 @@
         <div>新たなる地を求めて走る</div>
       </div>
       <div>
-        <v-text-field label="ユーザー名"></v-text-field>
-        <div class="error-msg">&nbsp;</div>
-        <v-text-field label="メールアドレス"></v-text-field>
-        <div class="error-msg">&nbsp;</div>
-        <v-text-field label="パスワード"></v-text-field>
-        <div class="error-msg">&nbsp;</div>
-        <v-text-field label="パスワード(確認)"></v-text-field>
-        <div class="error-msg mb-3">&nbsp;</div>
-        <v-select label="お住いの都道府県を選択" solo></v-select>
+        <v-text-field label="ユーザー名" v-model="form.user.name"></v-text-field>
+        <div class="error-msg">&nbsp;{{ user.errors.name }}</div>
+        <v-text-field label="メールアドレス" v-model="form.user.email"></v-text-field>
+        <div class="error-msg">&nbsp;{{ user.errors.email }}</div>
+        <v-text-field label="パスワード" v-model="form.user.password" type="password"></v-text-field>
+        <div class="error-msg">&nbsp;{{ user.errors.password }}</div>
+        <v-text-field label="パスワード(確認)" v-model="form.user.password_confirmation" type="password"></v-text-field>
+        <div class="error-msg mb-3">&nbsp;{{ user.errors.password_confirmation }}</div>
+        <v-select
+          label="お住いの都道府県を選択"
+          :items="towns"
+          item-text="town_name"
+          item-value="town_id"
+          v-model="form.user.town_id"
+          solo
+        ></v-select>
+        <div class="error-msg mb-3">&nbsp;{{ user.errors.town_id }}</div>
       </div>
-      <v-btn color="#1FAB89" class="mb-4" width="100%" dark>アカウントを登録</v-btn>
+      <v-btn
+        color="#1FAB89"
+        class="mb-4 white--text"
+        width="100%"
+        @click="oncreate"
+        :disabled="isLoading"
+        :loading="isLoading"
+      >アカウントを登録</v-btn>
       <div>
         <div>すでにアカウントをお持ちの方</div>
         <div>
@@ -28,7 +43,60 @@
 </template>
 
 <script>
-export default {};
+import Valid from "./../../modules/validation.js";
+import { createNamespacedHelpers } from "vuex";
+
+const { mapState, mapMutations } = createNamespacedHelpers("Account");
+export default {
+  props: ["towns", "isLoading"],
+  data: function() {
+    return {
+      form: {
+        user: {
+          name: "",
+          email: "",
+          password: "",
+          password_confirmation: "",
+          town_id: ""
+        }
+      }
+    }
+  },
+  mixins: [Valid],
+  computed: {
+    ...mapState(["user"]),
+  },
+  methods: {
+    ...mapMutations(["setUserErrors"]),
+    oncreate() {
+      if (this.userFormValid()) {
+        this.$emit("oncreate", this.form);
+      }
+    },
+    userFormValid() {
+      let results = {};
+      let errors = {};
+
+      // 検証
+      [results.name, errors.name] =
+        Valid.userNameValid(this.form.user.name);
+      [results.email, errors.email] =
+        Valid.emailValid(this.form.user.email);
+      [results.password,　errors.password] =
+        Valid.passwordValid(this.form.user.password);
+      [results.password_confirmation, errors.password_confirmation] =
+        Valid.confirmationValid(this.form.user.password, this.form.user.password_confirmation);
+      [results.town_id, errors.town_id] =
+        Valid.townIdValid(this.form.user.town_id);
+
+      // エラーメッセージをセット
+      this.setUserErrors(errors);
+
+      // 全てのバリデーションが成功しているか真偽値で返却
+      return Object.values(results).every((val) => val);
+    }
+  }
+};
 </script>
 
 <style>

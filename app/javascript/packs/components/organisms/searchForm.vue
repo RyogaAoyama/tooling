@@ -67,7 +67,6 @@ export default {
 
       // 現在地をセット
       await this.setPosition();
-      console.log(this.form);
 
       // 検索
       await this.$store.dispatch("search", this.form);

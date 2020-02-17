@@ -8,32 +8,30 @@ RSpec.describe 'ApiV1User', type: :request do
 
   describe "POST /api/v1/user/create" do
     it "アカウントが作成されていること" do
+      old_user_cnt = User.all.size
       # TODO: S3のパス
-      post api_v1_users, params: {
+      post api_v1_users_path, params: {
         user: {
           name: "ARHM",
           email: "thisisemail@gmail.com",
           password: "password",
           password_confirmation: "password",
-          town_id: "33",
-          avatar: "S3のパス"
+          town_id: "33"
         }
-      },
-      headers: headers
+      }
 
-      data = JSON.parse(response.body)
-      users_count = User.all.size
+      users_cnt = User.all.size
       expect(response).to have_http_status(200)
-      # TODO: もしかしたら書き方違うかも
-      expect(data).to change { users_count }.by(1)
+      expect(users_cnt).to_not eq old_user_cnt
     end
   end
 
   describe "GET /api/v1/user/show/:id" do
-    let(:user) { FactoryBot.create(:user, name: "test", email: "test@gmail.com", town_id: "33") }
+    let(:town) { Town.find("33") }
+    let(:user) { FactoryBot.create(:user, name: "test", email: "test@gmail.com", town: town) }
 
     it "ユーザーデータが取得できている" do
-      get api_v1_user(user), headers: headers
+      get api_v1_user_path(user), headers: headers
 
       data = JSON.parse(response.body)
 

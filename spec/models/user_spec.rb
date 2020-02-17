@@ -5,7 +5,8 @@ RSpec.describe User, type: :model do
   let(:name_err) { user.errors.messages[:name] }
   let(:email_err) { user.errors.messages[:email] }
   let(:password_err) { user.errors.messages[:password] }
-  let(:confirmation_err) { user.errors.messages[:passwowrd_confirmation] }
+  let(:confirmation_err) { user.errors.messages[:password_confirmation] }
+  let(:town_id_err) { user.errors.messages[:town_id] }
 
   let(:min_str) { 1 }
   let(:max_str) { 50 }
@@ -14,7 +15,8 @@ RSpec.describe User, type: :model do
   let(:empty_msg) { "を入力してください" }
   let(:form_msg) { "の形式が違います" }
   let(:forbid_msg) { "は「-_.@」以外の記号は使用できません" }
-  let(:confirmation_msg) { "パスワードと一致しません" }
+  let(:confirmation_msg) { "とパスワードの入力が一致しません" }
+  let(:exsist_msg) { "はすでに存在します" }
 
   # 名前
   describe "name" do
@@ -51,35 +53,19 @@ RSpec.describe User, type: :model do
   # メールアドレス
   describe "email" do
     let(:min_str) { 3 }
-    let(:max_str) { 30 }
+    let(:max_str) { 256 }
     describe "文字数チェック" do
-      context "30文字" do
+      context "256文字" do
         it "正常" do
-          user.email = "a" * 30
+          user.email = "a" * 256
           user.valid?
           expect(email_err).to_not include str_msg
         end
       end
 
-      context "31文字" do
+      context "257文字" do
         it "異常" do
-          user.email = "a" * 31
-          user.valid?
-          expect(email_err).to include str_msg
-        end
-      end
-
-      context "3文字" do
-        it "正常" do
-          user.email = "a" * 3
-          user.valid?
-          expect(email_err).to_not include str_msg
-        end
-      end
-
-      context "2文字" do
-        it "異常" do
-          user.email = "a" * 2
+          user.email = "a" * 257
           user.valid?
           expect(email_err).to include str_msg
         end
@@ -107,20 +93,24 @@ RSpec.describe User, type: :model do
     end
 
     describe "形式チェック" do
-      context "ドットが連続して続いている" do
-        it "異常" do
-          user.email = "abc..a@gmail.com"
-          user.valid?
-          expect(email_err).to include form_msg
-        end
-      end
-
       context "行頭が記号" do
         it "異常" do
           user.email = ".abca@gmail.com"
           user.valid?
           expect(email_err).to include form_msg
         end
+      end
+    end
+
+    describe "重複チェック" do
+      let(:town) { FactoryBot.create(:town) }
+      before do
+        FactoryBot.create(:user, email: "test@gmail.com", password: "password", password_confirmation: "password", town: town)
+      end
+      it "異常" do
+        user.email = "test@gmail.com"
+        user.valid?
+        expect(email_err).to include exsist_msg
       end
     end
   end
@@ -194,6 +184,18 @@ RSpec.describe User, type: :model do
           user.valid?
           expect(confirmation_err).to include confirmation_msg
         end
+      end
+    end
+  end
+
+  ###############################################
+  # 住んでる都道府県
+  describe "空白チェック" do
+    context "空文字" do
+      it "異常" do
+        user.town_id = ""
+        user.valid?
+        expect(town_id_err).to include empty_msg
       end
     end
   end
