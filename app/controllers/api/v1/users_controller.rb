@@ -36,6 +36,26 @@ class Api::V1::UsersController < ApplicationController
   ####################################################################################
 
   def update
+    # 認証
+    if auth_params["is_authenticate"]
+      unless @user&.authenticate(auth_params[:authenticate])
+        @errors = { authenticate: "パスワードが違います" }
+        @result = 1
+        @user = User.new
+        return render :update, status: 200
+      end
+    end
+
+    # 保存
+    if @user.update(user_params)
+      @result = 0
+      return render :update, status: 200
+    else
+      @errors = @user.get_errors_hash
+      @result = 1
+      @user = User.new
+      return render :update, status: 200
+    end
   end
 
   private
@@ -48,6 +68,13 @@ class Api::V1::UsersController < ApplicationController
       :password_confirmation,
       :avatar,
       :town_id
+    )
+  end
+
+  def auth_params
+    params.require("auth").permit(
+    :is_authenticate,
+    :authenticate
     )
   end
 

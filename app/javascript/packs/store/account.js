@@ -5,30 +5,30 @@ export default {
   namespaced: true,
   state: {
     user: {
-      val: {
-        id: "",
-        name: "",
-        email: "",
-        town_id: "",
-        avatar: ""
+      name: "",
+      email: "",
+      town_id: "",
+      avatar: ""
       },
-      errors: {
-        name: "",
-        email: "",
-        town_id: "",
-        avatar: "",
-        password: "",
-        password_confirmation: "",
-      }
+    errors: {
+      name: "",
+      email: "",
+      town_id: "",
+      avatar: "",
+      password: "",
+      password_confirmation: "",
     }
   },
   mutations: {
     setUserErrors(state, payload) {
-      state.user.errors = payload;
+      state.errors = payload;
     },
 
     setUser(state, payload) {
-      state.user.val = payload
+      state.user.name = payload.user.name;
+      state.user.email = payload.user.email;
+      state.user.town_id = payload.user.town_id;
+      state.user.avatar = payload.user.avatar;
     }
   },
   actions: {
@@ -48,6 +48,17 @@ export default {
           console.log(e);
         })
         return result;
+    },
+
+    async getUser(context, payload) {
+      await UsersRepository.find(payload)
+        .then(res => {
+          console.log(res.data);
+          context.commit("setUser", res.data);
+        })
+        .catch(e => {
+          console.log(e);
+        })
     }
   }
 };

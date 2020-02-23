@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   namespace :api, format: "json" do
     namespace :v1 do
       resources :users, only: [:show, :create, :destroy, :update]
-      resources :sessions, only: [:create, :destroy]
+
+      post "/login", to: "sessions#create", as: "login"
+      delete "/logout", to: "sessions#destroy", as: "logout"
     end
   end
 

@@ -5,6 +5,7 @@ import Repository from "./repository.js";
 
 import Account from "./store/account.js";
 import Alert from "./store/alert.js";
+import Session from "./store/session.js";
 
 Vue.use(Vuex);
 
@@ -12,13 +13,15 @@ const TownsRepository = RepositoryFactory.get("towns");
 export default new Vuex.Store({
   modules: {
     Account,
-    Alert
+    Alert,
+    Session
   },
   state: {
     towns: [],
     searchStatus: 1,
     searchResult: {},
-    searchResultMsg: ""
+    searchResultMsg: "",
+    isDevelop: true
   },
 
   mutations: {

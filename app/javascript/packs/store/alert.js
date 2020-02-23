@@ -15,6 +15,7 @@ export default {
     },
     setMsg(state, payload) {
       state.msg = payload;
+      state.flashed = false;
     },
     setFlashed(state, payload) {
       state.flashed = payload;

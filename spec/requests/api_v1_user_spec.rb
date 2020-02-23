@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe 'ApiV1User', type: :request do
   include_context "project setup"
-  let(:headers) do
-    { 'Content-Type' => 'application/json', 'Accept' => 'application/json' }
-  end
+  let(:town) { Town.find("33") }
+
+  ####################################################################################
 
   describe "POST /api/v1/user/create" do
     it "アカウントが作成されていること" do
@@ -25,138 +25,142 @@ RSpec.describe 'ApiV1User', type: :request do
     end
   end
 
+  ####################################################################################
+
   describe "GET /api/v1/user/show/:id" do
-    let(:town) { Town.find("33") }
-    let(:user) { FactoryBot.create(:user, name: "test", email: "test@gmail.com", town: town) }
+    let(:email) { "test@gmail.com" }
+    let(:name) { "test" }
+    let(:user) { FactoryBot.create(:user, name: name, email: email, town: town) }
 
     it "ユーザーデータが取得できている" do
-      get api_v1_user_path(user), headers: headers
+      get api_v1_user_path(user)
 
       data = JSON.parse(response.body)
 
       expect(response).to have_http_status(200)
-      expect(data["name"]).to eq "test"
-      expect(data["email"]).to eq "test@gmail.com"
-      expect(data["town_id"]).to eq "33"
+      expect(data["user"]["name"]).to eq name
+      expect(data["user"]["email"]).to eq email
+      expect(data["user"]["town_id"]).to eq town.id
     end
   end
+
+  ####################################################################################
 
   describe "PUT /api/v1/user/update/:id" do
-    let(:user) { FactoryBot.create(:user, password: "password") }
+    let(:password) { "password" }
+    let(:email) { "update@gmail.com" }
+    let(:name) { "update" }
+    let(:town) { Town.find("10") }
+    let(:user) { FactoryBot.create(:user, town: town) }
+
+    ####################################################################################
+
     describe "プロフィール編集" do
       it "プロフィールが変更されていること" do
-        # TODO: S3のパス
-        put api_v1_user(user), params: {
+        put api_v1_user_path(user), params: {
           user: {
-            name: "update_name",
-            email: user.email,
-            town_id: "10",
-            avatar: "S3のパス",
-            is_authenticate: false
+            name: name,
+            town_id: town,
+            # TODO: S3のパス
+            #avatar: "S3のパス",
+          },
+          auth: {
+            is_authenticate: false,
+            authenticate: ""
           }
-        },
-        headers: headers
+        }
 
         data = JSON.parse(response.body)
 
         expect(response).to have_http_status(200)
-        expect(data["name"]).to_not eq user.name
-        expect(data["town_id"]).to_not eq user.town_id
+        expect(data["user"]["name"]).to_not eq name
+        expect(data["user"]["town_id"]).to_not eq town.id
+        # TODO: 写真はどうすればいいかわからんから実装してから書く
       end
 
-      # TODO: 写真はどうすればいいかわからんから実装してから書く
-      it "写真が変更されていること"
-
     end
+
+    ####################################################################################
 
     describe "メールアドレス編集" do
+      let(:user) { FactoryBot.create(
+        :user,
+        town: town,
+        password: password,
+        password_confirmation: password)
+      }
+
       it "メールアドレスが変更されていること" do
-        put api_v1_user(user), params: {
+        put api_v1_user_path(user), params: {
           user: {
-            name: user.name,
-            email: "update_email@gmail.com",
-            password: "password",
-            town_id: user.town_id,
-            avatar: user.avatar,
-            is_authenticate: true
+            email: email,
+          },
+          auth: {
+            is_authenticate: true,
+            authenticate: password
           }
-        },
-        headers: headers
+        }
 
         data = JSON.parse(response.body)
 
         expect(response).to have_http_status(200)
-        expect(data["email"]).to_not eq user.email
+        expect(data["user"]["email"]).to_not eq user.email
       end
 
       it "認証が失敗すること" do
-        put api_v1_user(user), params: {
+        put api_v1_user_path(user), params: {
           user: {
-            name: user.name,
-            email: "update_email@gmail.com",
-            password: "miss_password",
-            town_id: user.town_id,
-            avatar: user.avatar,
-            is_authenticate: true
+            email: email,
+          },
+          auth: {
+            is_authenticate: true,
+            authenticate: "miss_authenticate"
           }
-        },
-        headers: headers
+        }
 
         data = JSON.parse(response.body)
 
         expect(response).to have_http_status(200)
-        expect(data["resuslt"]).to be_falsey
+        expect(data["result"]).to eq 1
       end
     end
 
+    ####################################################################################
+
     describe "パスワード編集" do
+      let(:user) { FactoryBot.create(
+        :user,
+        town: town,
+        password: password,
+        password_confirmation: password)
+      }
+      let(:new_password) { "new_password" }
       it "パスワードが変更されていること" do
-        put api_v1_user(user), params: {
+        put api_v1_user_path(user), params: {
           user: {
-            name: user.name,
-            email: user.email,
-            authenticate: "password",
-            password: "update_password",
-            password_confirmation: "update_password",
-            town_id: user.town_id,
-            avatar: user.avatar,
-            is_authenticate: true
+            password: new_password,
+            password_confirmation: new_password
+          },
+          auth: {
+            is_authenticate: true,
+            authenticate: password
           }
-        },
-        headers: headers
+        }
 
         data = JSON.parse(response.body)
 
         expect(response).to have_http_status(200)
-        expect(data["resuslt"]).to be_falsey
-      end
-      it "認証が失敗すること" do
-        put api_v1_user(user), params: {
-          user: {
-            name: user.name,
-            email: user.email,
-            authenticate: "miss_password",
-            password: "password",
-            password_confirmation: "password",
-            town_id: user.town_id,
-            avatar: user.avatar,
-            is_authenticate: true
-          }
-        },
-        headers: headers
-
-        data = JSON.parse(response.body)
-        new_password_digest = User.find(user.id).password_digest
-
-        expect(response).to have_http_status(200)
-        expect(new_password_digest).to_not user.password_digest
+        expect(data["result"]).to eq 0
+        expect(User.find(user.id).password_digest).to_not eq user.password_digest
       end
     end
   end
 
+  ####################################################################################
+
   describe "DELETE /api/v1/user/delete/:id" do
-    it "ユーザー情報が削除されていること" do
-      delete api_v1_user(user), headers: headers
+    xit "ユーザー情報が削除されていること" do
+      delete api_v1_user_path(user)
 
       expect(response).to have_http_status(200)
       expect{ User.find(user.id) }.to raise_error(ActiveRecord::RecordNotFound)

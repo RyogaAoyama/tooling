@@ -6,7 +6,7 @@ const resource = "/v1/user"
 export default {
 
   find(id) {
-    return Repository.get(`${resources}`, id);
+    return Repository.get(`${resources}/${id}`);
   },
 
   create(data) {

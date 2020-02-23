@@ -32,17 +32,25 @@
 </template>
 
 <script>
-// TODO: エラーごとに出力内容違うからそれの判定
-// TODO: opacityImageの位置調整
 import MaskImage from "./../../atoms/maskImage.vue";
 import SearchForm from "./../../organisms/searchForm.vue";
 import SearchResult from "./../../organisms/searchResult.vue";
 import IconText from "./../../molecules/iconText.vue";
 import OpacityImage from "./../../atoms/opacityImage.vue";
 import { RepositoryFactory } from "./../../../factories/repositoryFactory.js";
+import { createNamespacedHelpers } from "vuex";
 import { mapState } from "vuex";
 
-const TownsRepository = RepositoryFactory.get("towns");
+const {
+  mapState: mapStateOfSession
+} = createNamespacedHelpers("Session");
+
+const {
+  mapActions: mapActionsOfAccount
+} = createNamespacedHelpers("Account");
+
+const UsersRepository = RepositoryFactory.get("users");
+
 export default {
   components: {
     "my-mask-image": MaskImage,
@@ -59,8 +67,16 @@ export default {
   async created() {
     this.$store.dispatch("getAllTown");
     this.createArrivalTime();
+    this.get();
+
+  },
+  computed: {
+    ...mapState(["towns", "searchStatus", "searchResultMsg"]),
+    ...mapStateOfSession(["id"]),
   },
   methods: {
+    ...mapActionsOfAccount(["getUser"]),
+
     // 到着時間のセレクトボックスにデータを格納するメソッド
     createArrivalTime() {
       // 上限到着時間(分)
@@ -79,10 +95,10 @@ export default {
         // 到着時間を格納
         this.arrivalTimes.push(option);
       }
+    },
+    async get() {
+      await this.getUser(this.id);
     }
-  },
-  computed: {
-    ...mapState(["towns", "searchStatus", "searchResultMsg"])
   }
 };
 </script>
