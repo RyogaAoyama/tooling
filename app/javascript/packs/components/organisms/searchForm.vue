@@ -41,6 +41,12 @@
 <script>
 import Repository from "./../../repository.js";
 import Geolocation from "./../../modules/geolocation.js";
+import { createNamespacedHelpers } from "vuex";
+
+const {
+  mapState: mapStateOfAccount
+} = createNamespacedHelpers("Account");
+
 export default {
   props: ["towns", "arrivalTimes"],
   data: function() {
@@ -48,13 +54,16 @@ export default {
       form: {
         search: {
           arrivalTime: "",
-          town: "",
+          town: 0,
           position: ""
         }
       },
       searchResultMsg: "",
       isLoading: false
     };
+  },
+  computed: {
+    ...mapStateOfAccount(["user"])
   },
   methods: {
     async setPosition() {
@@ -67,6 +76,10 @@ export default {
 
       // 現在地をセット
       await this.setPosition();
+
+      if (this.form.search.town == 0 || this.form.search.town == undefined) {
+        this.form.search.town = this.user.town_id;
+      }
 
       // 検索
       await this.$store.dispatch("search", this.form);

@@ -15,6 +15,10 @@ export default {
     },
     setId(state, payload) {
       state.id = payload
+    },
+    resetSession(state) {
+      state.id = "";
+      state.loginError = "";
     }
   },
   actions: {
@@ -22,8 +26,6 @@ export default {
       let data = "";
       await sessionsRepository.login(payload).then(res => {
         data = res.data;
-        console.log("test", data);
-        console.log(payload);
         if (data.result == 0) {
           context.commit("setId", data.id);
           context.commit("Alert/setMsg", "ログインしました。", { root: true });

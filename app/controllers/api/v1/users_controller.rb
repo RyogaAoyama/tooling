@@ -10,7 +10,7 @@ class Api::V1::UsersController < ApplicationController
     if @user.save
       @result = 0
       @errors = {}
-      session[:id] = @user.id
+      @user_id = @user.id
     else
       @result = 1
       # エラーメッセージをハッシュで取得
@@ -31,6 +31,13 @@ class Api::V1::UsersController < ApplicationController
   ####################################################################################
 
   def destroy
+    if @user.destroy
+      @result = 0
+      render :destroy, status: 200
+    else
+      @result = 2
+      render :destroy, status: 200
+    end
   end
 
   ####################################################################################
@@ -66,7 +73,6 @@ class Api::V1::UsersController < ApplicationController
       :email,
       :password,
       :password_confirmation,
-      :avatar,
       :town_id
     )
   end

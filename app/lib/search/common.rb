@@ -27,8 +27,10 @@ module Search::Common
 
     photo_limit = 7
     # 写真を7件のみ取得するように制限
-    if join_data["photos"]&.size > photo_limit
-      join_data["photos"].slice!(photo_limit, join_data["photos"].size)
+    if join_data["photos"]
+      if join_data["photos"].size > photo_limit
+        join_data["photos"].slice!(photo_limit, join_data["photos"].size)
+      end
     end
     return join_data
   end

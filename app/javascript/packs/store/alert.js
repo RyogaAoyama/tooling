@@ -20,5 +20,12 @@ export default {
     setFlashed(state, payload) {
       state.flashed = payload;
     }
-}
+  },
+  actions: {
+    setAlert(context, payload) {
+      context.commit("setIsShow", true);
+      context.commit("setMsg", payload.msg);
+      context.commit("setType", payload.type);
+    }
+  }
 };

@@ -3,12 +3,9 @@ class Api::SearchController < ApplicationController
     # 到着時間で検索
     if search_params["arrivalTime"].present?
       search_obj = Search::ArrivalSearch.new
-    # 都道府県で検索
-    elsif search_params["town"].present?
+    # 都道府県で検索(何も選択されていなかった場合も都道府県で検索)
+    else search_params["town"].present?
       search_obj = Search::TownSearch.new
-    # 何も入力されていなかった場合は都道府県で検索
-    else
-      search_obj = Search::DefaultSearch.new
     end
 
     # 検索

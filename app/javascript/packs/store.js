@@ -3,6 +3,7 @@ import Vuex from "vuex";
 import { RepositoryFactory } from "./factories/repositoryFactory.js";
 import Repository from "./repository.js";
 
+import createPersistedState from 'vuex-persistedstate'
 import Account from "./store/account.js";
 import Alert from "./store/alert.js";
 import Session from "./store/session.js";
@@ -11,6 +12,11 @@ Vue.use(Vuex);
 
 const TownsRepository = RepositoryFactory.get("towns");
 export default new Vuex.Store({
+  plugins: [createPersistedState({
+    storage: window.sessionStorage,
+    key: "ar-tooling-app",
+    path: ["Session.id"]
+  })],
   modules: {
     Account,
     Alert,
@@ -32,14 +38,19 @@ export default new Vuex.Store({
     },
 
     ////////////////////////////////////////////////////////////////////////////
+
     changeSearchStatus(state, payload) {
       state.searchStatus = payload;
     },
 
     ////////////////////////////////////////////////////////////////////////////
+
     setSearchResult(state, payload) {
       state.searchResult = payload;
     },
+
+    ////////////////////////////////////////////////////////////////////////////
+
     setSearchResultMsg(state, payload) {
       state.searchResultMsg = payload;
     }
@@ -51,12 +62,15 @@ export default new Vuex.Store({
         context.commit("getAllTown", res.data.towns);
       });
     },
+
     ////////////////////////////////////////////////////////////////////////////
+
     async search(context, payload) {
+      let data = {}
       // 検索
       await Repository.post("/search", payload)
         .then(res => {
-          let data = res.data;
+          data = res.data;
 
           // 結果が取得できなかったらエラー表示
           if (data.result["name"] == "") {
@@ -95,6 +109,11 @@ export default new Vuex.Store({
             );
           }
         });
+    },
+    ////////////////////////////////////////////////////////////////////////////
+    reset(context) {
+      context.commit("Account/resetUser");
+      context.commit("Session/resetSession");
     }
   }
 });

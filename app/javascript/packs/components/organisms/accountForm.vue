@@ -7,13 +7,13 @@
       </div>
       <div>
         <v-text-field label="ユーザー名" v-model="form.user.name"></v-text-field>
-        <div class="error-msg">&nbsp;{{ user.errors.name }}</div>
+        <div class="error-msg">&nbsp;{{ errors.name }}</div>
         <v-text-field label="メールアドレス" v-model="form.user.email"></v-text-field>
-        <div class="error-msg">&nbsp;{{ user.errors.email }}</div>
+        <div class="error-msg">&nbsp;{{ errors.email }}</div>
         <v-text-field label="パスワード" v-model="form.user.password" type="password"></v-text-field>
-        <div class="error-msg">&nbsp;{{ user.errors.password }}</div>
+        <div class="error-msg">&nbsp;{{ errors.password }}</div>
         <v-text-field label="パスワード(確認)" v-model="form.user.password_confirmation" type="password"></v-text-field>
-        <div class="error-msg mb-3">&nbsp;{{ user.errors.password_confirmation }}</div>
+        <div class="error-msg mb-3">&nbsp;{{ errors.password_confirmation }}</div>
         <v-select
           label="お住いの都道府県を選択"
           :items="towns"
@@ -22,7 +22,7 @@
           v-model="form.user.town_id"
           solo
         ></v-select>
-        <div class="error-msg mb-3">&nbsp;{{ user.errors.town_id }}</div>
+        <div class="error-msg mb-3">&nbsp;{{ errors.town_id }}</div>
       </div>
       <v-btn
         color="#1FAB89"
@@ -46,9 +46,9 @@
 import Valid from "./../../modules/validation.js";
 import { createNamespacedHelpers } from "vuex";
 
-const { mapState, mapMutations } = createNamespacedHelpers("Account");
+const { mapState: mapStateOfAccount } = createNamespacedHelpers("Account");
 export default {
-  props: ["towns", "isLoading"],
+  props: ["towns", "isLoading", "errors"],
   data: function() {
     return {
       form: {
@@ -64,10 +64,9 @@ export default {
   },
   mixins: [Valid],
   computed: {
-    ...mapState(["user"]),
+    ...mapStateOfAccount(["user"]),
   },
   methods: {
-    ...mapMutations(["setUserErrors"]),
     oncreate() {
       if (this.userFormValid()) {
         this.$emit("oncreate", this.form);
@@ -90,7 +89,9 @@ export default {
         Valid.townIdValid(this.form.user.town_id);
 
       // エラーメッセージをセット
-      this.setUserErrors(errors);
+      for (let key in errors) {
+        this.$set(this.errors, key, errors[key]);
+      }
 
       // 全てのバリデーションが成功しているか真偽値で返却
       return Object.values(results).every((val) => val);

@@ -60,9 +60,7 @@ RSpec.describe 'ApiV1User', type: :request do
         put api_v1_user_path(user), params: {
           user: {
             name: name,
-            town_id: town,
-            # TODO: S3のパス
-            #avatar: "S3のパス",
+            town_id: town
           },
           auth: {
             is_authenticate: false,
@@ -158,11 +156,15 @@ RSpec.describe 'ApiV1User', type: :request do
 
   ####################################################################################
 
-  describe "DELETE /api/v1/user/delete/:id" do
-    xit "ユーザー情報が削除されていること" do
+  describe "DELETE /api/v1/users/:id" do
+    let(:user) { FactoryBot.create(:user, town: town) }
+
+    it "ユーザー情報が削除されていること" do
       delete api_v1_user_path(user)
 
+      data = JSON.parse(response.body)
       expect(response).to have_http_status(200)
+      expect(data["result"]).to eq 0
       expect{ User.find(user.id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
 

@@ -1,7 +1,6 @@
 import Repository from "../repository.js";
 
 const resources = "/v1/users";
-const resource = "/v1/user"
 
 export default {
 
@@ -14,10 +13,10 @@ export default {
   },
 
   update(id, data) {
-    return Repository.put(`${resource}/${id}`, data);
+    return Repository.put(`${resources}/${id}`, data);
   },
 
   destroy(id) {
-    return Repository.delete(`${resource}/${id}`);
+    return Repository.delete(`${resources}/${id}`);
   }
 };

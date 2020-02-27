@@ -2,6 +2,7 @@
 class User < ApplicationRecord
   has_secure_password validations: false
   has_one_attached :avatar
+  attr_accessor :image
   belongs_to :town
   # 名前
   validates :name, presence: true, allow_nil: true, length: {
