@@ -7,8 +7,8 @@ class Api::V1::SessionsController < ApplicationController
       session[:id] = user.id
       @result = 0
     else
-      @user_id = ""
-      @error = "メールアドレスとパスワードが一致しません"
+      @user_id = ''
+      @error = 'メールアドレスとパスワードが一致しません'
       @result = 1
     end
 
@@ -24,6 +24,6 @@ class Api::V1::SessionsController < ApplicationController
   private
 
   def user_params
-    params.require("user").permit(:email, :password)
+    params.require('user').permit(:email, :password)
   end
 end

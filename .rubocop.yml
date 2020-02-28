@@ -1,25 +1,48 @@
+inherit_from: .rubocop_todo.yml
+
 Style/FrozenStringLiteralComment:
   Enabled: false
 
-Rails:
-  Enabled: true
 # 日本語でのコメントを許可
-AsciiComments:
+Style/AsciiComments:
   Enabled: false
+
 # 最大文字数
 Metrics/LineLength:
-  Max: 120
+  Enabled: false
+
 # 以下のファイルはブロックの文字数チェックはしない
 Metrics/BlockLength:
   Exclude:
     - "spec/**/*"
+
 # {}のスペースがあることをチェック
 Layout/SpaceInsideStringInterpolation:
   EnforcedStyle: space
+
 # クラス定義方法はチェックしない
 ClassAndModuleChildren:
   Enabled: false
 
 # クラスにコメントを残さない
-Documentation:
+Style/Documentation:
+  Enabled: false
+
+# メソッドサイズのチェックはしない
+Metrics/MethodLength:
+  Enabled: false
+
+# 条件内のサイズはチェックしない
+Metrics/AbcSize:
+  Enabled: false
+
+# メソッド名のprefixに「set_」「get_」を許可
+Naming/AccessorMethodName:
+  Enabled: false
+
+# 自動でフォーマットしたら変な治し方するから無効化
+Layout/EndAlignment:
+  Enabled: false 
+
+Style/IfUnlessModifier:
   Enabled: false

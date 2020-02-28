@@ -6,7 +6,7 @@ class Api::V1::UsersController < ApplicationController
 
     # デフォルトのプロフィール画像を設定
     @user.default_avatar_set
-    
+
     if @user.save
       @result = 0
       @errors = {}
@@ -31,22 +31,21 @@ class Api::V1::UsersController < ApplicationController
   ####################################################################################
 
   def destroy
-    if @user.destroy
-      @result = 0
-      render :destroy, status: 200
-    else
-      @result = 2
-      render :destroy, status: 200
+    @result = if @user.destroy
+                0
+              else
+                2
     end
+    render :destroy, status: 200
   end
 
   ####################################################################################
 
   def update
     # 認証
-    if auth_params["is_authenticate"]
+    if auth_params['is_authenticate']
       unless @user&.authenticate(auth_params[:authenticate])
-        @errors = { authenticate: "パスワードが違います" }
+        @errors = { authenticate: 'パスワードが違います' }
         @result = 1
         @user = User.new
         return render :update, status: 200
@@ -56,19 +55,18 @@ class Api::V1::UsersController < ApplicationController
     # 保存
     if @user.update(user_params)
       @result = 0
-      return render :update, status: 200
     else
       @errors = @user.get_errors_hash
       @result = 1
       @user = User.new
-      return render :update, status: 200
     end
+    render :update, status: 200
   end
 
   private
 
   def user_params
-    params.require("user").permit(
+    params.require('user').permit(
       :name,
       :email,
       :password,
@@ -78,9 +76,9 @@ class Api::V1::UsersController < ApplicationController
   end
 
   def auth_params
-    params.require("auth").permit(
-    :is_authenticate,
-    :authenticate
+    params.require('auth').permit(
+      :is_authenticate,
+      :authenticate
     )
   end
 
