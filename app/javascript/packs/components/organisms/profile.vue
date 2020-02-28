@@ -141,12 +141,12 @@ export default {
           is_authenticate: false
         }
       },
-      errors: {}
+      errors: {},
+      towns: []
     }
   },
   computed: {
     ...mapStateOfAccount(["user"]),
-    ...mapState(["towns"]),
     emailErrors() {
       // エラーメッセージをセット
       for (let key in this.parentErrors) {
@@ -161,7 +161,10 @@ export default {
       this.$emit("emailChange");
     },
     async get() {
-      await this.getAllTown();
+      let data = await this.getAllTown();
+      for (let town of data.towns) {
+        this.towns.push(town);
+      }
       // フォームで使用するキーのみ取得
       for (let key in this.form.user) {
         this.form.user[key] = this.user[key];

@@ -17,12 +17,10 @@ export default {
       srcs: []
     };
   },
+  props: ["searchResult"],
   components: {
     "my-carousel": Carousel,
     "my-icon-text": IconText
-  },
-  computed: {
-    ...mapState(["searchResult"])
   },
   methods: {
     create_photo_url() {

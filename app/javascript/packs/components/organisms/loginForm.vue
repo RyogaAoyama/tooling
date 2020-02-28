@@ -69,7 +69,6 @@ export default {
     ...mapMutationsOfSession(["setSessionError"]),
     onlogin() {
       this.$emit("onlogin", this.form);
-      console.log(this.form);
     },
     testlogin() {
       this.form.user.email = "test@gmail.com";

@@ -22,9 +22,9 @@
       <v-chip x-small color="yellow" text-color="white">行ったことない</v-chip>
     </div>
     <div class="px-xl-12 px-md-12 px-sm-12 px-1 pb-12">
-      <my-picture-section class="mb-12"></my-picture-section>
-      <my-review-section class="mb-12"></my-review-section>
-      <my-address-section></my-address-section>
+      <my-picture-section class="mb-12" :searchResult="searchResult"></my-picture-section>
+      <my-review-section class="mb-12" :searchResult="searchResult"></my-review-section>
+      <my-address-section :searchResult="searchResult"></my-address-section>
     </div>
     <v-btn @click="test">test</v-btn>
   </v-card>
@@ -37,6 +37,7 @@ import ReviewSection from "./../organisms/reviewSection.vue";
 import AddressSection from "./../organisms/addressSection.vue";
 import { mapState } from "vuex";
 export default {
+  props: ["searchResult"],
   data: function() {
     return {
       src: ""
@@ -47,9 +48,6 @@ export default {
     "my-picture-section": PicutureSection,
     "my-review-section": ReviewSection,
     "my-address-section": AddressSection
-  },
-  computed: {
-    ...mapState(["searchResult"])
   },
   methods: {
     test() {

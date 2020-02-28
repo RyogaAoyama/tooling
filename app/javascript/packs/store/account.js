@@ -85,7 +85,6 @@ export default {
         }
         })
         .catch(e => {
-          // TODO: ここの処理リファクタリング
           console.log(e);
           let responseCode = e.response.status;
   

@@ -10,6 +10,7 @@
 import AccountForm from "./../../organisms/accountForm.vue";
 import { createNamespacedHelpers } from "vuex";
 import { mapState } from "vuex";
+import { mapActions } from "vuex";
 
 const {
   mapActions: mapActionsOfAccount
@@ -28,20 +29,25 @@ export default {
   data: function() {
     return {
       isLoading: false,
-      errors: {}
+      errors: {},
+      towns: []
     };
   },
   components: {
     "my-account-form": AccountForm
   },
-  created() {
-    this.$store.dispatch("getAllTown");
+  async created() {
+    let data = await this.getAllTown();
+    for (let town of data.towns) {
+      this.towns.push(town);
+    }
   },
   methods: {
     ...mapActionsOfAccount(["create"]),
     ...mapActionsOfSession(["login"]),
     ...mapMutationsOfSession(["setId"]),
     ...mapActionsOfAlert(["setAlert"]),
+    ...mapActions(["getAllTown"]),
     async userCreate(e) {
       
       // ロード開始
@@ -69,9 +75,6 @@ export default {
         }
       }
     }
-  },
-  computed: {
-    ...mapState(["towns"])
   }
 };
 </script>

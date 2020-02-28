@@ -16,12 +16,10 @@ import IconText from "./../molecules/iconText.vue";
 import GoogleMap from "./googleMap.vue";
 import { mapState } from "vuex";
 export default {
+  props: ["searchResult"],
   components: {
     "my-icon-text": IconText,
     "my-google-map": GoogleMap
-  },
-  computed: {
-    ...mapState(["searchResult"])
   }
 };
 </script>

@@ -43,12 +43,8 @@ import Repository from "./../../repository.js";
 import Geolocation from "./../../modules/geolocation.js";
 import { createNamespacedHelpers } from "vuex";
 
-const {
-  mapState: mapStateOfAccount
-} = createNamespacedHelpers("Account");
-
 export default {
-  props: ["towns", "arrivalTimes"],
+  props: ["towns", "arrivalTimes", "isLoading"],
   data: function() {
     return {
       form: {
@@ -57,35 +53,15 @@ export default {
           town: 0,
           position: ""
         }
-      },
-      searchResultMsg: "",
-      isLoading: false
+      }
     };
-  },
-  computed: {
-    ...mapStateOfAccount(["user"])
   },
   methods: {
     async setPosition() {
       this.form.search.position = await Geolocation.getCurrentPosition();
     },
     async search() {
-      this.$store.commit("changeSearchStatus", 2);
-      // 検索中はボタンを無効化
-      this.isLoading = true;
-
-      // 現在地をセット
-      await this.setPosition();
-
-      if (this.form.search.town == 0 || this.form.search.town == undefined) {
-        this.form.search.town = this.user.town_id;
-      }
-
-      // 検索
-      await this.$store.dispatch("search", this.form);
-
-      // 検索終了後ボタンを有効化
-      this.isLoading = false;
+      this.$emit("search", this.form);
     }
   }
 };
