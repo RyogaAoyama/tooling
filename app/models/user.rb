@@ -1,9 +1,10 @@
 class User < ApplicationRecord
+  belongs_to :town
+  has_many :destinations
+
   has_secure_token
   has_secure_password validations: false
   has_one_attached :avatar
-  attr_accessor :image
-  belongs_to :town
   # 名前
   validates :name, presence: true, allow_nil: true, length: {
     in: 1..50, message: 'は1文字以上50文字以内で入力してください'

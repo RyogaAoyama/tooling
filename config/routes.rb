@@ -2,6 +2,9 @@ Rails.application.routes.draw do
   namespace :api, format: 'json' do
     namespace :v1 do
       resources :users, only: %i[show create destroy update]
+      resources :users do
+        resources :destinations, only: %i[index create update destroy]
+      end
 
       post '/login', to: 'sessions#create', as: 'login'
       delete '/logout', to: 'sessions#destroy', as: 'logout'

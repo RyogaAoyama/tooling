@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_29_043530) do
+ActiveRecord::Schema.define(version: 2020_02_29_081643) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -43,6 +43,22 @@ ActiveRecord::Schema.define(version: 2020_02_29_043530) do
     t.index ["town_id"], name: "index_city_places_on_town_id"
   end
 
+  create_table "destinations", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "place_id", null: false
+    t.string "name", null: false
+    t.string "picture", default: ""
+    t.string "address", null: false
+    t.decimal "review_rank", precision: 10, null: false
+    t.integer "review_num", null: false
+    t.decimal "lat", precision: 8, null: false
+    t.decimal "lng", precision: 9, null: false
+    t.datetime "visited_at"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id"], name: "index_destinations_on_user_id"
+  end
+
   create_table "towns", primary_key: "town_id", id: :string, limit: 2, options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "town_name", null: false
     t.datetime "created_at", precision: 6, null: false
@@ -63,4 +79,5 @@ ActiveRecord::Schema.define(version: 2020_02_29_043530) do
 
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "city_places", "towns", primary_key: "town_id"
+  add_foreign_key "destinations", "users"
 end
