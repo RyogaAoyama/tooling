@@ -1,7 +1,5 @@
 import Repository from "../repository.js";
 
-
-
 export default {
 
   login(data) {

@@ -82,7 +82,7 @@ export default {
     }
   },
   computed: {
-    ...mapStateOfSession(["id"]),
+    ...mapStateOfSession(["id", "token"]),
     ...mapStateOfAccount(["user"])
   },
 
@@ -91,6 +91,7 @@ export default {
     ...mapActions(["reset"]),
     test() {
       console.log(this.id);
+      console.log(this.token);
       console.log(this.user);
     },
     logout() {

@@ -1,4 +1,5 @@
 class User < ApplicationRecord
+  has_secure_token
   has_secure_password validations: false
   has_one_attached :avatar
   attr_accessor :image
@@ -32,6 +33,9 @@ class User < ApplicationRecord
 
   # 住んでる都道府県
   validates :town_id, allow_nil: true, presence: true
+
+  # トークン
+  validates :token, uniqueness: true
 
   def get_errors_hash
     errors_hash = {}

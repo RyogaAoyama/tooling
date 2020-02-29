@@ -4,7 +4,10 @@ const resources = "/v1/users";
 
 export default {
 
-  find(id) {
+  find(id, token) {
+    alert(token);
+    alert(id);
+    Repository.defaults.headers.common["Authorization"] = `Bearer ${token}`
     return Repository.get(`${resources}/${id}`);
   },
 
@@ -12,11 +15,13 @@ export default {
     return Repository.post(`${resources}`, data);
   },
 
-  update(id, data) {
+  update(id, data, token) {
+    Repository.defaults.headers.common["Authorization"] = `Bearer ${token}`
     return Repository.put(`${resources}/${id}`, data);
   },
 
-  destroy(id) {
+  destroy(id, token) {
+    Repository.defaults.headers.common["Authorization"] = `Bearer ${token}`
     return Repository.delete(`${resources}/${id}`);
   }
 };

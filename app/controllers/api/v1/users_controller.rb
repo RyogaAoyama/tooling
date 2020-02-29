@@ -1,16 +1,18 @@
 class Api::V1::UsersController < ApplicationController
   before_action :current_user, only: %i[show update destroy]
+  skip_before_action :authenticate!, only: %i[create]
 
   def create
-    @user = User.new(user_params)
+    user = User.new(user_params)
 
     # デフォルトのプロフィール画像を設定
-    @user.default_avatar_set
+    user.default_avatar_set
 
-    if @user.save
+    if user.save!
       @result = 0
       @errors = {}
-      @user_id = @user.id
+      @user_id = user.id
+      @token = user.token
     else
       @result = 1
       # エラーメッセージをハッシュで取得

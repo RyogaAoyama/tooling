@@ -110,7 +110,7 @@ export default {
       }
     },
     async get() {
-      await this.getUser(this.id);
+      await this.getUser();
     },
     async search(e) {
       this.searchStatus = 2;

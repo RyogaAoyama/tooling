@@ -156,7 +156,7 @@ export default {
   },
   methods: {
     ...mapActions(["getAllTown"]),
-    ...mapActionsOfAccount(["getUser, update"]),
+    ...mapActionsOfAccount(["update"]),
     emailChange() {
       this.$emit("emailChange");
     },

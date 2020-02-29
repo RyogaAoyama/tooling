@@ -28,7 +28,7 @@ const router =  new VueRouter({
 
 router.beforeEach((to, from, next) => {
   if (to.matched.some(rec => rec.meta.requiresAuth)) {
-    if (store.state.Session.id == "") {
+    if (store.state.Session.id == "" || store.state.Session.token == "") {
       next({ path: "/login", query: { redirect: to.fullPath }});
     } else {
       next();

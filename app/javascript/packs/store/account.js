@@ -60,10 +60,10 @@ export default {
         return data;
     },
 
-    async getUser(context, payload) {
-      await UsersRepository.find(payload)
+    async getUser({ commit, rootState }) {
+      await UsersRepository.find(rootState.Session.id, rootState.Session.token)
         .then(res => {
-          context.commit("setUser", res.data);
+          commit("setUser", res.data);
         })
         .catch(e => {
           console.log(e);
@@ -72,7 +72,7 @@ export default {
 
     async updateUser({ commit, dispatch, rootState }, payload) {
       let data = {};
-      await UsersRepository.update(rootState.Session.id, payload)
+      await UsersRepository.update(rootState.Session.id, payload, rootState.Session.token)
       .then(res => {
         data = res.data;
 
@@ -107,12 +107,14 @@ export default {
         })
         return data;
     },
-    async destroyUser({ commit, dispatch, rootState }, payload) {
-      let result = await UsersRepository.destroy(rootState.Session.id, payload)
+    async destroyUser({ dispatch, rootState }) {
+      let result = await UsersRepository.destroy(rootState.Session.id, rootState.Session.token)
         .then(res => {
-          dispatch("Alert/setIsShow", true, { root: true });
-          dispatch("Alert/setMsg", "サービスを退会しました、ご利用ありがとうございました。", { root: true });
-          dispatch("Alert/setType", "error", { root: true });
+          dispatch(
+            "Alert/setAlert",
+            { msg: "サービスを退会しました、ご利用ありがとうございました。",type: "success" },
+            { root: true }
+          )
           return res.data.result;
         })
         .catch(e => {
@@ -120,17 +122,23 @@ export default {
 
           let responseCode = e.response.status;
           if (responseCode == 400) {
-            dispatch("Alert/setIsShow", true, { root: true });
-            dispatch("Alert/setMsg", "ネットワークエラーが発生しました。ネットワークの接続を確認してください。", { root: true });
-            dispatch("Alert/setType", "error", { root: true });
+            dispatch(
+              "Alert/setAlert",
+              { msg: "ネットワークエラーが発生しました。ネットワークの接続を確認してください。",type: "error" },
+              { root: true }
+            )
           } else if (responseCode == 500) {
-            dispatch("Alert/setType", "error", { root: true });
-            dispatch("Alert/setIsShow", true, { root: true });
-            dispatch("Alert/setMsg", "内部でエラーが発生しました。時間を置いて再度お試しください。", { root: true });
+            dispatch(
+              "Alert/setAlert",
+              { msg: "内部でエラーが発生しました。時間を置いて再度お試しください。",type: "error" },
+              { root: true }
+            )
           } else {
-            dispatch("Alert/setIsShow", true, { root: true });
-            dispatch("Alert/setType", "error", { root: true });
-            dispatch("Alert/setMsg", "予期せぬエラーが発生しました。システム管理者までご連絡ください。", { root: true });
+            dispatch(
+              "Alert/setAlert",
+              { msg: "予期せぬエラーが発生しました。システム管理者までご連絡ください。",type: "error" },
+              { root: true }
+            )
           }
           return responseCode;
         });
