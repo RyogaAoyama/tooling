@@ -10,6 +10,8 @@
       class="serach-form-position"
       :towns="towns"
       :arrivalTimes="arrivalTimes"
+      :isLoading="isLoading"
+      @search="search"
     ></my-search-form>
     <v-container>
       <my-icon-text size="35" iconName="mdi-magnify" class="mb-12"
@@ -23,7 +25,7 @@
         color="green"
         v-else-if="searchStatus == 2"
       ></v-progress-circular>
-      <my-search-result v-else-if="searchStatus == 3"></my-search-result>
+      <my-search-result :searchResult="SearchResult" v-else-if="searchStatus == 3"></my-search-result>
       <my-opacity-image src="/search_error.svg" v-else-if="searchStatus == 4">
         {{ searchResultMsg }}
       </my-opacity-image>
@@ -32,17 +34,27 @@
 </template>
 
 <script>
-// TODO: エラーごとに出力内容違うからそれの判定
-// TODO: opacityImageの位置調整
 import MaskImage from "./../../atoms/maskImage.vue";
 import SearchForm from "./../../organisms/searchForm.vue";
 import SearchResult from "./../../organisms/searchResult.vue";
 import IconText from "./../../molecules/iconText.vue";
 import OpacityImage from "./../../atoms/opacityImage.vue";
 import { RepositoryFactory } from "./../../../factories/repositoryFactory.js";
-import { mapState } from "vuex";
+import Geolocation from "./../../../modules/geolocation.js";
+import { createNamespacedHelpers } from "vuex";
+import { mapActions } from "vuex";
 
-const TownsRepository = RepositoryFactory.get("towns");
+const {
+  mapState: mapStateOfSession
+} = createNamespacedHelpers("Session");
+
+const {
+  mapActions: mapActionsOfAccount,
+  mapState: mapStateOfAccount
+} = createNamespacedHelpers("Account");
+
+const UsersRepository = RepositoryFactory.get("users");
+
 export default {
   components: {
     "my-mask-image": MaskImage,
@@ -53,14 +65,31 @@ export default {
   },
   data: function() {
     return {
-      arrivalTimes: []
+      arrivalTimes: [],
+      SearchResult: {},
+      searchStatus: 1,
+      searchResultMsg: "",
+      isLoading: false,
+      towns: []
     };
   },
   async created() {
-    this.$store.dispatch("getAllTown");
+    let data = await this.getAllTown();
+    for (let town of data.towns) {
+      this.towns.push(town);
+    }
     this.createArrivalTime();
+    this.get();
+
+  },
+  computed: {
+    ...mapStateOfSession(["id"]),
+    ...mapStateOfAccount(["user"])
   },
   methods: {
+    ...mapActionsOfAccount(["getUser"]),
+    ...mapActions(["getAllTown"]),
+
     // 到着時間のセレクトボックスにデータを格納するメソッド
     createArrivalTime() {
       // 上限到着時間(分)
@@ -79,10 +108,47 @@ export default {
         // 到着時間を格納
         this.arrivalTimes.push(option);
       }
+    },
+    async get() {
+      await this.getUser();
+    },
+    async search(e) {
+      this.searchStatus = 2;
+      // 検索中はボタンを無効化
+      this.isLoading = true;
+
+      // 現在地をセット
+      e.search.position = await Geolocation.getCurrentPosition();
+
+      if (e.search.town == 0 || e.search.town == undefined) {
+        e.search.town = this.user.town_id;
+      }
+      let data = {};
+      let result = 0;
+      // 検索
+      [result, data] = await this.$store.dispatch("search", e);
+
+      if (result == 0) {
+        if (data.result["name"] == "") {
+          this.searchResultMsg = "条件に該当する行き先が見つかりませんでした。"
+          this.searchStatus = 4
+        }
+      this.SearchResult = data.result;
+      this.searchStatus = 3;
+      } else if (result == 400) {
+        this.searchResultMsg = "ネットワークエラーが発生しました。ネットワークの接続を確認してください。"
+        this.searchStatus = 4
+      } else if (result == 500) {
+        this.searchResultMsg = "内部でエラーが発生しました。時間を置いて再度お試しください。"
+        this.searchStatus = 4
+      } else {
+        this.searchResultMsg = "予期せぬエラーが発生しました。システム管理者までご連絡ください。"
+        this.searchStatus = 4
+      }
+
+      // 検索終了後ボタンを有効化
+      this.isLoading = false;
     }
-  },
-  computed: {
-    ...mapState(["towns", "searchStatus", "searchResultMsg"])
   }
 };
 </script>

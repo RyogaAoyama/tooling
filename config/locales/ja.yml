@@ -1,0 +1,16 @@
+ja:
+  activerecord:
+    models:
+      user: ユーザー
+      town: 都道府県
+    attributes:
+        user:
+          id: ID
+          name: 名前
+          email: メールアドレス
+          password: パスワード
+          password_confirmation: 確認
+          town: お住いの都道府県
+          avatar: プロフィール画像
+          created_at: 作成日
+          updated_at: 更新日

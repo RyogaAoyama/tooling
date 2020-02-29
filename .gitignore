@@ -33,6 +33,6 @@ yarn-debug.log*
 .DS_Store
 memo.md
 .env
-test.rb
+test.*
 /http
 *.svg

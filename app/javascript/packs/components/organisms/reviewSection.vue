@@ -45,12 +45,10 @@ import IconText from "./../molecules/iconText.vue";
 import OpacityImage from "./../atoms/opacityImage.vue";
 import { mapState } from "vuex";
 export default {
+  props: ["searchResult"],
   components: {
     "my-icon-text": IconText,
     "my-opacity-image": OpacityImage
-  },
-  computed: {
-    ...mapState(["searchResult"])
   }
 };
 </script>
