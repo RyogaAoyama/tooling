@@ -1,5 +1,4 @@
 class Destination < ApplicationRecord
-
   include Common
   belongs_to :user
 

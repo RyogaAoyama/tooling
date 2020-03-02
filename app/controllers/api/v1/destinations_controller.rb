@@ -21,7 +21,7 @@ class Api::V1::DestinationsController < ApplicationController
     if destination_params[:is_visit]
       @destination.visited_at = DateTime.now
     end
-    
+
     if @destination.save
       ok, @fields = Destination.new.output_column
       render :update, status: :ok
@@ -33,7 +33,7 @@ class Api::V1::DestinationsController < ApplicationController
 
   def create
     @destination = @user.destinations.new(destination_params)
-    
+
     if @destination.save
       render :create, status: :created
     else
@@ -41,7 +41,7 @@ class Api::V1::DestinationsController < ApplicationController
       render :error, status: :unprocessable_entity
     end
   end
-  
+
   def destroy
     if Destination.find(params[:id]).destroy
       render :destroy, status: :no_content
@@ -67,6 +67,4 @@ class Api::V1::DestinationsController < ApplicationController
       :is_visit
     )
   end
-
-
 end

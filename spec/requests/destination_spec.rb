@@ -23,8 +23,8 @@ RSpec.describe 'ApiV1User', type: :request do
         data = JSON.parse(response.body)
 
         expect(response).to have_http_status(200)
-        expect(data["destinations"][0].keys.size).to eq 1
-        expect(data["destinations"][0].keys[0]).to eq fields.values[0]
+        expect(data['destinations'][0].keys.size).to eq 1
+        expect(data['destinations'][0].keys[0]).to eq fields.values[0]
       end
     end
 
@@ -35,7 +35,7 @@ RSpec.describe 'ApiV1User', type: :request do
         data = JSON.parse(response.body)
 
         expect(response).to have_http_status(200)
-        expect(data["destinations"][0].keys.size).to eq Destination.new.output_column[1].size
+        expect(data['destinations'][0].keys.size).to eq Destination.new.output_column[1].size
       end
       it 'ユーザーの全ての行き先レコードが取得できていること' do
         get api_v1_user_destinations_path(user), headers: headers
@@ -43,7 +43,7 @@ RSpec.describe 'ApiV1User', type: :request do
         data = JSON.parse(response.body)
 
         expect(response).to have_http_status(200)
-        expect(data["destinations"].size).to eq user.destinations.size
+        expect(data['destinations'].size).to eq user.destinations.size
       end
     end
 
@@ -69,8 +69,8 @@ RSpec.describe 'ApiV1User', type: :request do
         data = JSON.parse(response.body)
 
         expect(response).to have_http_status(200)
-        expect(data["destinations"][0].keys.size).to eq 1
-        expect(data["destinations"][0].keys[0]).to eq fields.values[0]
+        expect(data['destinations'][0].keys.size).to eq 1
+        expect(data['destinations'][0].keys[0]).to eq fields.values[0]
       end
     end
 
@@ -81,7 +81,7 @@ RSpec.describe 'ApiV1User', type: :request do
         data = JSON.parse(response.body)
 
         expect(response).to have_http_status(200)
-        expect(data["destinations"][0].keys.size).to eq Destination.new.output_column[1].size
+        expect(data['destinations'][0].keys.size).to eq Destination.new.output_column[1].size
       end
     end
 
