@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 2020_02_29_081643) do
     t.string "address", null: false
     t.decimal "review_rank", precision: 10, null: false
     t.integer "review_num", null: false
+    t.boolean "is_visit", default: false, null: false
     t.decimal "lat", precision: 8, null: false
     t.decimal "lng", precision: 9, null: false
     t.datetime "visited_at"

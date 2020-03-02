@@ -15,6 +15,7 @@ RSpec.describe 'ApiSession', type: :request do
     )
   end
   let(:town) { FactoryBot.create(:town) }
+  let(:headers) { { 'Authorization': "Bearer #{ user.token }" } }
 
   describe 'POST /login' do
     it 'ユーザーデータが返却されていること' do
@@ -42,7 +43,7 @@ RSpec.describe 'ApiSession', type: :request do
     end
 
     it 'セッションが削除されていること' do
-      delete api_v1_logout_path
+      delete api_v1_logout_path, headers: headers
       expect(response).to have_http_status(200)
     end
   end

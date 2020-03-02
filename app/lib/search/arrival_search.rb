@@ -96,6 +96,7 @@ class Search::ArrivalSearch < Search::BaseSearch
   # 所要時間内の市区町村を取得する
   def city_refine(arrival_time, distances, cities)
     rtn_cities = []
+    arrival_time = arrival_time.to_i if arrival_time.is_a?(String)
     distances['rows'][0]['elements'].each_with_index do |val, idx|
       diff = arrival_time - val['duration']['value']
       rtn_cities << { lat: cities[idx][:lat], lng: cities[idx][:lng] } if diff > -1200 && diff < 1200

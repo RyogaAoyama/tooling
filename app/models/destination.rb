@@ -1,6 +1,13 @@
 class Destination < ApplicationRecord
+
+  include Common
   belongs_to :user
 
-  # TODO: output_columnを実装すること
-  def output_column; end
+  def output_column(fields = [])
+    if fields.blank?
+      [true, attribute_names]
+    else
+      [field_valid(fields), fields]
+    end
+  end
 end
