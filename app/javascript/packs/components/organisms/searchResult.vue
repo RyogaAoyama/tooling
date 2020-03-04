@@ -25,8 +25,10 @@
       <my-picture-section class="mb-12" :searchResult="searchResult"></my-picture-section>
       <my-review-section class="mb-12" :searchResult="searchResult"></my-review-section>
       <my-address-section :searchResult="searchResult"></my-address-section>
+      <div class="text-center">
+        <v-btn rounded color="#1FAB89" dark large @click="$router.push('/destination/index')">ここに行く</v-btn>
+      </div>
     </div>
-    <v-btn @click="test">test</v-btn>
   </v-card>
 </template>
 

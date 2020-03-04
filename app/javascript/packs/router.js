@@ -8,11 +8,9 @@ import AccountNew from "./components/pages/account/new.vue";
 import Login from "./components/pages/session/new.vue";
 import PageNotFound from "./components/pages/error/404.vue";
 import AccountProfile from "./components/pages/account/edit.vue";
+import DestinationIndex from "./components/pages/destination/index.vue";
 
-Vue.use(VueRouter);
-
-
-
+Vue.use(VueRouter)
 
 const router =  new VueRouter({
   routes: [
@@ -22,6 +20,7 @@ const router =  new VueRouter({
     { path: "/account/new", component: AccountNew },
     { path: "/account/edit", component: AccountProfile, meta: { requiresAuth:true } },
     { path: "/login", component: Login },
+    { path: "/destination/index", component: DestinationIndex, meta: { requiresAuth:true } },
     { path: "*", component: PageNotFound }
   ]
 });

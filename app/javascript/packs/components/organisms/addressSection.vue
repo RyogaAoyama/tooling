@@ -5,9 +5,6 @@
     <div class="d-inline-block">所要時間：{{ searchResult.rows[0].elements[0].duration.text }}</div>
     <div class="mb-5">距離：{{ searchResult.rows[0].elements[0].distance.text }}</div>
     <my-google-map :searchResult="searchResult" class="mb-10"></my-google-map>
-    <div class="text-center">
-      <v-btn rounded color="#1FAB89" dark>ここに行く</v-btn>
-    </div>
   </div>
 </template>
 

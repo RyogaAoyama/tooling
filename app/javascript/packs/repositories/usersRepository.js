@@ -5,8 +5,6 @@ const resources = "/v1/users";
 export default {
 
   find(id, token) {
-    alert(token);
-    alert(id);
     Repository.defaults.headers.common["Authorization"] = `Bearer ${token}`
     return Repository.get(`${resources}/${id}`);
   },

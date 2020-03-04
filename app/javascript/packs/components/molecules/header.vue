@@ -76,7 +76,8 @@ export default {
       group: false,
       userName: "",
       menus:[
-        { name: "行き先を検索", icon: "mdi-logout-variant", page: "/search" },
+        { name: "行き先を検索", icon: "mdi-bike", page: "/search" },
+        { name: "行き先一覧", icon: "mdi-format-list-bulleted", page: "/destination/index" },
         { name: "設定", icon: "mdi-cogs", page: "/account/edit" }
       ]
     }
