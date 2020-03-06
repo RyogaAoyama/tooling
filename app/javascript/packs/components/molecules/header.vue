@@ -8,7 +8,6 @@
       <v-toolbar-items>
         <v-btn @click="$router.push('/')">TOP</v-btn>
         <v-btn @click="$router.push('/sandbox')">サンドボックス</v-btn>
-        <v-btn @click="test">test</v-btn>
         <v-btn @click="$router.push('/account/edit')">設定</v-btn>
         <v-btn text v-show="isAuth">{{ user.name }}</v-btn>
       </v-toolbar-items>
@@ -90,11 +89,6 @@ export default {
   methods: {
     ...mapActionsOfAlert(["setAlert"]),
     ...mapActions(["reset"]),
-    test() {
-      console.log(this.id);
-      console.log(this.token);
-      console.log(this.user);
-    },
     logout() {
       this.setAlert({ msg: "ログアウトしました", type: "success" });
       this.reset();

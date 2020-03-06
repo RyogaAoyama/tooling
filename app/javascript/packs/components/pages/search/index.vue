@@ -29,7 +29,6 @@
       <my-opacity-image src="/search_error.svg" v-else-if="searchStatus == 4">
         {{ searchResultMsg }}
       </my-opacity-image>
-      <v-btn @click="$router.push('/destination/index')">test</v-btn>
     </v-container>
   </v-app>
 </template>

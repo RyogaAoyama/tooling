@@ -47,7 +47,7 @@ ActiveRecord::Schema.define(version: 2020_02_29_081643) do
     t.bigint "user_id", null: false
     t.string "place_id", null: false
     t.string "name", null: false
-    t.string "picture", default: ""
+    t.text "picture"
     t.string "address", null: false
     t.decimal "review_rank", precision: 10, null: false
     t.integer "review_num", null: false

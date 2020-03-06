@@ -4,7 +4,7 @@ class CreateDestinations < ActiveRecord::Migration[6.0]
       t.references :user, null: false, foreign_key: true
       t.string :place_id, null: false
       t.string :name, null: false
-      t.string :picture, default: ''
+      t.text :picture
       t.string :address, null: false
       t.decimal :review_rank, null: false
       t.integer :review_num, null: false

@@ -1,6 +1,6 @@
 class Api::V1::DestinationsController < ApplicationController
   before_action :current_user
-  # skip_before_action :authenticate!
+  skip_before_action :authenticate!
 
   def index
     @destinations = @user.destinations
@@ -18,6 +18,7 @@ class Api::V1::DestinationsController < ApplicationController
   def update
     @destination = Destination.find(params[:id])
     @destination.is_visit = destination_params[:is_visit]
+    p destination_params[:is_visit]
     if destination_params[:is_visit]
       @destination.visited_at = DateTime.now
     end
@@ -33,7 +34,6 @@ class Api::V1::DestinationsController < ApplicationController
 
   def create
     @destination = @user.destinations.new(destination_params)
-
     if @destination.save
       render :create, status: :created
     else
