@@ -189,7 +189,6 @@ RSpec.describe 'ApiV1User', type: :request do
         data = JSON.parse(response.body)
 
         expect(response).to have_http_status(200)
-        p Destination.new.output_column
         expect(data['destination'].keys.size).to eq Destination.new.output_column[1].size
       end
     end
