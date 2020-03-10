@@ -3,6 +3,7 @@ require 'rails_helper'
 RSpec.describe 'ApiV1User', type: :request do
   include_context 'project setup'
   let(:town) { Town.find('33') }
+  let(:headers) { { 'Authorization': "Bearer #{ user.token }" } }
 
   ####################################################################################
 
@@ -33,7 +34,7 @@ RSpec.describe 'ApiV1User', type: :request do
     let(:user) { FactoryBot.create(:user, name: name, email: email, town: town) }
 
     it 'ユーザーデータが取得できている' do
-      get api_v1_user_path(user)
+      get api_v1_user_path(user), headers: headers
 
       data = JSON.parse(response.body)
 
@@ -66,7 +67,7 @@ RSpec.describe 'ApiV1User', type: :request do
             is_authenticate: false,
             authenticate: ''
           }
-        }
+        }, headers: headers
 
         data = JSON.parse(response.body)
 
@@ -98,7 +99,7 @@ RSpec.describe 'ApiV1User', type: :request do
             is_authenticate: true,
             authenticate: password
           }
-        }
+        }, headers: headers
 
         data = JSON.parse(response.body)
 
@@ -115,7 +116,7 @@ RSpec.describe 'ApiV1User', type: :request do
             is_authenticate: true,
             authenticate: 'miss_authenticate'
           }
-        }
+        }, headers: headers
 
         data = JSON.parse(response.body)
 
@@ -146,7 +147,7 @@ RSpec.describe 'ApiV1User', type: :request do
             is_authenticate: true,
             authenticate: password
           }
-        }
+        }, headers: headers
 
         data = JSON.parse(response.body)
 
@@ -163,7 +164,7 @@ RSpec.describe 'ApiV1User', type: :request do
     let(:user) { FactoryBot.create(:user, town: town) }
 
     it 'ユーザー情報が削除されていること' do
-      delete api_v1_user_path(user)
+      delete api_v1_user_path(user), headers: headers
 
       data = JSON.parse(response.body)
       expect(response).to have_http_status(200)

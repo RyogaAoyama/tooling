@@ -27,10 +27,15 @@ export default {
       }
     },
 
+    ////////////////////////////////////////////////////////////////////////////
+
     resetUser(state) {
       state.user = {};
       state.errors = {};
     }
+
+    ////////////////////////////////////////////////////////////////////////////
+
   },
   actions: {
     async create(context, payload) {
@@ -60,6 +65,8 @@ export default {
         return data;
     },
 
+    ////////////////////////////////////////////////////////////////////////////
+
     async getUser({ commit, rootState }) {
       await UsersRepository.find(rootState.Session.id, rootState.Session.token)
         .then(res => {
@@ -69,6 +76,8 @@ export default {
           console.log(e);
         })
     },
+
+    ////////////////////////////////////////////////////////////////////////////
 
     async updateUser({ commit, dispatch, rootState }, payload) {
       let data = {};
@@ -107,6 +116,9 @@ export default {
         })
         return data;
     },
+
+    ////////////////////////////////////////////////////////////////////////////
+    
     async destroyUser({ dispatch, rootState }) {
       let result = await UsersRepository.destroy(rootState.Session.id, rootState.Session.token)
         .then(res => {

@@ -7,6 +7,7 @@ import createPersistedState from 'vuex-persistedstate'
 import Account from "./store/account.js";
 import Alert from "./store/alert.js";
 import Session from "./store/session.js";
+import Destination from "./store/destination.js";
 
 Vue.use(Vuex);
 
@@ -20,7 +21,8 @@ export default new Vuex.Store({
   modules: {
     Account,
     Alert,
-    Session
+    Session,
+    Destination
   },
   state: {
     towns: [],

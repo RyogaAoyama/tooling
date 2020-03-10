@@ -25,8 +25,18 @@
       <my-picture-section class="mb-12" :searchResult="searchResult"></my-picture-section>
       <my-review-section class="mb-12" :searchResult="searchResult"></my-review-section>
       <my-address-section :searchResult="searchResult"></my-address-section>
+      <div class="text-center">
+        <v-btn
+          rounded
+          color="#1FAB89"
+          class="white--text"
+          large
+          @click="create"
+          :disabled="isLoading"
+          :loading="isLoading"
+        >ここに行く</v-btn>
+      </div>
     </div>
-    <v-btn @click="test">test</v-btn>
   </v-card>
 </template>
 
@@ -36,11 +46,18 @@ import PicutureSection from "./../organisms/pictureSection.vue";
 import ReviewSection from "./../organisms/reviewSection.vue";
 import AddressSection from "./../organisms/addressSection.vue";
 import { mapState } from "vuex";
+import { createNamespacedHelpers } from "vuex";
+
+const { mapActions: mapActionsOfDestination } = createNamespacedHelpers(
+  "Destination"
+);
+
 export default {
   props: ["searchResult"],
   data: function() {
     return {
-      src: ""
+      src: "",
+      isLoading: false
     };
   },
   components: {
@@ -50,10 +67,7 @@ export default {
     "my-address-section": AddressSection
   },
   methods: {
-    test() {
-      console.log(this.searchResult);
-      console.log(this.src);
-    },
+    ...mapActionsOfDestination(["createDestination"]),
     create_photo_url() {
       if (this.searchResult["photos"].length == 0) {
         this.src = "/not_image.svg";
@@ -64,6 +78,29 @@ export default {
         gon.GOOGLE_API_KEY +
         "&photoreference=" +
         this.searchResult["photos"][0]["photo_reference"];
+      console.log(this.searchResult);
+    },
+    async create() {
+      let send = { destination: {} };
+      let result = this.searchResult;
+
+      console.log(send.destination);
+      // HACK: どこかで取得する項目定義してforで回したい(時間がある時にリファクタ)
+      send.destination.place_id = result.place_id;
+      send.destination.name = result.name;
+      send.destination.picture = this.src;
+      send.destination.address = result.address;
+      send.destination.review_rank = result.rating;
+      send.destination.review_num = result.user_ratings_total;
+      send.destination.lat = result.lat;
+      send.destination.lng = result.lng;
+      send.destination.is_visit = false;
+      this.isLoading = true;
+      let responseCode = await this.createDestination(send);
+      this.isLoading = false;
+      if (responseCode == 201) {
+        this.$router.push("/destination/index");
+      }
     }
   },
   created() {

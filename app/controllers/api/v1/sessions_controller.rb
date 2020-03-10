@@ -18,7 +18,6 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def destroy
-    session[:id] = nil
     @result = 0
     render :destroy, status: 200
   end

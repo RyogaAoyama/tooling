@@ -7,6 +7,10 @@ RSpec.describe 'ApiSearch', type: :request do
 
   include_context 'project setup'
 
+  let(:town) { Town.find('33') }
+  let(:user) { FactoryBot.create(:user, town: town) }
+  let(:headers) { { 'Authorization': "Bearer #{ user.token }" } }
+
   describe 'GET /search' do
     fields = FieldDefine::SEARCH_RESULT_FIELDS
 
@@ -18,8 +22,7 @@ RSpec.describe 'ApiSearch', type: :request do
             town: '',
             position: POSITION
           }
-        },
-                              as: :json
+        }, headers: headers
 
         data = JSON.parse(response.body)
         expect(response).to have_http_status(200)
@@ -35,8 +38,7 @@ RSpec.describe 'ApiSearch', type: :request do
             town: TOWN,
             position: POSITION
           }
-        },
-                              as: :json
+        }, headers: headers
 
         data = JSON.parse(response.body)
         expect(response).to have_http_status(200)
