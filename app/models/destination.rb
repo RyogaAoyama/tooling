@@ -2,6 +2,7 @@ class Destination < ApplicationRecord
   include Common
   belongs_to :user
 
+  # 取得するJSONを定義
   def output_column(fields = [])
     if fields.blank?
       [true, attribute_names]
