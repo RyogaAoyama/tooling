@@ -3,7 +3,7 @@ Rails.application.routes.draw do
     namespace :v1 do
       resources :users, only: %i[show create destroy update]
       resources :users do
-        resources :destinations, only: %i[index create update destroy]
+        resources :destinations, only: %i[index create update destroy show]
       end
 
       post '/login', to: 'sessions#create', as: 'login'

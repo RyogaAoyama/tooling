@@ -8,11 +8,12 @@ export default {
   mutations: {},
   // HACK: エラーのところ重複してるから時間ある時にリファクタ
   actions: {
-    async getAllDestination({ dispatch, rootState }) {
+    async getAllDestination({ dispatch, rootState }, payload = "") {
       let data = {};
       await DestinationsRepository.all(
         rootState.Session.id,
-        rootState.Session.token
+        rootState.Session.token,
+        payload
       )
         .then(res => {
           data = res.data;

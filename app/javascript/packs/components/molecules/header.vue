@@ -13,19 +13,15 @@
       </v-toolbar-items>
     </v-toolbar>
 
-    <v-navigation-drawer
-      fixed
-      dark
-      temporary
-      color="#1FAB89"
-      v-model="isActive"
-    >
+    <v-navigation-drawer fixed dark temporary color="#1FAB89" v-model="isActive">
       <template>
         <v-list-item>
           <v-list-item-icon>
             <v-icon>mdi-cogs</v-icon>
           </v-list-item-icon>
-          <v-list-item-title><strong>設定</strong></v-list-item-title>
+          <v-list-item-title>
+            <strong>設定</strong>
+          </v-list-item-title>
         </v-list-item>
       </template>
 
@@ -53,19 +49,13 @@
 </template>
 
 <script>
-import { createNamespacedHelpers, mapActions } from "vuex"
+import { createNamespacedHelpers, mapActions } from "vuex";
 
-const {
-  mapState: mapStateOfAccount
-} = createNamespacedHelpers("Account");
+const { mapState: mapStateOfAccount } = createNamespacedHelpers("Account");
 
-const {
-  mapState: mapStateOfSession,
-} = createNamespacedHelpers("Session");
+const { mapState: mapStateOfSession } = createNamespacedHelpers("Session");
 
-const {
-  mapActions: mapActionsOfAlert
-} = createNamespacedHelpers("Alert");
+const { mapActions: mapActionsOfAlert } = createNamespacedHelpers("Alert");
 
 export default {
   data: function() {
@@ -74,12 +64,21 @@ export default {
       isActive: false,
       group: false,
       userName: "",
-      menus:[
+      menus: [
         { name: "行き先を検索", icon: "mdi-bike", page: "/search" },
-        { name: "行き先一覧", icon: "mdi-format-list-bulleted", page: "/destination/index" },
+        {
+          name: "行き先一覧",
+          icon: "mdi-format-list-bulleted",
+          page: "/destination/index"
+        },
+        {
+          name: "訪問マップ",
+          icon: "mdi-map-check-outline",
+          page: "/map"
+        },
         { name: "設定", icon: "mdi-cogs", page: "/account/edit" }
       ]
-    }
+    };
   },
   computed: {
     ...mapStateOfSession(["id", "token"]),
@@ -98,12 +97,12 @@ export default {
       if (this.id != "") {
         this.isAuth = true;
       } else {
-        this.isAuth = false
+        this.isAuth = false;
       }
     }
   },
   created() {
-    this.existId()
+    this.existId();
   },
   watch: {
     group() {
@@ -117,7 +116,6 @@ export default {
 </script>
 
 <style>
-
 .fixed {
   position: fixed;
   z-index: 1000;
