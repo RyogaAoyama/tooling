@@ -6,7 +6,7 @@
         <div>新たなる地を求めて走る</div>
       </div>
       <div>
-        <div class="error-msg">&nbsp;{{ loginError }}</div>
+        <div class="error-msg">&nbsp;{{ error }}</div>
         <v-text-field label="メールアドレス" v-model="form.user.email"></v-text-field>
         <v-text-field label="パスワード" v-model="form.user.password" type="password"></v-text-field>
         <div class="error-msg">&nbsp;</div>
@@ -42,13 +42,12 @@
 import { createNamespacedHelpers } from "vuex";
 import { mapState } from "vuex";
 
-const {
-  mapState: mapStateOfSession,
-  mapMutations: mapMutationsOfSession
-} = createNamespacedHelpers("Session");
+const { mapMutations: mapMutationsOfSession } = createNamespacedHelpers(
+  "Session"
+);
 
 export default {
-  props: ["isLoading"],
+  props: ["isLoading", "error"],
   data: function() {
     return {
       form: {
@@ -57,10 +56,10 @@ export default {
           password: ""
         }
       }
-    }
+    };
   },
   watch: {
-    '$route': function (to, from) {
+    $route: function(to, from) {
       // エラーメッセージの初期化
       this.setSessionError("");
     }
@@ -77,10 +76,9 @@ export default {
     }
   },
   computed: {
-    ...mapState(["isDevelop"]),
-    ...mapStateOfSession(["loginError"])
+    ...mapState(["isDevelop"])
   }
-}
+};
 </script>
 
 <style>

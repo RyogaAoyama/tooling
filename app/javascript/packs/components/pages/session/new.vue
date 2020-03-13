@@ -1,7 +1,7 @@
 <template>
   <v-app class="teal lighten-3">
     <v-row align="center" justify="center">
-      <my-login-form :isLoading="isLoading" @onlogin="onlogin"></my-login-form>
+      <my-login-form :isLoading="isLoading" :error="error" @onlogin="onlogin"></my-login-form>
     </v-row>
   </v-app>
 </template>
@@ -10,23 +10,20 @@
 import LoginForm from "./../../organisms/loginForm.vue";
 import { createNamespacedHelpers, mapActions } from "vuex";
 
-const {
-  mapActions: mapActionsOfSession
-} = createNamespacedHelpers("Session");
+const { mapActions: mapActionsOfSession } = createNamespacedHelpers("Session");
 
-const {
-  mapMutations: mapMutationsOfAccount
-} = createNamespacedHelpers("Account");
+const { mapMutations: mapMutationsOfAccount } = createNamespacedHelpers(
+  "Account"
+);
 
-const {
-  mapMutations: mapMutationsOfAlert
-} = createNamespacedHelpers("Alert");
+const { mapMutations: mapMutationsOfAlert } = createNamespacedHelpers("Alert");
 
 export default {
   data: function() {
     return {
-      isLoading: false
-    }
+      isLoading: false,
+      error: ""
+    };
   },
   components: {
     "my-login-form": LoginForm
@@ -38,14 +35,16 @@ export default {
     async onlogin(e) {
       this.isLoading = true;
 
-      await this.login(e);
+      let data = await this.login(e);
+      if (data.result == 1) {
+        this.error = data.error;
+      }
 
       this.isLoading = false;
     }
   }
-}
+};
 </script>
 
 <style>
-
 </style>

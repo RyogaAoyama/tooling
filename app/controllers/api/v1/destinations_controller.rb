@@ -46,6 +46,7 @@ class Api::V1::DestinationsController < ApplicationController
 
   def create
     @destination = @user.destinations.new(destination_params)
+
     if @destination.save
       render :create, status: :created
     else
