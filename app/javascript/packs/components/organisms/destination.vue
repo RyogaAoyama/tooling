@@ -37,7 +37,18 @@
 
     <v-row>
       <v-col cols="3">
-        <my-icon-text iconName="mdi-nature-people" size="15" color="#9E9E9E">300</my-icon-text>
+        <my-icon-text
+          iconName="mdi-account"
+          size="15"
+          color="#9E9E9E"
+        >{{ destination.all_destination_num }}</my-icon-text>
+      </v-col>
+      <v-col cols="3">
+        <my-icon-text
+          iconName="mdi-nature-people"
+          size="15"
+          color="#9E9E9E"
+        >{{ destination.all_visit_num }}</my-icon-text>
       </v-col>
     </v-row>
 
