@@ -19,6 +19,7 @@ export default {
 }
 
 .wrap {
+  position: relative;
 }
 
 .image-on-center {

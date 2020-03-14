@@ -43,9 +43,23 @@
                   class="mb-2"
                 >{{ item.is_visit ? `${item.visited_at.substr(0, 10)}に訪れました` : "まだ訪れていません" }}</my-icon-text>
 
-                <v-divider class="mb-2"></v-divider>
-
-                <my-icon-text iconName="mdi-nature-people" size="13" color="#9E9E9E">300</my-icon-text>
+                <v-divider class="mb-1"></v-divider>
+                <v-row>
+                  <v-col cols="3">
+                    <my-icon-text
+                      iconName="mdi-account"
+                      size="13"
+                      color="#9E9E9E"
+                    >{{ item.all_destination_num }}</my-icon-text>
+                  </v-col>
+                  <v-col cols="3">
+                    <my-icon-text
+                      iconName="mdi-nature-people"
+                      size="13"
+                      color="#9E9E9E"
+                    >{{ item.all_visit_num }}</my-icon-text>
+                  </v-col>
+                </v-row>
               </v-col>
             </v-row>
           </div>
@@ -127,6 +141,7 @@ export default {
       // オブジェクトをリストに格納
       this.marker_items.push(marker_data);
     }
+    console.log(this.marker_items);
     this.center = await Geolocation.getCurrentPosition();
   },
 

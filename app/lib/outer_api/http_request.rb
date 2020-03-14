@@ -12,11 +12,9 @@ class OuterApi::HttpRequest
     case res
     when Net::HTTPSuccess
       result = JSON.parse(res.body)
-      Rails.logger.info("URL -> #{ uri }")
-      Rails.logger.info("GET -> #{ res.body }")
+      # Rails.logger.info("URL -> #{ uri }")
       [true, 200, result]
     when Net::HTTPRedirection
-      Rails.logger.dubug('必要になったら書きまうす')
     when Net::HTTPClientError
       raise Net::HTTPServerException
     when Net::HTTPServerError
