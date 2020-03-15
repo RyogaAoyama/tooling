@@ -20,6 +20,7 @@ jobs:
       - name: Use secret value
         env:
           GOOGLE_API_KEY: ${{ secret.GOOGLE_API_KEY }}
+        run: echo ${GOOGLE_API_KEY}
 
       - name: Set up Ruby 2.6
         uses: actions/setup-ruby@v1
