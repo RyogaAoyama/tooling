@@ -73,7 +73,8 @@ class Api::V1::UsersController < ApplicationController
       :email,
       :password,
       :password_confirmation,
-      :town_id
+      :town_id,
+      :authority
     )
   end
 
