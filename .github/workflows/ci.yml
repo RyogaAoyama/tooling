@@ -16,15 +16,16 @@ jobs:
           - 3306
 
     steps:
+      - uses: actions/checkout@v1
+      - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+
       - name: Use secret value
         env:
           GOOGLE_API_KEY: ${{ secret.GOOGLE_API_KEY }}
-      - uses: actions/checkout@v1
-      - name: Set up Ruby 2.6
-        uses: actions/setup-ruby@v1
-        with:
-          ruby-version: 2.6.x
-
+        
       - name: mysql set up
         run: |
           sudo apt-get update
