@@ -10,14 +10,18 @@
     ></my-search-form>
     <v-container>
       <my-icon-text size="35" iconName="mdi-magnify" class="mb-12">検索結果</my-icon-text>
-      <my-opacity-image src="/search_not.svg" v-if="searchStatus == 1">検索してみましょう</my-opacity-image>
+      <my-opacity-image src="/search_not.svg" v-if="searchStatus == 1">
+        <h2>検索してみましょう</h2>
+      </my-opacity-image>
       <v-progress-circular indeterminate color="green" v-else-if="searchStatus == 2"></v-progress-circular>
       <my-search-result
         :searchResult="SearchResult"
         v-else-if="searchStatus == 3"
         :isRegist="isRegist"
       ></my-search-result>
-      <my-opacity-image src="/search_error.svg" v-else-if="searchStatus == 4">{{ searchResultMsg }}</my-opacity-image>
+      <my-opacity-image src="/search_error.svg" v-else-if="searchStatus == 4">
+        <h2>{{ searchResultMsg }}</h2>
+      </my-opacity-image>
     </v-container>
   </v-app>
 </template>

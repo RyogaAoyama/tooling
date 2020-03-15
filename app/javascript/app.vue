@@ -16,9 +16,3 @@ export default {
   }
 };
 </script>
-
-<style>
-[v-clock] {
-  display: none;
-}
-</style>

@@ -75,7 +75,7 @@
       </GmapMap>
     </div>
 
-    <v-card class="visit-info-card ml-2 pa-1" v-show="destinations.length == 0">
+    <v-card class="visit-info-card ml-2 pa-1" v-show="notExists">
       <v-card-text>
         <my-icon-text iconName="mdi-information-outline" class="mb-2" size="21">
           <strong>まだ行き先が登録されていないようです</strong>
@@ -102,8 +102,9 @@ export default {
   data() {
     return {
       destinations: [],
+      notExists: false,
       center: {},
-      zoom: 7,
+      zoom: 11,
       marker_items: [],
       item: {},
       infoOptions: {
@@ -123,6 +124,10 @@ export default {
     // 登録した行き先を取得
     this.destinations = await this.getDestination();
 
+    if (this.destinations.length == 0) {
+      this.notExists = true;
+    }
+
     // 行き先をGoogleMap用にフォーマットして格納
     for (let val of this.destinations) {
       let marker_data = {};
@@ -141,7 +146,6 @@ export default {
       // オブジェクトをリストに格納
       this.marker_items.push(marker_data);
     }
-    console.log(this.marker_items);
     this.center = await Geolocation.getCurrentPosition();
   },
 
