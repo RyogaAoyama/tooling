@@ -2,8 +2,7 @@ class Destination < ApplicationRecord
   include Common
   belongs_to :user
 
-  attr_accessor :all_visit_num
-  attr_accessor :all_destination_num
+  attr_accessor :all_visit_num, :all_destination_num
 
   # 取得するJSONを定義
   def output_column(fields = [])
@@ -13,7 +12,6 @@ class Destination < ApplicationRecord
       fields.concat(white_list)
       [true, fields]
     else
-      fields.concat(white_list)
       [field_valid(fields), fields]
     end
   end

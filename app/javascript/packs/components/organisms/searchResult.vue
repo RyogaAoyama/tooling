@@ -60,8 +60,7 @@ export default {
   data: function() {
     return {
       src: "",
-      isLoading: false,
-      isRegist: false
+      isLoading: false
     };
   },
   components: {
