@@ -1,4 +1,5 @@
 import { RepositoryFactory } from "./../factories/repositoryFactory.js";
+import Vue from "vue";
 
 const UsersRepository = RepositoryFactory.get("users");
 export default {
@@ -18,7 +19,7 @@ export default {
   mutations: {
     setUser(state, payload) {
       for (let key in payload.user) {
-        state.user[key] = payload.user[key];
+        Vue.set(state.user, key, payload.user[key]);
       }
     },
 
