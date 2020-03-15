@@ -14,7 +14,6 @@ class OuterApi::HttpRequest
       result = JSON.parse(res.body)
       # Rails.logger.info("URL -> #{ uri }")
       [true, 200, result]
-    when Net::HTTPRedirection
     when Net::HTTPClientError
       raise Net::HTTPServerException
     when Net::HTTPServerError
