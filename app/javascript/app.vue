@@ -2,7 +2,7 @@
   <v-app id="app">
     <my-header></my-header>
     <my-alert></my-alert>
-      <router-view />
+    <router-view />
   </v-app>
 </template>
 
@@ -16,3 +16,9 @@ export default {
   }
 };
 </script>
+
+<style>
+[v-clock] {
+  display: none;
+}
+</style>

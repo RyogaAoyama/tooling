@@ -14,6 +14,7 @@ import VisitMap from "./components/pages/map/index.vue";
 Vue.use(VueRouter);
 
 const router = new VueRouter({
+  mode: "history",
   routes: [
     { path: "/search", component: Search, meta: { requiresAuth: true } },
     { path: "/sandbox", component: Sandbox },
