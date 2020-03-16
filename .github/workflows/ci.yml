@@ -53,7 +53,9 @@ jobs:
           restore-keys: ${{runner.os}}-node-
       
       - name: Create db
-        run: bundle exec rails db:create
+        run: |
+          mysql.server status
+          bundle exec rails db:create
 
       - name: Run rubocop
         run: bundle exec rubocop
