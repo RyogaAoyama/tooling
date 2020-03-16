@@ -52,9 +52,6 @@ jobs:
           key: ${{runner.os}}-node-${{hashFiles('**/yarn.lock')}}
           restore-keys: ${{runner.os}}-node-
       
-      - name: Wait docker
-        run: dockerize -wait tcp://localhost:3306 -timeout 1m
-      
       - name: Create db
         run: bundle exec rails db:create
 
