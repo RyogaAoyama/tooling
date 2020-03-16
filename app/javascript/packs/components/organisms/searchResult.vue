@@ -86,7 +86,6 @@ export default {
       let send = { destination: {} };
       let result = this.searchResult;
 
-      // HACK: どこかで取得する項目定義してforで回したい(時間がある時にリファクタ)
       send.destination.place_id = result.place_id;
       send.destination.name = result.name;
       send.destination.picture = this.src;

@@ -6,7 +6,13 @@
         <v-row>
           <v-col cols="12">
             <div class="sub-header">到着時間</div>
-            <v-select label="到着時間を選択" :items="arrivalTimes" v-model="form.search.arrivalTime" solo></v-select>
+            <v-select
+              clearable
+              label="到着時間を選択"
+              :items="arrivalTimes"
+              v-model="form.search.arrivalTime"
+              solo
+            ></v-select>
           </v-col>
         </v-row>
         <v-row>
@@ -18,6 +24,7 @@
               item-text="town_name"
               item-value="town_id"
               v-model="form.search.town"
+              clearable
               solo
             ></v-select>
           </v-col>

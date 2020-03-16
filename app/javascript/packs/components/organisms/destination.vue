@@ -26,7 +26,7 @@
       size="15"
       color="#9E9E9E"
       class="mb-1"
-    >{{ destination.address }}</my-icon-text>
+    >{{ destination.address == null ? "住所が登録されていません" : destination.address }}</my-icon-text>
     <my-icon-text
       iconName="mdi-calendar-today"
       size="15"
@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     update() {
-      // HACK: 圧倒的リファクタポイント
+      console.log(this.destination.address);
       this.$emit("update", {
         destination: { is_visit: !this.destination.is_visit },
         id: this.destination.id
