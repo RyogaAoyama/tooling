@@ -1,8 +1,6 @@
 <template>
-  <div>
-    <v-alert :type="type" v-show="isShow" dismissible>
-      {{ msg }}
-    </v-alert>
+  <div @click="flash">
+    <v-alert :type="type" v-show="isShow" class="my-alert">{{ msg }}</v-alert>
   </div>
 </template>
 
@@ -16,26 +14,33 @@ const {
 
 export default {
   watch: {
-    '$route': function (to, from) {
-      if (this.flashed && this.isShow) {
-        this.setIsShow(false);
-        this.setMsg("");
-        this.setFlashed(false);
-      } else if (!this.flashed && this.isShow) {
-        this.setFlashed(true);
-      }
+    $route: function(to, from) {
+      this.flash();
     }
   },
   methods: {
-    ...mapMutationsOfAlert(["setIsShow", "setMsg", "setFlashed"])
+    ...mapMutationsOfAlert(["setIsShow", "setMsg"]),
+    flash() {
+      if (this.isShow) {
+        this.setIsShow(false);
+        this.setMsg("");
+      }
+    }
   },
   computed: {
     ...mapStateOfAlert(["type", "msg", "isShow", "flashed"])
+  },
+  created() {
+    this.setIsShow(false);
+    this.setMsg("");
   }
-
-}
+};
 </script>
 
 <style>
-
+.my-alert {
+  position: relative;
+  z-index: 9999;
+  width: 100%;
+}
 </style>

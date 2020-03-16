@@ -1,11 +1,10 @@
 <template>
   <div>
-
     <h1>プロフィール編集</h1>
     <v-divider></v-divider>
     <my-space size="20"></my-space>
 
-    <v-row>
+    <!-- <v-row>
       <v-col lg="3" md="12" sm="12" cols="12">
         <h3>プロフィール写真</h3>
       </v-col>
@@ -33,7 +32,7 @@
 
     <my-space size="20"></my-space>
     <v-divider></v-divider>
-    <my-space size="20"></my-space>
+    <my-space size="20"></my-space>-->
 
     <v-row>
       <v-col lg="3" md="12" sm="12" cols="12">
@@ -41,11 +40,7 @@
       </v-col>
 
       <v-col lg="9" md="12" sm="12" cols="12">
-        <v-text-field
-          v-model="form.user.name"
-          placeholder="ユーザー名"
-          solo
-        ></v-text-field>
+        <v-text-field v-model="form.user.name" placeholder="ユーザー名" solo></v-text-field>
         <div class="red--text">&nbsp;{{ errors.name }}</div>
       </v-col>
     </v-row>
@@ -83,7 +78,9 @@
 
       <v-col lg="9" md="12" sm="12" cols="12">
         <div>{{ form.user.email }}</div>
-        <div><a @click="emailChange">メールアドレスを変更</a></div>
+        <div>
+          <a @click="emailChange">メールアドレスを変更</a>
+        </div>
         <div class="red--text">&nbsp;</div>
       </v-col>
     </v-row>
@@ -110,7 +107,7 @@
 
 <script>
 import Dashboard from "./../molecules/dashboard.vue";
-import Space from "./../atoms/space.vue"
+import Space from "./../atoms/space.vue";
 import Valid from "./../../modules/validation.js";
 import { createNamespacedHelpers, mapMutations } from "vuex";
 import { mapActions } from "vuex";
@@ -143,7 +140,7 @@ export default {
       },
       errors: {},
       towns: []
-    }
+    };
   },
   computed: {
     ...mapStateOfAccount(["user"]),
@@ -180,10 +177,10 @@ export default {
       let errors = {};
 
       // 検証
-      [results.name, errors.name] =
-        Valid.userNameValid(this.form.user.name);
-      [results.town_id, errors.town_id] =
-        Valid.townIdValid(this.form.user.town_id);
+      [results.name, errors.name] = Valid.userNameValid(this.form.user.name);
+      [results.town_id, errors.town_id] = Valid.townIdValid(
+        this.form.user.town_id
+      );
 
       // エラーメッセージをセット
       for (let key in errors) {
@@ -191,13 +188,13 @@ export default {
       }
 
       // 全てのバリデーションが成功しているか真偽値で返却
-      return Object.values(results).every((val) => val);
+      return Object.values(results).every(val => val);
     }
   },
   created() {
     this.get();
   }
-}
+};
 </script>
 
 <style>
@@ -205,5 +202,4 @@ export default {
   width: 100%;
   height: 300px;
 }
-
 </style>

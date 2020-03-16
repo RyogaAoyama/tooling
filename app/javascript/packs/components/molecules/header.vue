@@ -2,7 +2,7 @@
   <v-card class="header-wrap">
     <v-toolbar height="65px" width="100%" class="fixed" color="white">
       <v-app-bar-nav-icon @click="isActive = !isActive" v-show="isAuth"></v-app-bar-nav-icon>
-      <v-toolbar-title @click="$router.push('/')">Tooling</v-toolbar-title>
+      <v-toolbar-title @click="$router.push('/')">SPOT</v-toolbar-title>
 
       <v-spacer></v-spacer>
       <v-btn outlined color="#1FAB89" v-show="!isAuth" @click="$router.push('/account/edit')">ログイン</v-btn>
@@ -120,7 +120,7 @@ export default {
 <style>
 .fixed {
   position: fixed;
-  z-index: 1000;
+  z-index: 10000;
 }
 
 .header-wrap {

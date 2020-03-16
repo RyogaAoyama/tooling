@@ -1,7 +1,7 @@
 <template>
-  <v-col lg="4" md="6" sm="10" col="12">
+  <v-col xl="3" lg="4" md="6" sm="10" col="12">
     <v-card class="pa-10">
-      <h1 class="center mb-2">ツーリング先を見つける</h1>
+      <h1 class="center mb-2">目的地を見つける</h1>
       <form>
         <v-row>
           <v-col cols="12">

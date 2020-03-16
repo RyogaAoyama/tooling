@@ -6,7 +6,7 @@ class Api::V1::UsersController < ApplicationController
     user = User.new(user_params)
 
     # デフォルトのプロフィール画像を設定
-    user.default_avatar_set
+    # user.default_avatar_set
 
     if user.save!
       @result = 0

@@ -173,7 +173,6 @@ export default {
     ////////////////////////////////////////////////////////////////////////////
 
     async setDestinationStatus(place_id) {
-      // HACK: 行き先の情報vuexで値管理すべきだけど、期限的改修きついので、時間できたら改修
       let data = await this.getAllDestination();
       if (data == undefined) {
         return;

@@ -7,7 +7,7 @@
         <h2>写真はありません</h2>
       </my-opacity-image>
     </div>
-    <my-carousel :srcs="srcs" v-else></my-carousel>
+    <my-carousel :srcs="srcs" v-else height="600"></my-carousel>
   </div>
 </template>
 
