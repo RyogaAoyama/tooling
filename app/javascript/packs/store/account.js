@@ -5,16 +5,7 @@ const UsersRepository = RepositoryFactory.get("users");
 export default {
   namespaced: true,
   state: {
-    user: {},
-    errors: {
-      name: "",
-      email: "",
-      town_id: "",
-      avatar: "",
-      password: "",
-      password_confirmation: "",
-      authenticate: ""
-    }
+    user: {}
   },
   mutations: {
     setUser(state, payload) {

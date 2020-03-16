@@ -8,7 +8,7 @@ class Api::V1::UsersController < ApplicationController
     # デフォルトのプロフィール画像を設定
     # user.default_avatar_set
 
-    if user.save!
+    if user.save
       @result = 0
       @errors = {}
       @user_id = user.id
@@ -16,7 +16,7 @@ class Api::V1::UsersController < ApplicationController
     else
       @result = 1
       # エラーメッセージをハッシュで取得
-      @errors = @user.get_errors_hash
+      @errors = user.get_errors_hash
     end
 
     # 値を返却

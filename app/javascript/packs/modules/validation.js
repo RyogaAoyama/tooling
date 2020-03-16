@@ -61,8 +61,7 @@ export default {
 
     // 文字列範囲
     if (this.isLengthOverRange(email.length, 0, 256)) {
-      return [false, `${COLUMN_NAME}は3文字以上256文字以内で入力してください`]
-      ;
+      return [false, `${COLUMN_NAME}は3文字以上256文字以内で入力してください`];
     }
 
     // 禁止文字
@@ -72,7 +71,7 @@ export default {
     }
 
     // メールアドレス形式
-    pattern = /^[\w+\-.]+@[a-z\d\-.]+\.[a-z]+$/i;
+    pattern = /^[\w][\w+\-.]+@[a-z\d\-.]+\.[a-z]+$/i;
     if (this.patternNg(email, pattern)) {
       return [false, `${COLUMN_NAME}の形式が違います`];
     }
@@ -103,7 +102,6 @@ export default {
 
   // パスワード確認
   confirmationValid(password, confirmation) {
-
     // パスワードと同じか
     if (this.confirmationNg(password, confirmation)) {
       return [false, "パスワードと一致しません"];
