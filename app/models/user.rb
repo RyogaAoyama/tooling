@@ -4,7 +4,7 @@ class User < ApplicationRecord
 
   has_secure_token
   has_secure_password validations: false
-  # has_one_attached :avatar
+  has_one_attached :avatar
   # 名前
   validates :name, presence: true, allow_nil: true, length: {
     in: 1..50, message: 'は1文字以上50文字以内で入力してください'
