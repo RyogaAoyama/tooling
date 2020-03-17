@@ -54,7 +54,9 @@ jobs:
       
       - name: Create db
         run: |
-          mysql.server status
+          echo $MYSQL_ROOT_PASSWORD
+          echo $MYSQL_DATABASE
+          sudo service mysqld status
           bundle exec rails db:create
 
       - name: Run rubocop
