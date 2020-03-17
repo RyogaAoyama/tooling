@@ -58,4 +58,5 @@ jobs:
         run: bundle exec rubocop
 
       - name: Run rspec
+        GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: bundle exec rspec
