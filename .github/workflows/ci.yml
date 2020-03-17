@@ -52,11 +52,18 @@ jobs:
           key: ${{runner.os}}-node-${{hashFiles('**/yarn.lock')}}
           restore-keys: ${{runner.os}}-node-
       
-      - name: Create db
+      - name: test output
         run: |
           echo $MYSQL_ROOT_PASSWORD
           echo $MYSQL_DATABASE
-          sudo service mysqld status
+          
+      - name: Sleep for 30 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '30s'
+          
+      - name: Create db
+        run: |
           bundle exec rails db:create
 
       - name: Run rubocop
