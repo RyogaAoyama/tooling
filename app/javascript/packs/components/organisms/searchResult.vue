@@ -24,7 +24,7 @@
     <div class="px-xl-12 px-md-12 px-sm-12 px-1 pb-12">
       <my-picture-section class="mb-12" :searchResult="searchResult"></my-picture-section>
       <my-review-section class="mb-12" :searchResult="searchResult"></my-review-section>
-      <my-address-section :searchResult="searchResult"></my-address-section>
+      <my-address-section :searchResult="searchResult" :positionOk="positionOk"></my-address-section>
       <div class="text-center" v-if="isRegist">
         <v-btn rounded color="#1FAB89" class="white--text" large disabled>登録済み</v-btn>
       </div>
@@ -50,13 +50,11 @@ import ReviewSection from "./../organisms/reviewSection.vue";
 import AddressSection from "./../organisms/addressSection.vue";
 import { mapState } from "vuex";
 import { createNamespacedHelpers } from "vuex";
-
 const { mapActions: mapActionsOfDestination } = createNamespacedHelpers(
   "Destination"
 );
-
 export default {
-  props: ["searchResult", "isRegist"],
+  props: ["searchResult", "isRegist", "positionOk"],
   data: function() {
     return {
       src: "",
@@ -85,7 +83,6 @@ export default {
     async create() {
       let send = { destination: {} };
       let result = this.searchResult;
-
       send.destination.place_id = result.place_id;
       send.destination.name = result.name;
       send.destination.picture = this.src;

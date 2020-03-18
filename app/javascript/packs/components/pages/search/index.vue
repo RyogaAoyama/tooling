@@ -18,6 +18,7 @@
         :searchResult="SearchResult"
         v-else-if="searchStatus == 3"
         :isRegist="isRegist"
+        :positionOk="positionOk"
       ></my-search-result>
       <my-opacity-image src="/search_error.svg" v-else-if="searchStatus == 4">
         <h2>{{ searchResultMsg }}</h2>
@@ -36,9 +37,7 @@ import { RepositoryFactory } from "./../../../factories/repositoryFactory.js";
 import Geolocation from "./../../../modules/geolocation.js";
 import { createNamespacedHelpers } from "vuex";
 import { mapActions } from "vuex";
-
 const { mapState: mapStateOfSession } = createNamespacedHelpers("Session");
-
 const {
   mapActions: mapActionsOfAccount,
   mapState: mapStateOfAccount
@@ -47,9 +46,7 @@ const {
 const { mapActions: mapActionsOfDestination } = createNamespacedHelpers(
   "Destination"
 );
-
 const UsersRepository = RepositoryFactory.get("users");
-
 export default {
   components: {
     "my-mask-image": MaskImage,
@@ -60,7 +57,7 @@ export default {
   },
 
   ////////////////////////////////////////////////////////////////////////////
-
+  
   data: function() {
     return {
       arrivalTimes: [],
@@ -70,10 +67,10 @@ export default {
       isLoading: false,
       isRegist: false,
       isVisit: false,
-      towns: []
+      towns: [],
+      positionOk: true
     };
   },
-
   ////////////////////////////////////////////////////////////////////////////
 
   async created() {
@@ -107,34 +104,33 @@ export default {
         let hour = Math.floor(countMinute / 60);
         let minute = ("00" + (countMinute - hour * 60)).slice(-2);
         let second = countMinute * 60;
-
         // 到着時間のデータ
         let option = {
           text: `${hour}時間${minute}分`,
           value: second
         };
-
         // 到着時間を格納
         this.arrivalTimes.push(option);
       }
     },
-
+    
     ////////////////////////////////////////////////////////////////////////////
-
+    
     async get() {
       await this.getUser();
     },
-
+    
     ////////////////////////////////////////////////////////////////////////////
 
     async search(e) {
       this.searchStatus = 2;
       // 検索中はボタンを無効化
       this.isLoading = true;
-
       // 現在地をセット
-      e.search.position = await Geolocation.getCurrentPosition();
-
+      [
+        e.search.position,
+        this.positionOk
+      ] = await Geolocation.getCurrentPosition();
       if (e.search.town == 0 || e.search.town == undefined) {
         e.search.town = this.user.town_id;
       }
@@ -165,7 +161,6 @@ export default {
           "予期せぬエラーが発生しました。システム管理者までご連絡ください。";
         this.searchStatus = 4;
       }
-
       // 検索終了後ボタンを有効化
       this.isLoading = false;
     },
@@ -195,7 +190,6 @@ export default {
   left: 5%;
   top: 150px;
 }
-
 @media screen and (max-width: 599px) {
   .serach-form-position {
     position: static;

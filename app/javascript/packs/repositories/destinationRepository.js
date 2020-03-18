@@ -10,6 +10,12 @@ export default {
     return Repository.get(`${resources}/${user_id}/destinations${query}`);
   },
 
+  show(id, user_id, token, query = "") {
+    Repository.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+    if (query != "") query = `?${query}`;
+    return Repository.get(`${resources}/${user_id}/destinations/${id}${query}`);
+  },
+
   create(user_id, token, data) {
     Repository.defaults.headers.common["Authorization"] = `Bearer ${token}`;
     return Repository.post(`${resources}/${user_id}/destinations`, data);

@@ -57,16 +57,12 @@ export default {
       form: {
         search: {
           arrivalTime: "",
-          town: 0,
-          position: ""
+          town: 0
         }
       }
     };
   },
   methods: {
-    async setPosition() {
-      this.form.search.position = await Geolocation.getCurrentPosition();
-    },
     async search() {
       this.$emit("search", this.form);
     }

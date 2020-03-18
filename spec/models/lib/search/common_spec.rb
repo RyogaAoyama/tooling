@@ -35,7 +35,7 @@ RSpec.describe 'Common', type: :model do
     let(:photos) { (1..10).to_a }
     let(:join_data) do
       {
-        'destination_addresses' => ["日本、#{ address_number } #{ address }"],
+        'formatted_address' => "日本、#{ address_number } #{ address }",
         'photos' => photos
       }
     end

@@ -1,5 +1,8 @@
 <template>
-  <my-card-top-image :src="destination.picture">
+  <my-card-top-image
+    :src="destination.picture"
+    @onclick="$router.push(`/destination/${destination.id}`)"
+  >
     <v-row>
       <v-col>
         <h2>{{ destination.name }}</h2>
@@ -59,12 +62,18 @@
         v-show="!destination.is_visit"
         class="white--text mr-4"
         color="#1FAB89"
-        @click="update"
+        @click.stop="update"
         large
       >訪れた</v-btn>
-      <v-btn v-show="destination.is_visit" class="mr-4" color="#EEEEEE" @click="update" large>訪問済</v-btn>
+      <v-btn
+        v-show="destination.is_visit"
+        class="mr-4"
+        color="#EEEEEE"
+        @click.stop="update"
+        large
+      >訪問済</v-btn>
 
-      <v-btn class="white--text" color="red" @click="destroy(destination.id)" large>削除</v-btn>
+      <v-btn class="white--text" color="red" @click.stop="destroy(destination.id)" large>削除</v-btn>
     </v-row>
   </my-card-top-image>
 </template>
@@ -99,7 +108,6 @@ export default {
 .left {
   text-align: left;
 }
-
 .dest-icon-text {
   color: red !important;
 }

@@ -5,7 +5,7 @@ export default {
       let defaultPosition = { lng: 35.68944, lng: 139.69167 };
       if (!navigator.geolocation) {
         console.log("位置情報取得不可");
-        return defaultPosition;
+        return [defaultPosition, false];
       }
 
       navigator.geolocation.getCurrentPosition(
@@ -15,7 +15,7 @@ export default {
             lat: position.coords.latitude,
             lng: position.coords.longitude
           };
-          resolve(currentPosition);
+          resolve([currentPosition, true]);
         },
         // エラー時の処理
         error => {
@@ -34,7 +34,7 @@ export default {
               console.log(error.code);
               break;
           }
-          resolve(defaultPosition);
+          resolve([defaultPosition, false]);
         }
       );
     });
