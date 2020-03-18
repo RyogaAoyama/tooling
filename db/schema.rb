@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_02_29_081643) do
+ActiveRecord::Schema.define(version: 2020_03_14_234324) do
 
   create_table "active_storage_attachments", options: "ENGINE=InnoDB DEFAULT CHARSET=utf8mb4", force: :cascade do |t|
     t.string "name", null: false
@@ -48,9 +48,9 @@ ActiveRecord::Schema.define(version: 2020_02_29_081643) do
     t.string "place_id", null: false
     t.string "name", null: false
     t.text "picture"
-    t.string "address", null: false
-    t.decimal "review_rank", precision: 10, null: false
-    t.integer "review_num", null: false
+    t.string "address"
+    t.decimal "review_rank", precision: 10, default: "0"
+    t.integer "review_num", default: 0
     t.boolean "is_visit", default: false, null: false
     t.decimal "lat", precision: 9, scale: 6, null: false
     t.decimal "lng", precision: 9, scale: 6, null: false
@@ -74,6 +74,7 @@ ActiveRecord::Schema.define(version: 2020_02_29_081643) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.string "token"
+    t.integer "authority", default: 0, null: false
     t.index ["token"], name: "index_users_on_token", unique: true
     t.index ["town_id"], name: "index_users_on_town_id"
   end

@@ -2,8 +2,8 @@
   <div class="card-wrap">
     <v-card class="mx-auto center in-wrap">
       <div>
-        <h1>Tooling</h1>
-        <div>新たなる地を求めて走る</div>
+        <h1>SPOT</h1>
+        <div>新たなる地を求めて</div>
       </div>
       <div>
         <div class="error-msg">&nbsp;{{ error }}</div>

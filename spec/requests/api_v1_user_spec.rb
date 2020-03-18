@@ -74,7 +74,6 @@ RSpec.describe 'ApiV1User', type: :request do
         expect(response).to have_http_status(200)
         expect(data['user']['name']).to_not eq name
         expect(data['user']['town_id']).to_not eq town.id
-        # TODO: 写真はどうすればいいかわからんから実装してから書く
       end
     end
 
@@ -162,7 +161,9 @@ RSpec.describe 'ApiV1User', type: :request do
 
   describe 'DELETE /api/v1/users/:id' do
     let(:user) { FactoryBot.create(:user, town: town) }
+    let(:destination) { FactoryBot.create(:destination, user: user) }
 
+    before { destination }
     it 'ユーザー情報が削除されていること' do
       delete api_v1_user_path(user), headers: headers
 
@@ -170,9 +171,7 @@ RSpec.describe 'ApiV1User', type: :request do
       expect(response).to have_http_status(200)
       expect(data['result']).to eq 0
       expect { User.find(user.id) }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { Destination.find(destination.id) }.to raise_error(ActiveRecord::RecordNotFound)
     end
-
-    # TODO: これは関連する機能を追加したときに作成
-    it 'ユーザーに関連する情報が削除されていること'
   end
 end

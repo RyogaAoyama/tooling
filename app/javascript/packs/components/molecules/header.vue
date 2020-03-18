@@ -1,16 +1,18 @@
 <template>
   <v-card class="header-wrap">
     <v-toolbar height="65px" width="100%" class="fixed" color="white">
-      <v-app-bar-nav-icon @click="isActive = !isActive" v-show="id != ''"></v-app-bar-nav-icon>
-      <v-toolbar-title>Tooling</v-toolbar-title>
+      <v-app-bar-nav-icon @click="isActive = !isActive" v-show="isAuth"></v-app-bar-nav-icon>
+      <v-toolbar-title @click="$router.push('/')">SPOT</v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <v-toolbar-items>
-        <v-btn @click="$router.push('/')">TOP</v-btn>
-        <v-btn @click="$router.push('/sandbox')">サンドボックス</v-btn>
-        <v-btn @click="$router.push('/account/edit')">設定</v-btn>
-        <v-btn text v-show="isAuth">{{ user.name }}</v-btn>
-      </v-toolbar-items>
+      <v-btn outlined color="#1FAB89" v-show="!isAuth" @click="$router.push('/account/edit')">ログイン</v-btn>
+      <v-btn
+        outlined
+        color="#1FAB89"
+        v-show="$route.path === '/account/edit'"
+        @click="$router.push('/search')"
+      >検索画面に戻る</v-btn>
+      <v-btn text v-show="isAuth" @click="$router.push('/account/edit')">{{ user.name }}</v-btn>
     </v-toolbar>
 
     <v-navigation-drawer fixed dark temporary color="#1FAB89" v-model="isActive">
@@ -118,7 +120,7 @@ export default {
 <style>
 .fixed {
   position: fixed;
-  z-index: 1000;
+  z-index: 10000;
 }
 
 .header-wrap {

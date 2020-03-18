@@ -18,7 +18,7 @@
         <my-destination :destination="destination" @update="update" @destroy="destroy"></my-destination>
       </v-col>
     </v-row>
-    <my-destination-none v-show="destinations.length == 0"></my-destination-none>
+    <my-destination-none v-show="notExists"></my-destination-none>
   </v-container>
 </template>
 
@@ -38,6 +38,7 @@ export default {
   data: function() {
     return {
       destinations: [],
+      notExists: false,
       visitCnt: 0
     };
   },
@@ -50,6 +51,7 @@ export default {
     let data = await this.getDestination();
     this.destinations = data.destinations;
     this.getVisitCnt();
+    this.setNotExists();
   },
   methods: {
     ...mapActionsOfAlert(["setAlert"]),
@@ -70,6 +72,7 @@ export default {
         }
       });
       this.getVisitCnt();
+      this.setNotExists();
     },
     async destroy(e) {
       await this.destroyDestination(e);
@@ -82,6 +85,7 @@ export default {
           });
         }
       });
+      this.setNotExists();
     },
     getVisitCnt() {
       this.visitCnt = 0;
@@ -89,6 +93,13 @@ export default {
         if (destination.is_visit) {
           this.visitCnt++;
         }
+      }
+    },
+    setNotExists() {
+      if (this.destinations.length == 0) {
+        this.notExists = true;
+      } else {
+        this.notExists = false;
       }
     }
   }

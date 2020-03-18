@@ -2,18 +2,18 @@
   <div class="card-wrap">
     <v-card class="mx-auto center in-wrap">
       <div>
-        <h1>Tooling</h1>
-        <div>新たなる地を求めて走る</div>
+        <h1>SPOT</h1>
+        <div>新たなる地を求めて</div>
       </div>
       <div>
         <v-text-field label="ユーザー名" v-model="form.user.name"></v-text-field>
-        <div class="error-msg">&nbsp;{{ errors.name }}</div>
+        <div class="error-msg">{{ errors.name }}&nbsp;</div>
         <v-text-field label="メールアドレス" v-model="form.user.email"></v-text-field>
-        <div class="error-msg">&nbsp;{{ errors.email }}</div>
+        <div class="error-msg">{{ errors.email }}&nbsp;</div>
         <v-text-field label="パスワード" v-model="form.user.password" type="password"></v-text-field>
-        <div class="error-msg">&nbsp;{{ errors.password }}</div>
+        <div class="error-msg">{{ errors.password }}&nbsp;</div>
         <v-text-field label="パスワード(確認)" v-model="form.user.password_confirmation" type="password"></v-text-field>
-        <div class="error-msg mb-3">&nbsp;{{ errors.password_confirmation }}</div>
+        <div class="error-msg mb-3">{{ errors.password_confirmation }}&nbsp;</div>
         <v-select
           label="お住いの都道府県を選択"
           :items="towns"
@@ -60,11 +60,11 @@ export default {
           town_id: ""
         }
       }
-    }
+    };
   },
   mixins: [Valid],
   computed: {
-    ...mapStateOfAccount(["user"]),
+    ...mapStateOfAccount(["user"])
   },
   methods: {
     oncreate() {
@@ -77,16 +77,21 @@ export default {
       let errors = {};
 
       // 検証
-      [results.name, errors.name] =
-        Valid.userNameValid(this.form.user.name);
-      [results.email, errors.email] =
-        Valid.emailValid(this.form.user.email);
-      [results.password,　errors.password] =
-        Valid.passwordValid(this.form.user.password);
-      [results.password_confirmation, errors.password_confirmation] =
-        Valid.confirmationValid(this.form.user.password, this.form.user.password_confirmation);
-      [results.town_id, errors.town_id] =
-        Valid.townIdValid(this.form.user.town_id);
+      [results.name, errors.name] = Valid.userNameValid(this.form.user.name);
+      [results.email, errors.email] = Valid.emailValid(this.form.user.email);
+      [results.password, errors.password] = Valid.passwordValid(
+        this.form.user.password
+      );
+      [
+        results.password_confirmation,
+        errors.password_confirmation
+      ] = Valid.confirmationValid(
+        this.form.user.password,
+        this.form.user.password_confirmation
+      );
+      [results.town_id, errors.town_id] = Valid.townIdValid(
+        this.form.user.town_id
+      );
 
       // エラーメッセージをセット
       for (let key in errors) {
@@ -94,7 +99,7 @@ export default {
       }
 
       // 全てのバリデーションが成功しているか真偽値で返却
-      return Object.values(results).every((val) => val);
+      return Object.values(results).every(val => val);
     }
   }
 };

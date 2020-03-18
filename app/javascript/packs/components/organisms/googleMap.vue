@@ -40,21 +40,6 @@ export default {
 
 <style>
 .g-map-size {
-  height: 1200px;
-}
-@media screen and (max-width: 1264px) {
-  .g-map-size {
-    height: 950px;
-  }
-}
-@media screen and (max-width: 959px) {
-  .g-map-size {
-    height: 700px;
-  }
-}
-@media screen and (max-width: 599px) {
-  .g-map-size {
-    height: 500px;
-  }
+  height: 90vh;
 }
 </style>

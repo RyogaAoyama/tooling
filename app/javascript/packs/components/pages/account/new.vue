@@ -1,7 +1,12 @@
 <template>
   <v-app class="teal lighten-3">
     <v-row align="center" justify="center">
-      <my-account-form :towns="towns" :isLoading="isLoading" :errors="errors" @oncreate="userCreate"></my-account-form>
+      <my-account-form
+        :towns="towns"
+        :isLoading="isLoading"
+        :errors="errors"
+        @oncreate="userCreate"
+      ></my-account-form>
     </v-row>
   </v-app>
 </template>
@@ -12,18 +17,14 @@ import { createNamespacedHelpers } from "vuex";
 import { mapState } from "vuex";
 import { mapActions } from "vuex";
 
-const {
-  mapActions: mapActionsOfAccount
-} = createNamespacedHelpers("Account");
+const { mapActions: mapActionsOfAccount } = createNamespacedHelpers("Account");
 
 const {
   mapActions: mapActionsOfSession,
   mapMutations: mapMutationsOfSession
 } = createNamespacedHelpers("Session");
 
-const {
-  mapActions: mapActionsOfAlert
-} = createNamespacedHelpers("Alert");
+const { mapActions: mapActionsOfAlert } = createNamespacedHelpers("Alert");
 
 export default {
   data: function() {
@@ -45,11 +46,10 @@ export default {
   methods: {
     ...mapActionsOfAccount(["create"]),
     ...mapActionsOfSession(["login"]),
-    ...mapMutationsOfSession(["setId"]),
+    ...mapMutationsOfSession(["setId", "setToken"]),
     ...mapActionsOfAlert(["setAlert"]),
     ...mapActions(["getAllTown"]),
     async userCreate(e) {
-      
       // ロード開始
       this.isLoading = true;
 
@@ -61,14 +61,17 @@ export default {
 
       // 完了メッセージを出力
       if (data.result == 0) {
-
         await this.setId(data.id);
+        await this.setToken(data.token);
 
-        this.setAlert({ msg: "アカウントを作成しました。サービスをお楽しみください！", type: "success" });
+        this.setAlert({
+          msg: "アカウントを作成しました。サービスをお楽しみください！",
+          type: "success"
+        });
 
         // 画面遷移
         this.$router.push("/search");
-      } else if(data.reuslt == 1) {
+      } else if (data.result == 1) {
         // エラーメッセージをセット
         for (let key in data.errors) {
           this.$set(this.errors, key, data.errors[key]);

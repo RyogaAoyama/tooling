@@ -3,8 +3,7 @@ export default {
   state: {
     type: "success",
     msg: "",
-    isShow: false,
-    flashed: false
+    isShow: false
   },
   mutations: {
     setIsShow(state, payload) {
@@ -16,9 +15,6 @@ export default {
     setMsg(state, payload) {
       state.msg = payload;
       state.flashed = false;
-    },
-    setFlashed(state, payload) {
-      state.flashed = payload;
     }
   },
   actions: {

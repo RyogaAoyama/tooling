@@ -6,7 +6,7 @@
       </v-card-title>
     </my-gradient-image>
     <div class="mb-12 px-xl-12 px-md-12 px-sm-12 px-1">
-      <span>{{ searchResult.rating }}</span>
+      <span>{{ searchResult.rating != "" ? searchResult.rating : 0.0 }}</span>
       <v-rating
         v-model="searchResult.rating"
         color="yellow darken-3"
@@ -18,14 +18,17 @@
         small
         class="d-inline-block"
       ></v-rating>
-      <span>({{ searchResult.user_ratings_total }})</span>
-      <v-chip x-small color="yellow" text-color="white">行ったことない</v-chip>
+      <span>({{ searchResult.user_ratings_total != "" ? searchResult.user_ratings_total : 0 }})</span>
+      <v-chip x-small color="green" text-color="white" v-show="isRegist">訪問済み</v-chip>
     </div>
     <div class="px-xl-12 px-md-12 px-sm-12 px-1 pb-12">
       <my-picture-section class="mb-12" :searchResult="searchResult"></my-picture-section>
       <my-review-section class="mb-12" :searchResult="searchResult"></my-review-section>
       <my-address-section :searchResult="searchResult"></my-address-section>
-      <div class="text-center">
+      <div class="text-center" v-if="isRegist">
+        <v-btn rounded color="#1FAB89" class="white--text" large disabled>登録済み</v-btn>
+      </div>
+      <div class="text-center" v-else>
         <v-btn
           rounded
           color="#1FAB89"
@@ -53,7 +56,7 @@ const { mapActions: mapActionsOfDestination } = createNamespacedHelpers(
 );
 
 export default {
-  props: ["searchResult"],
+  props: ["searchResult", "isRegist"],
   data: function() {
     return {
       src: "",
@@ -78,20 +81,18 @@ export default {
         gon.GOOGLE_API_KEY +
         "&photoreference=" +
         this.searchResult["photos"][0]["photo_reference"];
-      console.log(this.searchResult);
     },
     async create() {
       let send = { destination: {} };
       let result = this.searchResult;
 
-      console.log(send.destination);
-      // HACK: どこかで取得する項目定義してforで回したい(時間がある時にリファクタ)
       send.destination.place_id = result.place_id;
       send.destination.name = result.name;
       send.destination.picture = this.src;
       send.destination.address = result.address;
-      send.destination.review_rank = result.rating;
-      send.destination.review_num = result.user_ratings_total;
+      send.destination.review_rank = result.rating == "" ? 0 : result.rating;
+      send.destination.review_num =
+        result.user_ratings_total == "" ? 0 : result.user_ratings_total;
       send.destination.lat = result.lat;
       send.destination.lng = result.lng;
       send.destination.is_visit = false;

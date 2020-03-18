@@ -1,15 +1,20 @@
 <template>
   <div>
-    <my-icon-text iconName="mdi-camera" size="25" class="mb-8">
-      写真
-    </my-icon-text>
-    <my-carousel :srcs="srcs"></my-carousel>
+    <my-icon-text iconName="mdi-camera" size="25" class="mb-8">写真</my-icon-text>
+
+    <div v-if="searchResult.photos == ''">
+      <my-opacity-image src="not_content.svg">
+        <h2>写真はありません</h2>
+      </my-opacity-image>
+    </div>
+    <my-carousel :srcs="srcs" v-else height="600"></my-carousel>
   </div>
 </template>
 
 <script>
 import Carousel from "./../molecules/carousel.vue";
 import IconText from "./../molecules/iconText.vue";
+import OpacityImage from "./../atoms/opacityImage.vue";
 import { mapState } from "vuex";
 export default {
   data: function() {
@@ -20,13 +25,13 @@ export default {
   props: ["searchResult"],
   components: {
     "my-carousel": Carousel,
-    "my-icon-text": IconText
+    "my-icon-text": IconText,
+    "my-opacity-image": OpacityImage
   },
   methods: {
     create_photo_url() {
-      // もし写真がなかったらデフォルト画像を使用
-      if (this.searchResult["photos"].length == 0) {
-        this.srcs.push("/no_image.svg");
+      // もし写真がなかったら処理終了
+      if (this.searchResult.photos == "") {
         return;
       }
 

@@ -1,6 +1,6 @@
 class User < ApplicationRecord
   belongs_to :town
-  has_many :destinations
+  has_many :destinations, dependent: :destroy
 
   has_secure_token
   has_secure_password validations: false
