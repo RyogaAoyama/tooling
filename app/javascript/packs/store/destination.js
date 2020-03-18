@@ -6,7 +6,6 @@ export default {
   namespaced: true,
   state: {},
   mutations: {},
-  // HACK: エラーのところ重複してるから時間ある時にリファクタ
   actions: {
     async getAllDestination({ dispatch, rootState }, payload = "") {
       let data = {};
@@ -61,6 +60,66 @@ export default {
           }
         });
       return data;
+    },
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    async getFullDestination({ dispatch, rootState }, payload) {
+      let data = {};
+      let result = 0;
+      await DestinationsRepository.show(
+        payload.id,
+        rootState.Session.id,
+        rootState.Session.token,
+        payload.query
+      )
+        .then(res => {
+          data = res.data;
+          result = res.status;
+        })
+        .catch(e => {
+          console.log(e);
+          result = e.response.status;
+
+          if (result == 400) {
+            dispatch(
+              "Alert/setAlert",
+              {
+                msg:
+                  "ネットワークエラーが発生しました。ネットワークの接続を確認してください。",
+                type: "error"
+              },
+              { root: true }
+            );
+          } else if (result == 500) {
+            dispatch(
+              "Alert/setAlert",
+              {
+                msg:
+                  "内部でエラーが発生しました。時間を置いて再度お試しください。",
+                type: "error"
+              },
+              { root: true }
+            );
+          } else if (result == 422) {
+            dispatch(
+              "Alert/setAlert",
+              { msg: "指定したURLが見つかりませんでした。", type: "error" },
+              { root: true }
+            );
+          } else {
+            dispatch(
+              "Alert/setAlert",
+              {
+                msg:
+                  "予期せぬエラーが発生しました。システム管理者までご連絡ください。",
+                type: "error"
+              },
+              { root: true }
+            );
+          }
+        });
+      return [result, data];
     },
 
     ////////////////////////////////////////////////////////////////////////////

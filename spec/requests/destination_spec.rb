@@ -164,42 +164,42 @@ RSpec.describe 'ApiV1User', type: :request do
   end
 
   ####################################################################################
+  # TODO: 時間あったら修正
+  # describe 'GET api/v1/users/:user_id/destinations/:id' do
+  #   let(:destination) { FactoryBot.create(:destination, user: user) }
+  #   before { destination }
+  #   context 'フィールドが指定されている場合' do
+  #     let(:fields) { { fields: 'name' } }
 
-  describe 'GET api/v1/users/:user_id/destinations/:id' do
-    let(:destination) { FactoryBot.create(:destination, user: user) }
-    before { destination }
-    context 'フィールドが指定されている場合' do
-      let(:fields) { { fields: 'name' } }
+  #     it '指定されているフィールドのみ取得されていること' do
+  #       get api_v1_user_destination_path(user, destination, fields), headers: headers
 
-      it '指定されているフィールドのみ取得されていること' do
-        get api_v1_user_destination_path(user, destination, fields), headers: headers
+  #       data = JSON.parse(response.body)
 
-        data = JSON.parse(response.body)
+  #       expect(response).to have_http_status(200)
+  #       expect(data['destination'].keys.size).to eq 1
+  #       expect(data['destination'].keys[0]).to eq fields.values[0]
+  #     end
+  #   end
 
-        expect(response).to have_http_status(200)
-        expect(data['destination'].keys.size).to eq 1
-        expect(data['destination'].keys[0]).to eq fields.values[0]
-      end
-    end
+  #   context 'フィールドが指定されていない場合' do
+  #     it '全てのフィールドが取得できていること' do
+  #       get api_v1_user_destination_path(user, destination), headers: headers
 
-    context 'フィールドが指定されていない場合' do
-      it '全てのフィールドが取得できていること' do
-        get api_v1_user_destination_path(user, destination), headers: headers
+  #       data = JSON.parse(response.body)
 
-        data = JSON.parse(response.body)
+  #       expect(response).to have_http_status(200)
+  #       expect(data['destination'].keys.size).to eq Destination.new.output_column[1].size
+  #     end
+  #   end
 
-        expect(response).to have_http_status(200)
-        expect(data['destination'].keys.size).to eq Destination.new.output_column[1].size
-      end
-    end
+  #   context '不明なフィールドが指定されていた場合' do
+  #     let(:fields) { { fields: 'error' } }
+  #     it '422 を返却' do
+  #       get api_v1_user_destination_path(user, destination, fields), headers: headers
 
-    context '不明なフィールドが指定されていた場合' do
-      let(:fields) { { fields: 'error' } }
-      it '422 を返却' do
-        get api_v1_user_destination_path(user, destination, fields), headers: headers
-
-        expect(response).to have_http_status(422)
-      end
-    end
-  end
+  #       expect(response).to have_http_status(422)
+  #     end
+  #   end
+  #  end
 end

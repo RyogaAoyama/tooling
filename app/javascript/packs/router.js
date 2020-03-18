@@ -9,11 +9,13 @@ import Login from "./components/pages/session/new.vue";
 import PageNotFound from "./components/pages/error/404.vue";
 import AccountProfile from "./components/pages/account/edit.vue";
 import DestinationIndex from "./components/pages/destination/index.vue";
+import DestinationShow from "./components/pages/destination/show.vue";
 import VisitMap from "./components/pages/map/index.vue";
 
 Vue.use(VueRouter);
 
 const router = new VueRouter({
+  mode: "history",
   routes: [
     { path: "/search", component: Search, meta: { requiresAuth: true } },
     { path: "/sandbox", component: Sandbox },
@@ -28,6 +30,11 @@ const router = new VueRouter({
     {
       path: "/destination/index",
       component: DestinationIndex,
+      meta: { requiresAuth: true }
+    },
+    {
+      path: "/destination/:id",
+      component: DestinationShow,
       meta: { requiresAuth: true }
     },
     { path: "/map", component: VisitMap, meta: { requiresAuth: true } },

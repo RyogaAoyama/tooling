@@ -1,5 +1,8 @@
 <template>
-  <my-card-top-image :src="destination.picture">
+  <my-card-top-image
+    :src="destination.picture"
+    @onclick="$router.push(`/destination/${destination.id}`)"
+  >
     <v-row>
       <v-col>
         <h2>{{ destination.name }}</h2>
@@ -26,7 +29,7 @@
       size="15"
       color="#9E9E9E"
       class="mb-1"
-    >{{ destination.address }}</my-icon-text>
+    >{{ destination.address == null ? "住所が登録されていません" : destination.address }}</my-icon-text>
     <my-icon-text
       iconName="mdi-calendar-today"
       size="15"
@@ -37,7 +40,18 @@
 
     <v-row>
       <v-col cols="3">
-        <my-icon-text iconName="mdi-nature-people" size="15" color="#9E9E9E">300</my-icon-text>
+        <my-icon-text
+          iconName="mdi-account"
+          size="15"
+          color="#9E9E9E"
+        >{{ destination.all_destination_num }}</my-icon-text>
+      </v-col>
+      <v-col cols="3">
+        <my-icon-text
+          iconName="mdi-nature-people"
+          size="15"
+          color="#9E9E9E"
+        >{{ destination.all_visit_num }}</my-icon-text>
       </v-col>
     </v-row>
 
@@ -48,12 +62,18 @@
         v-show="!destination.is_visit"
         class="white--text mr-4"
         color="#1FAB89"
-        @click="update"
+        @click.stop="update"
         large
       >訪れた</v-btn>
-      <v-btn v-show="destination.is_visit" class="mr-4" color="#EEEEEE" @click="update" large>訪問済</v-btn>
+      <v-btn
+        v-show="destination.is_visit"
+        class="mr-4"
+        color="#EEEEEE"
+        @click.stop="update"
+        large
+      >訪問済</v-btn>
 
-      <v-btn class="white--text" color="red" @click="destroy(destination.id)" large>削除</v-btn>
+      <v-btn class="white--text" color="red" @click.stop="destroy(destination.id)" large>削除</v-btn>
     </v-row>
   </my-card-top-image>
 </template>
@@ -71,7 +91,7 @@ export default {
   },
   methods: {
     update() {
-      // HACK: 圧倒的リファクタポイント
+      console.log(this.destination.address);
       this.$emit("update", {
         destination: { is_visit: !this.destination.is_visit },
         id: this.destination.id
@@ -88,7 +108,6 @@ export default {
 .left {
   text-align: left;
 }
-
 .dest-icon-text {
   color: red !important;
 }

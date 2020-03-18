@@ -16,16 +16,14 @@ class Api::V1::DestinationsController < ApplicationController
   end
 
   def show
-    @destination = Destination.find(params[:id])
+    destination = Destination.find(params[:id])
+    full_data = Search::FullData.new
 
-    ok, @fields = Destination.new.output_column(params[:fields]&.split(','))
+    # Google APIから全ての行き先情報を取得
+    status, @result = full_data.get_full_data(position_params, destination.place_id)
 
-    if ok
-      render :show, status: :ok
-    else
-      @error_params = ErrorDefine.new.get_error_params(4221)
-      render 'error/error', status: :unprocessable_entity
-    end
+    # 値を返却
+    render :show, status: status
   end
 
   def update
@@ -78,6 +76,13 @@ class Api::V1::DestinationsController < ApplicationController
       :lat,
       :lng,
       :is_visit
+    )
+  end
+
+  def position_params
+    params.permit(
+      :lat,
+      :lng
     )
   end
 end

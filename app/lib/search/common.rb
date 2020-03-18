@@ -20,7 +20,7 @@ module Search::Common
   # 出力形式をフォーマットする
   def field_format(join_data)
     # 住所フォーマット
-    /(.*)、(〒[0-9]{3}-[0-9]{4}) (.*)/ =~ join_data['destination_addresses'][0]
+    /(.*)、(〒[0-9]{3}-[0-9]{4}) (.*)/ =~ join_data['formatted_address']
     join_data['address_number'] = Regexp.last_match(2)
     join_data['address'] = Regexp.last_match(3)
 

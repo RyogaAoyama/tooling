@@ -43,9 +43,23 @@
                   class="mb-2"
                 >{{ item.is_visit ? `${item.visited_at.substr(0, 10)}に訪れました` : "まだ訪れていません" }}</my-icon-text>
 
-                <v-divider class="mb-2"></v-divider>
-
-                <my-icon-text iconName="mdi-nature-people" size="13" color="#9E9E9E">300</my-icon-text>
+                <v-divider class="mb-1"></v-divider>
+                <v-row>
+                  <v-col cols="3">
+                    <my-icon-text
+                      iconName="mdi-account"
+                      size="13"
+                      color="#9E9E9E"
+                    >{{ item.all_destination_num }}</my-icon-text>
+                  </v-col>
+                  <v-col cols="3">
+                    <my-icon-text
+                      iconName="mdi-nature-people"
+                      size="13"
+                      color="#9E9E9E"
+                    >{{ item.all_visit_num }}</my-icon-text>
+                  </v-col>
+                </v-row>
               </v-col>
             </v-row>
           </div>
@@ -61,7 +75,7 @@
       </GmapMap>
     </div>
 
-    <v-card class="visit-info-card ml-2 pa-1" v-show="destinations.length == 0">
+    <v-card class="visit-info-card ml-2 pa-1" v-show="notExists">
       <v-card-text>
         <my-icon-text iconName="mdi-information-outline" class="mb-2" size="21">
           <strong>まだ行き先が登録されていないようです</strong>
@@ -77,7 +91,6 @@
 import IconText from "./../molecules/iconText.vue";
 import Geolocation from "./../../modules/geolocation.js";
 import { createNamespacedHelpers } from "vuex";
-
 const { mapActions: mapActionsOfDestination } = createNamespacedHelpers(
   "Destination"
 );
@@ -88,8 +101,9 @@ export default {
   data() {
     return {
       destinations: [],
+      notExists: false,
       center: {},
-      zoom: 7,
+      zoom: 11,
       marker_items: [],
       item: {},
       infoOptions: {
@@ -102,13 +116,13 @@ export default {
       infoWinOpen: false
     };
   },
-
   ////////////////////////////////////////////////////////////////////////////
-
   async created() {
     // 登録した行き先を取得
     this.destinations = await this.getDestination();
-
+    if (this.destinations.length == 0) {
+      this.notExists = true;
+    }
     // 行き先をGoogleMap用にフォーマットして格納
     for (let val of this.destinations) {
       let marker_data = {};
@@ -117,37 +131,30 @@ export default {
         // latとlngはpositionオブジェクトに格納
         if (key == "lat" || key == "lng") {
           marker_data.position[key] = parseFloat(val[key]);
-
           // その他はそのまま格納
         } else {
           marker_data[key] = val[key];
         }
       }
-
       // オブジェクトをリストに格納
       this.marker_items.push(marker_data);
     }
-    this.center = await Geolocation.getCurrentPosition();
+    let ok;
+    [this.center, ok] = await Geolocation.getCurrentPosition();
   },
-
   ////////////////////////////////////////////////////////////////////////////
-
   methods: {
     ...mapActionsOfDestination(["getAllDestination"]),
-
     toggleInfoWindow(marker) {
       // マーカーをつける位置をセット
       this.infoWindowPos = marker.position;
       this.infoWinOpen = true;
-
       // Gmapピンのwindowに表示する値をセット
       for (let key in marker) {
         this.item[key] = marker[key];
       }
     },
-
     ////////////////////////////////////////////////////////////////////////////
-
     async getDestination() {
       let data = await this.getAllDestination();
       return data.destinations;
@@ -166,11 +173,9 @@ export default {
   width: 100vw;
   height: 100vh;
 }
-
 .img-height {
   height: 250px;
 }
-
 .g-window-size {
   width: 450px;
 }
@@ -178,7 +183,6 @@ export default {
   .img-height {
     height: 250px;
   }
-
   .g-window-size {
     width: 450px;
   }
@@ -187,7 +191,6 @@ export default {
   .img-height {
     height: 250px;
   }
-
   .g-window-size {
     width: 400px;
   }
@@ -196,7 +199,6 @@ export default {
   .img-height {
     height: 210px;
   }
-
   .g-window-size {
     width: 390px;
   }
