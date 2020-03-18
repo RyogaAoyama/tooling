@@ -17,6 +17,7 @@ jobs:
 
     steps:
       - uses: actions/checkout@v1
+
       - name: Set up Ruby 2.6
         uses: actions/setup-ruby@v1
         with:
@@ -50,12 +51,25 @@ jobs:
           path: ./node_modules
           key: ${{runner.os}}-node-${{hashFiles('**/yarn.lock')}}
           restore-keys: ${{runner.os}}-node-
-
+      
+      - name: test output
+        run: |
+          echo $MYSQL_ROOT_PASSWORD
+          echo $MYSQL_DATABASE
+          
+      - name: Sleep for 30 seconds
+        uses: jakejarvis/wait-action@master
+        with:
+          time: '30s'
+          
       - name: Create db
-        run: bundle exec rails db:create
+        run: |
+          bundle exec rails db:create
 
       - name: Run rubocop
         run: bundle exec rubocop
 
       - name: Run rspec
+        env:
+          GOOGLE_API_KEY: ${{ secrets.GOOGLE_API_KEY }}
         run: bundle exec rspec

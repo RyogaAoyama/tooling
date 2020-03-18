@@ -4,6 +4,7 @@ module Search::Common
 
   # 経緯度から都道府県を取得する
   def get_address(position, g_api)
+    p ENV['GOOGLE_API_KEY']
     query = {
       language: 'ja',
       sensor: false,

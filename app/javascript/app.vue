@@ -2,7 +2,7 @@
   <v-app id="app">
     <my-header></my-header>
     <my-alert></my-alert>
-      <router-view />
+    <router-view />
   </v-app>
 </template>
 

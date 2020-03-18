@@ -3,10 +3,12 @@ class Api::V1::DestinationsController < ApplicationController
   skip_before_action :authenticate!
 
   def index
-    @destinations = @user.destinations
+    @destinations = @user.destinations.each do |val|
+      val.set_all_visit_num
+      val.set_all_destination_num
+    end
 
     ok, @fields = Destination.new.output_column(params[:fields]&.split(','))
-
     if ok
       render :index, status: :ok
     else
@@ -34,6 +36,7 @@ class Api::V1::DestinationsController < ApplicationController
     end
 
     if @destination.save
+      @destination.set_all_visit_num.set_all_destination_num
       ok, @fields = Destination.new.output_column
       render :update, status: :ok
     else

@@ -1,6 +1,8 @@
 <template>
   <div>
-    <my-opacity-image src="/search_error.svg">エラーです</my-opacity-image>
+    <my-opacity-image src="/search_error.svg">
+      <h2>エラーです</h2>
+    </my-opacity-image>
   </div>
 </template>
 

@@ -42,6 +42,7 @@ const {
   mapActions: mapActionsOfAccount,
   mapState: mapStateOfAccount
 } = createNamespacedHelpers("Account");
+
 const { mapActions: mapActionsOfDestination } = createNamespacedHelpers(
   "Destination"
 );
@@ -54,7 +55,9 @@ export default {
     "my-search-result": SearchResult,
     "my-opacity-image": OpacityImage
   },
+
   ////////////////////////////////////////////////////////////////////////////
+  
   data: function() {
     return {
       arrivalTimes: [],
@@ -69,6 +72,7 @@ export default {
     };
   },
   ////////////////////////////////////////////////////////////////////////////
+
   async created() {
     let data = await this.getAllTown();
     for (let town of data.towns) {
@@ -77,16 +81,21 @@ export default {
     this.createArrivalTime();
     this.get();
   },
+
   ////////////////////////////////////////////////////////////////////////////
+
   computed: {
     ...mapStateOfSession(["id"]),
     ...mapStateOfAccount(["user"])
   },
+
   ////////////////////////////////////////////////////////////////////////////
+
   methods: {
     ...mapActionsOfAccount(["getUser"]),
     ...mapActions(["getAllTown"]),
     ...mapActionsOfDestination(["getAllDestination"]),
+
     // 到着時間のセレクトボックスにデータを格納するメソッド
     createArrivalTime() {
       // 上限到着時間(分)
@@ -104,11 +113,15 @@ export default {
         this.arrivalTimes.push(option);
       }
     },
+    
     ////////////////////////////////////////////////////////////////////////////
+    
     async get() {
       await this.getUser();
     },
+    
     ////////////////////////////////////////////////////////////////////////////
+
     async search(e) {
       this.searchStatus = 2;
       // 検索中はボタンを無効化
@@ -126,6 +139,7 @@ export default {
       // 検索
       [result, data] = await this.$store.dispatch("search", e);
       await this.setDestinationStatus(data.result.place_id);
+
       if (result == 0) {
         if (data.result["name"] == "") {
           this.searchResultMsg = "条件に該当する行き先が見つかりませんでした。";
@@ -150,12 +164,15 @@ export default {
       // 検索終了後ボタンを有効化
       this.isLoading = false;
     },
+
     ////////////////////////////////////////////////////////////////////////////
+
     async setDestinationStatus(place_id) {
       let data = await this.getAllDestination();
       if (data == undefined) {
         return;
       }
+
       for (let destination of data.destinations) {
         if (destination.place_id == place_id) {
           this.isVisit = destination.is_visit;

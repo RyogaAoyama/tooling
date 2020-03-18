@@ -34,10 +34,14 @@ export default {
           if (data.result == 0) {
             commit("setId", data.id);
             commit("setToken", data.token);
-            dispatch("Alert/setAlert", {
-              msg: "ログインしました。",
-              type: "success"
-            });
+            dispatch(
+              "Alert/setAlert",
+              {
+                msg: "ログインしました。",
+                type: "success"
+              },
+              { root: true }
+            );
 
             router.push("/search");
           }
