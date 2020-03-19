@@ -64,7 +64,9 @@ export default {
   },
   methods: {
     async search() {
-      this.$emit("search", this.form);
+      // 参照渡し防止
+      let form = this.form;
+      this.$emit("search", form);
     }
   }
 };

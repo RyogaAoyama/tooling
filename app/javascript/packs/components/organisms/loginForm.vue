@@ -31,7 +31,7 @@
       <div>
         <div>まだアカウントをお持ちでない方</div>
         <div>
-          <a @click="$router.push('/account/new')">アカウント登録</a>
+          <a @click="$router.push('/account/new').catch(e=>{})">アカウント登録</a>
         </div>
       </div>
     </v-card>

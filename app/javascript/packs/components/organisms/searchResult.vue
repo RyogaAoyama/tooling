@@ -97,7 +97,7 @@ export default {
       let responseCode = await this.createDestination(send);
       this.isLoading = false;
       if (responseCode == 201) {
-        this.$router.push("/destination/index");
+        this.$router.push("/destination/index").catch(e => {});
       }
     }
   },

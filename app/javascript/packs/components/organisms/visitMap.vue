@@ -81,7 +81,12 @@
           <strong>まだ行き先が登録されていないようです</strong>
         </my-icon-text>
         <p>行き先を検索して穴場スポットを見つけてみませんか？</p>
-        <v-btn color="#1FAB89" class="white--text" large @click="$router.push('/search')">穴場スポットを探す</v-btn>
+        <v-btn
+          color="#1FAB89"
+          class="white--text"
+          large
+          @click="$router.push('/search').catch(e=>{})"
+        >穴場スポットを探す</v-btn>
       </v-card-text>
     </v-card>
   </div>

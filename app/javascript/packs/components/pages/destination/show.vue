@@ -102,7 +102,7 @@ export default {
         "ネットワークエラーが発生しました。ネットワークの接続を確認してください。";
       this.status = 4;
     } else if (result == 404) {
-      this.$router.push("/notfound").catch(() => {});
+      this.$router.push("/notfound").catch(e => {});
     } else if (result == 500) {
       this.errorMsg =
         "内部でエラーが発生しました。時間を置いて再度お試しください。";

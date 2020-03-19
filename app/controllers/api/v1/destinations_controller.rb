@@ -17,8 +17,10 @@ class Api::V1::DestinationsController < ApplicationController
     end
   end
 
+  ####################################################################################
+
   def show
-    destination = Destination.find_by(id: params[:id])
+    destination = current_user.destinations.find_by(id: params[:id])
 
     # 取得に失敗したら404を返却
     unless destination
@@ -35,6 +37,8 @@ class Api::V1::DestinationsController < ApplicationController
     # 値を返却
     render :show, status: status
   end
+
+  ####################################################################################
 
   def update
     @destination = Destination.find(params[:id])
@@ -53,6 +57,8 @@ class Api::V1::DestinationsController < ApplicationController
     end
   end
 
+  ####################################################################################
+
   def create
     @destination = @user.destinations.new(destination_params)
 
@@ -64,17 +70,21 @@ class Api::V1::DestinationsController < ApplicationController
     end
   end
 
+  ####################################################################################
+
   def destroy
     if Destination.find(params[:id]).destroy
       render :destroy, status: :no_content
     end
   end
 
-  private
+  private ############################################################################
 
   def current_user
     @user = User.find(params[:user_id])
   end
+
+  ####################################################################################
 
   def destination_params
     params.require(:destination).permit(
@@ -89,6 +99,8 @@ class Api::V1::DestinationsController < ApplicationController
       :is_visit
     )
   end
+
+  ####################################################################################
 
   def position_params
     params.permit(

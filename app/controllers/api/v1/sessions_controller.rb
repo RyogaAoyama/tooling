@@ -8,6 +8,7 @@ class Api::V1::SessionsController < ApplicationController
       @user_id = user.id
       @token = user.token
       @result = 0
+      session[:id] = @user_id
     else
       @user_id = ''
       @error = 'メールアドレスとパスワードが一致しません'
@@ -18,6 +19,7 @@ class Api::V1::SessionsController < ApplicationController
   end
 
   def destroy
+    session[:id] = nil
     @result = 0
     render :destroy, status: 200
   end

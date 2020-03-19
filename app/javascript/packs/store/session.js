@@ -9,21 +9,36 @@ export default {
     id: "",
     token: ""
   },
+
+  ////////////////////////////////////////////////////////////////////////////
+
   mutations: {
     setSessionError(state, payload) {
       state.loginError = payload;
     },
+
+    ////////////////////////////////////////////////////////////////////////////
+
     setId(state, payload) {
       state.id = payload;
     },
+
+    ////////////////////////////////////////////////////////////////////////////
+
     setToken(state, payload) {
       state.token = payload;
     },
+
+    ////////////////////////////////////////////////////////////////////////////
+
     resetSession(state) {
       state.id = "";
       state.loginError = "";
     }
   },
+
+  ////////////////////////////////////////////////////////////////////////////
+
   actions: {
     async login({ commit, dispatch }, payload) {
       let data = "";
@@ -83,6 +98,22 @@ export default {
           }
         });
       return data;
+    },
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    async destroy(context, payload) {
+      let result = 0;
+      await sessionsRepository
+        .logout()
+        .then(res => {
+          result = res.status;
+        })
+        .catch(e => {
+          console.log(e);
+          result = e.response.status;
+        });
+      return result;
     }
   }
 };

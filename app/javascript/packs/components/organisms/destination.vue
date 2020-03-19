@@ -1,7 +1,7 @@
 <template>
   <my-card-top-image
     :src="destination.picture"
-    @onclick="$router.push(`/destination/${destination.id}`)"
+    @onclick="$router.push(`/destination/${destination.id}`).catch(e=>{})"
   >
     <v-row>
       <v-col>
