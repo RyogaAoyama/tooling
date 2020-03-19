@@ -10,7 +10,7 @@ jobs:
       db:
         image: mysql:5.7
         env:
-          MYSQL_ROOT_PASSWORD: password
+          MYSQL_ROOT_PASSWORD: root
           MYSQL_DATABASE: root
         ports:
           - 3306
@@ -23,10 +23,12 @@ jobs:
         with:
           ruby-version: 2.6.x
 
-      - name: mysql set up
+      - name: Set up mysql
         run: |
-          sudo apt-get update
-          sudo apt-get install libmysqlclient-dev
+          sudo mkdir -p /var/run/mysqld
+          sudo touch /var/run/mysqld/mysqld.sock
+          sudo chmod 777 /var/run/mysqld/mysqld.sock
+          sudo /etc/init.d/mysql start
 
       - name: yarn install
         run: yarn install
@@ -37,7 +39,6 @@ jobs:
           bundle install --jobs 4 --retry 3
           bundle exec rails
           cp config/database.yml.ci config/database.yml
-
       - name: Cache gems
         uses: actions/cache@preview
         with:
@@ -51,20 +52,9 @@ jobs:
           path: ./node_modules
           key: ${{runner.os}}-node-${{hashFiles('**/yarn.lock')}}
           restore-keys: ${{runner.os}}-node-
-      
-      - name: test output
-        run: |
-          echo $MYSQL_ROOT_PASSWORD
-          echo $MYSQL_DATABASE
-          
-      - name: Sleep for 30 seconds
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '30s'
-          
+
       - name: Create db
-        run: |
-          bundle exec rails db:create
+        run: bundle exec rails db:create
 
       - name: Run rubocop
         run: bundle exec rubocop
