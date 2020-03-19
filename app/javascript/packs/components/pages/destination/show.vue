@@ -32,7 +32,9 @@
     </v-card>
 
     <div v-else-if="status == 4">
-      <my-opacity-image src="/search_error.svg">{{ errorMsg }}</my-opacity-image>
+      <my-opacity-image src="/search_error.svg">
+        <h2>{{ errorMsg }}</h2>
+      </my-opacity-image>
     </div>
   </v-container>
 </template>
@@ -60,6 +62,9 @@ export default {
     "my-address-section": AddressSection,
     "my-space": Space
   },
+
+  ////////////////////////////////////////////////////////////////////////////
+
   data: function() {
     return {
       destination: {},
@@ -69,6 +74,9 @@ export default {
       positionOk: true
     };
   },
+
+  ////////////////////////////////////////////////////////////////////////////
+
   async created() {
     // 現在地を取得
     this.isLoading = true;
@@ -87,11 +95,14 @@ export default {
 
     if (result == 200) {
       this.destination = data.result;
+      this.create_photo_url();
       this.status = 3;
     } else if (result == 400) {
       this.errorMsg =
         "ネットワークエラーが発生しました。ネットワークの接続を確認してください。";
       this.status = 4;
+    } else if (result == 404) {
+      this.$router.push("/notfound").catch(() => {});
     } else if (result == 500) {
       this.errorMsg =
         "内部でエラーが発生しました。時間を置いて再度お試しください。";
@@ -102,8 +113,10 @@ export default {
       this.status = 4;
     }
     this.isLoading = false;
-    this.create_photo_url();
   },
+
+  ////////////////////////////////////////////////////////////////////////////
+
   methods: {
     ...mapActionsOfDestination(["getFullDestination"]),
     create_photo_url() {

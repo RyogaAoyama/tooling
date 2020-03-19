@@ -18,7 +18,15 @@ class Api::V1::DestinationsController < ApplicationController
   end
 
   def show
-    destination = Destination.find(params[:id])
+    destination = Destination.find_by(id: params[:id])
+
+    # 取得に失敗したら404を返却
+    unless destination
+      @error_params = ErrorDefine.new.get_error_params(404)
+      render 'error/error', status: :not_found
+      return
+    end
+
     full_data = Search::FullData.new
 
     # Google APIから全ての行き先情報を取得

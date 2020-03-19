@@ -38,6 +38,7 @@ const router = new VueRouter({
       meta: { requiresAuth: true }
     },
     { path: "/map", component: VisitMap, meta: { requiresAuth: true } },
+    { path: "/notfound", component: PageNotFound },
     { path: "*", component: PageNotFound }
   ]
 });
