@@ -35,8 +35,8 @@ class Api::V1::UsersController < ApplicationController
 
   def destroy
     @result = if @user.destroy
-                0
                 session[:id] = nil
+                0
               else
                 2
     end

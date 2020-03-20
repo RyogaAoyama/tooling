@@ -20,10 +20,11 @@ class Api::V1::DestinationsController < ApplicationController
   ####################################################################################
 
   def show
-    destination = current_user.destinations.find_by(id: params[:id])
+    @destination = current_user.destinations.find_by(id: params[:id])
+    _, @fields = @destination.output_column
 
     # 取得に失敗したら404を返却
-    unless destination
+    unless @destination
       @error_params = ErrorDefine.new.get_error_params(404)
       render 'error/error', status: :not_found
       return
@@ -32,7 +33,7 @@ class Api::V1::DestinationsController < ApplicationController
     full_data = Search::FullData.new
 
     # Google APIから全ての行き先情報を取得
-    status, @result = full_data.get_full_data(position_params, destination.place_id)
+    status, @result = full_data.get_full_data(position_params, @destination.place_id)
 
     # 値を返却
     render :show, status: status

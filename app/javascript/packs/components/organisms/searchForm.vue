@@ -65,7 +65,7 @@ export default {
   methods: {
     async search() {
       // 参照渡し防止
-      let form = this.form;
+      let form = JSON.parse(JSON.stringify(this.form));
       this.$emit("search", form);
     }
   }

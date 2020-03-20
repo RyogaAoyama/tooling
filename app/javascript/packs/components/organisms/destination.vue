@@ -91,7 +91,6 @@ export default {
   },
   methods: {
     update() {
-      console.log(this.destination.address);
       this.$emit("update", {
         destination: { is_visit: !this.destination.is_visit },
         id: this.destination.id

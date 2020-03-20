@@ -6,7 +6,7 @@
       </v-card-title>
     </my-gradient-image>
     <div class="mb-12 px-xl-12 px-md-12 px-sm-12 px-1">
-      <span>{{ searchResult.rating != "" ? searchResult.rating : 0.0 }}</span>
+      <span>{{ searchResult.rating != "" ? searchResult.rating : 0 }}</span>
       <v-rating
         v-model="searchResult.rating"
         color="yellow darken-3"

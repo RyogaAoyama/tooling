@@ -1,7 +1,9 @@
 <template>
   <v-container class="mb-5">
     <my-space size="30"></my-space>
-    <v-progress-circular indeterminate color="green" v-show="isLoading"></v-progress-circular>
+    <div v-show="isLoading" class="center">
+      <v-progress-circular indeterminate color="green"></v-progress-circular>
+    </div>
     <v-card v-if="status == 3">
       <my-gradient-image class="mb-3" xl="600" md="600" sm="500" :src="src">
         <v-card-title>
@@ -9,7 +11,7 @@
         </v-card-title>
       </my-gradient-image>
       <div class="mb-12 px-xl-12 px-md-12 px-sm-12 px-1">
-        <span>{{ destination.rating }}</span>
+        <span>{{ destination.rating != "" ? destination.rating : 0.0 }}</span>
         <v-rating
           v-model="destination.rating"
           color="yellow darken-3"
@@ -21,8 +23,8 @@
           small
           class="d-inline-block"
         ></v-rating>
-        <span>({{ destination.user_ratings_total }})</span>
-        <v-chip x-small color="yellow" text-color="white">行ったことない</v-chip>
+        <span>({{ destination.user_ratings_total != "" ? destination.user_ratings_total : 0 }})</span>
+        <v-chip x-small color="green" text-color="white" v-show="destination.is_visit">訪問済み</v-chip>
       </div>
       <div class="px-xl-12 px-md-12 px-sm-12 px-1 pb-12">
         <my-picture-section class="mb-12" :searchResult="destination"></my-picture-section>
@@ -135,4 +137,7 @@ export default {
 </script>
 
 <style>
+.center {
+  text-align: center;
+}
 </style>
