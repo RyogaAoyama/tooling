@@ -8,4 +8,8 @@ class ApplicationController < ActionController::Base
       User.find_by(token: token).present?
     end
   end
+
+  def current_user
+    @current_user ||= User.find_by(id: session[:id]) if session[:id]
+  end
 end

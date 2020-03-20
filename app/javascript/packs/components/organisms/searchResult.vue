@@ -6,7 +6,7 @@
       </v-card-title>
     </my-gradient-image>
     <div class="mb-12 px-xl-12 px-md-12 px-sm-12 px-1">
-      <span>{{ searchResult.rating != "" ? searchResult.rating : 0.0 }}</span>
+      <span>{{ searchResult.rating != "" ? searchResult.rating : 0 }}</span>
       <v-rating
         v-model="searchResult.rating"
         color="yellow darken-3"
@@ -53,6 +53,8 @@ import { createNamespacedHelpers } from "vuex";
 const { mapActions: mapActionsOfDestination } = createNamespacedHelpers(
   "Destination"
 );
+
+const { mapActions: mapActionsOfAlert } = createNamespacedHelpers("Alert");
 export default {
   props: ["searchResult", "isRegist", "positionOk"],
   data: function() {
@@ -69,6 +71,7 @@ export default {
   },
   methods: {
     ...mapActionsOfDestination(["createDestination"]),
+    ...mapActionsOfAlert(["setAlert"]),
     create_photo_url() {
       if (this.searchResult["photos"].length == 0) {
         this.src = "/not_image.svg";
@@ -97,7 +100,16 @@ export default {
       let responseCode = await this.createDestination(send);
       this.isLoading = false;
       if (responseCode == 201) {
-        this.$router.push("/destination/index");
+        this.$router.push(
+          "/destination/index",
+          () => {
+            this.setAlert({
+              msg: "行き先を登録しました。早速訪れてみましょう！",
+              type: "success"
+            });
+          },
+          () => {}
+        );
       }
     }
   },

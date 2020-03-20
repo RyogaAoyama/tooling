@@ -132,26 +132,19 @@ export default {
     ////////////////////////////////////////////////////////////////////////////
 
     async destroyUser({ dispatch, rootState }) {
-      let result = await UsersRepository.destroy(
+      let result = 0;
+      await UsersRepository.destroy(
         rootState.Session.id,
         rootState.Session.token
       )
         .then(res => {
-          dispatch(
-            "Alert/setAlert",
-            {
-              msg: "サービスを退会しました、ご利用ありがとうございました。",
-              type: "success"
-            },
-            { root: true }
-          );
-          return res.data.result;
+          result = res.status;
         })
         .catch(e => {
           console.log(e);
 
-          let responseCode = e.response.status;
-          if (responseCode == 400) {
+          result = e.response.status;
+          if (result == 400) {
             dispatch(
               "Alert/setAlert",
               {
@@ -161,7 +154,7 @@ export default {
               },
               { root: true }
             );
-          } else if (responseCode == 500) {
+          } else if (result == 500) {
             dispatch(
               "Alert/setAlert",
               {
@@ -182,7 +175,6 @@ export default {
               { root: true }
             );
           }
-          return responseCode;
         });
       return result;
     }

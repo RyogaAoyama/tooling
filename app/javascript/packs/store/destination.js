@@ -80,44 +80,6 @@ export default {
         .catch(e => {
           console.log(e);
           result = e.response.status;
-
-          if (result == 400) {
-            dispatch(
-              "Alert/setAlert",
-              {
-                msg:
-                  "ネットワークエラーが発生しました。ネットワークの接続を確認してください。",
-                type: "error"
-              },
-              { root: true }
-            );
-          } else if (result == 500) {
-            dispatch(
-              "Alert/setAlert",
-              {
-                msg:
-                  "内部でエラーが発生しました。時間を置いて再度お試しください。",
-                type: "error"
-              },
-              { root: true }
-            );
-          } else if (result == 422) {
-            dispatch(
-              "Alert/setAlert",
-              { msg: "指定したURLが見つかりませんでした。", type: "error" },
-              { root: true }
-            );
-          } else {
-            dispatch(
-              "Alert/setAlert",
-              {
-                msg:
-                  "予期せぬエラーが発生しました。システム管理者までご連絡ください。",
-                type: "error"
-              },
-              { root: true }
-            );
-          }
         });
       return [result, data];
     },
@@ -133,14 +95,6 @@ export default {
       )
         .then(res => {
           responseCode = res.status;
-          dispatch(
-            "Alert/setAlert",
-            {
-              msg: "行き先を登録しました。早速訪れてみましょう！",
-              type: "success"
-            },
-            { root: true }
-          );
         })
         .catch(e => {
           console.log(e);

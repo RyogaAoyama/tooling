@@ -13,7 +13,9 @@
       <my-opacity-image src="/search_not.svg" v-if="searchStatus == 1">
         <h2>検索してみましょう</h2>
       </my-opacity-image>
-      <v-progress-circular indeterminate color="green" v-else-if="searchStatus == 2"></v-progress-circular>
+      <div v-else-if="searchStatus == 2" class="center">
+        <v-progress-circular indeterminate color="green"></v-progress-circular>
+      </div>
       <my-search-result
         :searchResult="SearchResult"
         v-else-if="searchStatus == 3"
@@ -57,7 +59,7 @@ export default {
   },
 
   ////////////////////////////////////////////////////////////////////////////
-  
+
   data: function() {
     return {
       arrivalTimes: [],
@@ -113,13 +115,13 @@ export default {
         this.arrivalTimes.push(option);
       }
     },
-    
+
     ////////////////////////////////////////////////////////////////////////////
-    
+
     async get() {
       await this.getUser();
     },
-    
+
     ////////////////////////////////////////////////////////////////////////////
 
     async search(e) {
@@ -198,5 +200,9 @@ export default {
     padding: 0;
     margin-bottom: 48px;
   }
+}
+
+.center {
+  text-align: center;
 }
 </style>

@@ -19,7 +19,7 @@
               color="white"
               block
               large
-              @click="$router.push('/account/new')"
+              @click="$router.push('/account/new').catch(e=>{})"
             >無料でアカウントを作成</v-btn>
           </v-col>
         </v-row>
@@ -190,7 +190,7 @@
           class="ma-2 teal--text"
           color="white"
           large
-          @click="$router.push('/account/new')"
+          @click="$router.push('/account/new').catch(e=>{})"
         >無料でアカウントを作成</v-btn>
       </div>
     </div>

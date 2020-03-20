@@ -2,17 +2,26 @@
   <v-card class="header-wrap">
     <v-toolbar height="65px" width="100%" class="fixed" color="white">
       <v-app-bar-nav-icon @click="isActive = !isActive" v-show="isAuth"></v-app-bar-nav-icon>
-      <v-toolbar-title @click="$router.push('/')">SPOT</v-toolbar-title>
+      <v-toolbar-title @click="$router.push('/').catch(e=>{})">SPOT</v-toolbar-title>
 
       <v-spacer></v-spacer>
-      <v-btn outlined color="#1FAB89" v-show="!isAuth" @click="$router.push('/account/edit')">ログイン</v-btn>
+      <v-btn
+        outlined
+        color="#1FAB89"
+        v-show="!isAuth"
+        @click="$router.push('/account/edit').catch(e=>{})"
+      >ログイン</v-btn>
       <v-btn
         outlined
         color="#1FAB89"
         v-show="$route.path === '/account/edit'"
-        @click="$router.push('/search')"
+        @click="$router.push('/search').catch(e=>{})"
       >検索画面に戻る</v-btn>
-      <v-btn text v-show="isAuth" @click="$router.push('/account/edit')">{{ user.name }}</v-btn>
+      <v-btn
+        text
+        v-show="isAuth"
+        @click="$router.push('/account/edit').catch(e=>{})"
+      >{{ user.name }}</v-btn>
     </v-toolbar>
 
     <v-navigation-drawer fixed dark temporary color="#1FAB89" v-model="isActive">
@@ -31,7 +40,11 @@
 
       <v-list>
         <v-list-item-group v-model="group">
-          <v-list-item v-for="menu in menus" :key="menu.page" @click="$router.push(menu.page)">
+          <v-list-item
+            v-for="menu in menus"
+            :key="menu.page"
+            @click="$router.push(menu.page).catch(e=>{})"
+          >
             <v-list-item-icon>
               <v-icon>{{ menu.icon }}</v-icon>
             </v-list-item-icon>
@@ -55,7 +68,10 @@ import { createNamespacedHelpers, mapActions } from "vuex";
 
 const { mapState: mapStateOfAccount } = createNamespacedHelpers("Account");
 
-const { mapState: mapStateOfSession } = createNamespacedHelpers("Session");
+const {
+  mapState: mapStateOfSession,
+  mapActions: mapActionsOfSession
+} = createNamespacedHelpers("Session");
 
 const { mapActions: mapActionsOfAlert } = createNamespacedHelpers("Alert");
 
@@ -82,19 +98,37 @@ export default {
       ]
     };
   },
+
+  ////////////////////////////////////////////////////////////////////////////
+
   computed: {
     ...mapStateOfSession(["id", "token"]),
     ...mapStateOfAccount(["user"])
   },
 
+  ////////////////////////////////////////////////////////////////////////////
+
   methods: {
     ...mapActionsOfAlert(["setAlert"]),
+    ...mapActionsOfSession(["destroy"]),
     ...mapActions(["reset"]),
-    logout() {
-      this.setAlert({ msg: "ログアウトしました", type: "success" });
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    async logout() {
+      await this.destroy();
       this.reset();
-      this.$router.push("/");
+      this.$router.push(
+        "/",
+        () => {
+          this.setAlert({ msg: "ログアウトしました", type: "success" });
+        },
+        () => {}
+      );
     },
+
+    ////////////////////////////////////////////////////////////////////////////
+
     existId() {
       if (this.id != "") {
         this.isAuth = true;
@@ -103,9 +137,15 @@ export default {
       }
     }
   },
+
+  ////////////////////////////////////////////////////////////////////////////
+
   created() {
     this.existId();
   },
+
+  ////////////////////////////////////////////////////////////////////////////
+
   watch: {
     group() {
       this.isActive = false;

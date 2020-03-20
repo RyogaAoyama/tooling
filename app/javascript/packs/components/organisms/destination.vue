@@ -1,7 +1,7 @@
 <template>
   <my-card-top-image
     :src="destination.picture"
-    @onclick="$router.push(`/destination/${destination.id}`)"
+    @onclick="$router.push(`/destination/${destination.id}`).catch(e=>{})"
   >
     <v-row>
       <v-col>
@@ -91,7 +91,6 @@ export default {
   },
   methods: {
     update() {
-      console.log(this.destination.address);
       this.$emit("update", {
         destination: { is_visit: !this.destination.is_visit },
         id: this.destination.id

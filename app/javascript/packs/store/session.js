@@ -9,21 +9,36 @@ export default {
     id: "",
     token: ""
   },
+
+  ////////////////////////////////////////////////////////////////////////////
+
   mutations: {
     setSessionError(state, payload) {
       state.loginError = payload;
     },
+
+    ////////////////////////////////////////////////////////////////////////////
+
     setId(state, payload) {
       state.id = payload;
     },
+
+    ////////////////////////////////////////////////////////////////////////////
+
     setToken(state, payload) {
       state.token = payload;
     },
+
+    ////////////////////////////////////////////////////////////////////////////
+
     resetSession(state) {
       state.id = "";
       state.loginError = "";
     }
   },
+
+  ////////////////////////////////////////////////////////////////////////////
+
   actions: {
     async login({ commit, dispatch }, payload) {
       let data = "";
@@ -34,16 +49,21 @@ export default {
           if (data.result == 0) {
             commit("setId", data.id);
             commit("setToken", data.token);
-            dispatch(
-              "Alert/setAlert",
-              {
-                msg: "ログインしました。",
-                type: "success"
-              },
-              { root: true }
-            );
 
-            router.push("/search");
+            router.push(
+              "/search",
+              () => {
+                dispatch(
+                  "Alert/setAlert",
+                  {
+                    msg: "ログインしました。",
+                    type: "success"
+                  },
+                  { root: true }
+                );
+              },
+              () => {}
+            );
           }
         })
         .catch(e => {
@@ -83,6 +103,22 @@ export default {
           }
         });
       return data;
+    },
+
+    ////////////////////////////////////////////////////////////////////////////
+
+    async destroy(context, payload) {
+      let result = 0;
+      await sessionsRepository
+        .logout()
+        .then(res => {
+          result = res.status;
+        })
+        .catch(e => {
+          console.log(e);
+          result = e.response.status;
+        });
+      return result;
     }
   }
 };

@@ -28,12 +28,15 @@ export default {
   created() {
     let marker_data = {};
     marker_data.position = {};
-    marker_data.position.lat = this.searchResult.lat;
-    marker_data.position.lng = this.searchResult.lng;
+    marker_data.position.lat = parseFloat(this.searchResult.lat);
+    marker_data.position.lng = parseFloat(this.searchResult.lng);
     marker_data.position.title = this.searchResult.name;
     this.marker_items.push(marker_data);
 
-    this.center = { lat: this.searchResult.lat, lng: this.searchResult.lng };
+    this.center = {
+      lat: parseFloat(this.searchResult.lat),
+      lng: parseFloat(this.searchResult.lng)
+    };
   }
 };
 </script>

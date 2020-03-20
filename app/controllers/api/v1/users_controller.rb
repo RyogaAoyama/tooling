@@ -13,6 +13,7 @@ class Api::V1::UsersController < ApplicationController
       @errors = {}
       @user_id = user.id
       @token = user.token
+      session[:id] = @user_id
     else
       @result = 1
       # エラーメッセージをハッシュで取得
@@ -34,6 +35,7 @@ class Api::V1::UsersController < ApplicationController
 
   def destroy
     @result = if @user.destroy
+                session[:id] = nil
                 0
               else
                 2

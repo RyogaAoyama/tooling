@@ -146,10 +146,19 @@ export default {
       this.isLoading = true;
       let result = await this.destroyUser();
       this.isLoading = false;
-      if (result == 0) {
+      if (result == 200) {
         this.reset();
         this.setId("");
-        this.$router.push("/");
+        this.$router.push(
+          "/",
+          () => {
+            this.setAlert({
+              msg: "サービスを退会しました、ご利用ありがとうございました。",
+              type: "success"
+            });
+          },
+          () => {}
+        );
       }
     }
   },
