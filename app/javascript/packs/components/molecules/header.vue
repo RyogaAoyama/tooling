@@ -117,9 +117,14 @@ export default {
 
     async logout() {
       await this.destroy();
-      this.setAlert({ msg: "ログアウトしました", type: "success" });
       this.reset();
-      this.$router.push("/").catch(e => {});
+      this.$router.push(
+        "/",
+        () => {
+          this.setAlert({ msg: "ログアウトしました", type: "success" });
+        },
+        () => {}
+      );
     },
 
     ////////////////////////////////////////////////////////////////////////////

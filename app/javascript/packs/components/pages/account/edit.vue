@@ -149,7 +149,16 @@ export default {
       if (result == 200) {
         this.reset();
         this.setId("");
-        this.$router.push("/").catch(e => {});
+        this.$router.push(
+          "/",
+          () => {
+            this.setAlert({
+              msg: "サービスを退会しました、ご利用ありがとうございました。",
+              type: "success"
+            });
+          },
+          () => {}
+        );
       }
     }
   },

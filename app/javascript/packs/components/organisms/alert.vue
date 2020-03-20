@@ -13,11 +13,6 @@ const {
 } = createNamespacedHelpers("Alert");
 
 export default {
-  watch: {
-    $route: function(to, from) {
-      this.flash();
-    }
-  },
   methods: {
     ...mapMutationsOfAlert(["setIsShow", "setMsg"]),
     flash() {
@@ -33,6 +28,12 @@ export default {
   created() {
     this.setIsShow(false);
     this.setMsg("");
+  },
+  mounted() {
+    this.$router.beforeEach((to, from, next) => {
+      this.flash();
+      next();
+    });
   }
 };
 </script>

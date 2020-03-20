@@ -95,14 +95,6 @@ export default {
       )
         .then(res => {
           responseCode = res.status;
-          dispatch(
-            "Alert/setAlert",
-            {
-              msg: "行き先を登録しました。早速訪れてみましょう！",
-              type: "success"
-            },
-            { root: true }
-          );
         })
         .catch(e => {
           console.log(e);

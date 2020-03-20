@@ -64,13 +64,14 @@ export default {
         await this.setId(data.id);
         await this.setToken(data.token);
 
-        this.setAlert({
-          msg: "アカウントを作成しました。サービスをお楽しみください！",
-          type: "success"
-        });
-
         // 画面遷移
-        this.$router.push("/search").catch(e => {});
+        this.$router.push("/search", () => {
+          this.setAlert({
+            msg: "アカウントを作成しました。サービスをお楽しみください！",
+            type: "success"
+          }),
+            () => {};
+        });
       } else if (data.result == 1) {
         // エラーメッセージをセット
         for (let key in data.errors) {

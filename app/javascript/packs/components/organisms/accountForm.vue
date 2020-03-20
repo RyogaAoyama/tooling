@@ -35,7 +35,7 @@
       <div>
         <div>すでにアカウントをお持ちの方</div>
         <div>
-          <a @click="$router.push('/login')">ログイン</a>
+          <a @click="$router.push('/login').catch(e=>{})">ログイン</a>
         </div>
       </div>
     </v-card>

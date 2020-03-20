@@ -138,14 +138,6 @@ export default {
         rootState.Session.token
       )
         .then(res => {
-          dispatch(
-            "Alert/setAlert",
-            {
-              msg: "サービスを退会しました、ご利用ありがとうございました。",
-              type: "success"
-            },
-            { root: true }
-          );
           result = res.status;
         })
         .catch(e => {

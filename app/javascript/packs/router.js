@@ -43,6 +43,7 @@ const router = new VueRouter({
   ]
 });
 
+// 認証が必要なページに遷移する前に認証しているかチェック
 router.beforeEach((to, from, next) => {
   if (to.matched.some(rec => rec.meta.requiresAuth)) {
     if (store.state.Session.id == "" || store.state.Session.token == "") {
