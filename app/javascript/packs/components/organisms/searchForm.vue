@@ -1,12 +1,18 @@
 <template>
-  <v-col lg="4" md="6" sm="10" col="12">
+  <v-col xl="3" lg="4" md="6" sm="10" col="12">
     <v-card class="pa-10">
-      <h1 class="center mb-2">ツーリング先を見つける</h1>
+      <h1 class="center mb-2">目的地を見つける</h1>
       <form>
         <v-row>
           <v-col cols="12">
             <div class="sub-header">到着時間</div>
-            <v-select label="到着時間を選択" :items="arrivalTimes" v-model="form.search.arrivalTime" solo></v-select>
+            <v-select
+              clearable
+              label="到着時間を選択"
+              :items="arrivalTimes"
+              v-model="form.search.arrivalTime"
+              solo
+            ></v-select>
           </v-col>
         </v-row>
         <v-row>
@@ -18,6 +24,7 @@
               item-text="town_name"
               item-value="town_id"
               v-model="form.search.town"
+              clearable
               solo
             ></v-select>
           </v-col>
@@ -41,39 +48,25 @@
 <script>
 import Repository from "./../../repository.js";
 import Geolocation from "./../../modules/geolocation.js";
+import { createNamespacedHelpers } from "vuex";
+
 export default {
-  props: ["towns", "arrivalTimes"],
+  props: ["towns", "arrivalTimes", "isLoading"],
   data: function() {
     return {
       form: {
         search: {
           arrivalTime: "",
-          town: "",
-          position: ""
+          town: 0
         }
-      },
-      searchResultMsg: "",
-      isLoading: false
+      }
     };
   },
   methods: {
-    async setPosition() {
-      this.form.search.position = await Geolocation.getCurrentPosition();
-    },
     async search() {
-      this.$store.commit("changeSearchStatus", 2);
-      // 検索中はボタンを無効化
-      this.isLoading = true;
-
-      // 現在地をセット
-      await this.setPosition();
-      console.log(this.form);
-
-      // 検索
-      await this.$store.dispatch("search", this.form);
-
-      // 検索終了後ボタンを有効化
-      this.isLoading = false;
+      // 参照渡し防止
+      let form = JSON.parse(JSON.stringify(this.form));
+      this.$emit("search", form);
     }
   }
 };

@@ -6,7 +6,7 @@
       </v-card-title>
     </my-gradient-image>
     <div class="mb-12 px-xl-12 px-md-12 px-sm-12 px-1">
-      <span>{{ searchResult.rating }}</span>
+      <span>{{ searchResult.rating != "" ? searchResult.rating : 0 }}</span>
       <v-rating
         v-model="searchResult.rating"
         color="yellow darken-3"
@@ -18,15 +18,28 @@
         small
         class="d-inline-block"
       ></v-rating>
-      <span>({{ searchResult.user_ratings_total }})</span>
-      <v-chip x-small color="yellow" text-color="white">行ったことない</v-chip>
+      <span>({{ searchResult.user_ratings_total != "" ? searchResult.user_ratings_total : 0 }})</span>
+      <v-chip x-small color="green" text-color="white" v-show="isRegist">訪問済み</v-chip>
     </div>
     <div class="px-xl-12 px-md-12 px-sm-12 px-1 pb-12">
-      <my-picture-section class="mb-12"></my-picture-section>
-      <my-review-section class="mb-12"></my-review-section>
-      <my-address-section></my-address-section>
+      <my-picture-section class="mb-12" :searchResult="searchResult"></my-picture-section>
+      <my-review-section class="mb-12" :searchResult="searchResult"></my-review-section>
+      <my-address-section :searchResult="searchResult" :positionOk="positionOk"></my-address-section>
+      <div class="text-center" v-if="isRegist">
+        <v-btn rounded color="#1FAB89" class="white--text" large disabled>登録済み</v-btn>
+      </div>
+      <div class="text-center" v-else>
+        <v-btn
+          rounded
+          color="#1FAB89"
+          class="white--text"
+          large
+          @click="create"
+          :disabled="isLoading"
+          :loading="isLoading"
+        >ここに行く</v-btn>
+      </div>
     </div>
-    <v-btn @click="test">test</v-btn>
   </v-card>
 </template>
 
@@ -36,10 +49,18 @@ import PicutureSection from "./../organisms/pictureSection.vue";
 import ReviewSection from "./../organisms/reviewSection.vue";
 import AddressSection from "./../organisms/addressSection.vue";
 import { mapState } from "vuex";
+import { createNamespacedHelpers } from "vuex";
+const { mapActions: mapActionsOfDestination } = createNamespacedHelpers(
+  "Destination"
+);
+
+const { mapActions: mapActionsOfAlert } = createNamespacedHelpers("Alert");
 export default {
+  props: ["searchResult", "isRegist", "positionOk"],
   data: function() {
     return {
-      src: ""
+      src: "",
+      isLoading: false
     };
   },
   components: {
@@ -48,14 +69,9 @@ export default {
     "my-review-section": ReviewSection,
     "my-address-section": AddressSection
   },
-  computed: {
-    ...mapState(["searchResult"])
-  },
   methods: {
-    test() {
-      console.log(this.searchResult);
-      console.log(this.src);
-    },
+    ...mapActionsOfDestination(["createDestination"]),
+    ...mapActionsOfAlert(["setAlert"]),
     create_photo_url() {
       if (this.searchResult["photos"].length == 0) {
         this.src = "/not_image.svg";
@@ -66,6 +82,35 @@ export default {
         gon.GOOGLE_API_KEY +
         "&photoreference=" +
         this.searchResult["photos"][0]["photo_reference"];
+    },
+    async create() {
+      let send = { destination: {} };
+      let result = this.searchResult;
+      send.destination.place_id = result.place_id;
+      send.destination.name = result.name;
+      send.destination.picture = this.src;
+      send.destination.address = result.address;
+      send.destination.review_rank = result.rating == "" ? 0 : result.rating;
+      send.destination.review_num =
+        result.user_ratings_total == "" ? 0 : result.user_ratings_total;
+      send.destination.lat = result.lat;
+      send.destination.lng = result.lng;
+      send.destination.is_visit = false;
+      this.isLoading = true;
+      let responseCode = await this.createDestination(send);
+      this.isLoading = false;
+      if (responseCode == 201) {
+        this.$router.push(
+          "/destination/index",
+          () => {
+            this.setAlert({
+              msg: "行き先を登録しました。早速訪れてみましょう！",
+              type: "success"
+            });
+          },
+          () => {}
+        );
+      }
     }
   },
   created() {

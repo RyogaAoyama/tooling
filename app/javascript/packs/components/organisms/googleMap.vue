@@ -28,33 +28,21 @@ export default {
   created() {
     let marker_data = {};
     marker_data.position = {};
-    marker_data.position.lat = this.searchResult.lat;
-    marker_data.position.lng = this.searchResult.lng;
+    marker_data.position.lat = parseFloat(this.searchResult.lat);
+    marker_data.position.lng = parseFloat(this.searchResult.lng);
     marker_data.position.title = this.searchResult.name;
     this.marker_items.push(marker_data);
 
-    this.center = { lat: this.searchResult.lat, lng: this.searchResult.lng };
+    this.center = {
+      lat: parseFloat(this.searchResult.lat),
+      lng: parseFloat(this.searchResult.lng)
+    };
   }
 };
 </script>
 
 <style>
 .g-map-size {
-  height: 1200px;
-}
-@media screen and (max-width: 1264px) {
-  .g-map-size {
-    height: 950px;
-  }
-}
-@media screen and (max-width: 959px) {
-  .g-map-size {
-    height: 700px;
-  }
-}
-@media screen and (max-width: 599px) {
-  .g-map-size {
-    height: 500px;
-  }
+  height: 90vh;
 }
 </style>
