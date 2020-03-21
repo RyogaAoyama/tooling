@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   # TODO: CSRF対策無効(本番では必ず消すこと！！！！)
-  skip_before_action :verify_authenticity_token
+  # skip_before_action :verify_authenticity_token
   before_action :authenticate!
 
   def authenticate!
