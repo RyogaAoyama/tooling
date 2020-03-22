@@ -2,30 +2,30 @@
 
 ## PRODUCTION ##
 
-# # DB作成
-# bin/rails db:create RAILS_ENV=production
+# DB作成
+bin/rails db:create RAILS_ENV=production
 
-# # DBマイグレーション
-# bin/rails db:migrate RAILS_ENV=production
+# DBマイグレーション
+bin/rails db:migrate RAILS_ENV=production
 
-# # 初期データ作成
-# bin/rails db:seed RAILS_ENV=production
+# 初期データ作成
+bin/rails db:seed RAILS_ENV=production
 
 # コンパイル
-# bin/rails assets:precompile
+bin/rails assets:precompile RAILS_ENV=production
 
 ############################################
 
 ## DEVELOPMENT
 
-# DB作成
-bin/rails db:create
+# # DB作成
+# bin/rails db:create
 
-# DBマイグレーション
-bin/rails db:migrate
+# # DBマイグレーション
+# bin/rails db:migrate
 
-# 初期データ作成
-bin/rails db:seed
+# # 初期データ作成
+# bin/rails db:seed
 
 
 
