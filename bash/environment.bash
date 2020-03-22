@@ -1,5 +1,6 @@
-# # yarn最新化
-# yarn install
+# TODO: マージする時は必ずDEVELOPMENTをコメントアウトすること
+
+## PRODUCTION ##
 
 # # DB作成
 # bin/rails db:create RAILS_ENV=production
@@ -10,13 +11,12 @@
 # # 初期データ作成
 # bin/rails db:seed RAILS_ENV=production
 
-# # 各種サーバーを起動
-# bundle exec foreman start
+# コンパイル
+# bin/rails assets:precompile
 
 ############################################
 
-# yarn最新化
-yarn install
+## DEVELOPMENT
 
 # DB作成
 bin/rails db:create
@@ -27,7 +27,5 @@ bin/rails db:migrate
 # 初期データ作成
 bin/rails db:seed
 
-# 各種サーバーを起動
-bundle exec foreman start
 
 

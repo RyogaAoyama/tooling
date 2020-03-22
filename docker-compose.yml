@@ -3,14 +3,15 @@ services:
   db:
     image: mysql:5.7
     environment:
-      MYSQL_ROOT_PASSWORD: password
-      MYSQL_DATABASE: root
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: tooling
+      MYSQL_PASSWORD: password
     ports:
       - "3306:3306"
 
   web:
     build: .
-    command: bash ./bash/environment.bash
+    command: bundle exec foreman start
     volumes:
       - .:/tooling:cached
       - /tooling/tmp
