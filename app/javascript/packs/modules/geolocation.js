@@ -2,7 +2,7 @@ export default {
   getCurrentPosition() {
     return new Promise((resolve, reject) => {
       // 現在地取得APIが利用できるか確認
-      let defaultPosition = { lng: 35.68944, lng: 139.69167 };
+      let defaultPosition = { lat: 35.68944, lng: 139.69167 };
       if (!navigator.geolocation) {
         console.log("位置情報取得不可");
         return [defaultPosition, false];
