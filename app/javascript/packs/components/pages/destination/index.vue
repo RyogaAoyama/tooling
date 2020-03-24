@@ -1,10 +1,16 @@
 <template>
   <v-container>
-    <my-icon-text size="30" iconName="mdi-format-list-bulleted" class="mt-10 mb-1">
+    <my-icon-text
+      size="30"
+      iconName="mdi-format-list-bulleted"
+      class="mt-10 mb-1"
+    >
       <strong>行き先一覧</strong>
     </my-icon-text>
     <hr size="7" color="#1FAB89" class="mb-2" noshade />
-    <h3 class="mb-2">今まで訪れた場所 {{ visitCnt }}/{{ destinations.length }}</h3>
+    <h3 class="mb-2">
+      今まで訪れた場所 {{ visitCnt }}/{{ destinations.length }}
+    </h3>
     <v-row justify="start">
       <v-col
         xl="3"
@@ -15,7 +21,11 @@
         v-for="destination in destinations"
         :key="destination.id"
       >
-        <my-destination :destination="destination" @update="update" @destroy="destroy"></my-destination>
+        <my-destination
+          :destination="destination"
+          @update="update"
+          @destroy="destroy"
+        ></my-destination>
       </v-col>
     </v-row>
     <my-destination-none v-show="notExists"></my-destination-none>
@@ -79,6 +89,7 @@ export default {
       this.destinations.forEach((destination, idx) => {
         if (destination.id == e) {
           this.destinations.splice(idx, 1);
+          this.getVisitCnt();
           this.setAlert({
             msg: `${destination.name}を一覧から削除しました。`,
             type: "error"
@@ -106,5 +117,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>
