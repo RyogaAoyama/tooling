@@ -37,7 +37,7 @@ User.create(
 )
 
 20.times do |i|
-  user = User.create(
+  User.create(
     name: "テストユーザー#{ i + 1 }",
     email: "test#{ i + 1 }@gmail.com",
     password: "password#{ i + 1 }",
