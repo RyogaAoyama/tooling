@@ -2,16 +2,15 @@ version: "3"
 services:
   db:
     image: mysql:5.7
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: tooling
-      MYSQL_PASSWORD: password
+    env_file: ./docker.env
     ports:
       - "3306:3306"
 
   web:
     build: .
-    command: bash ./bash/dev_environment.bash
+    command: bash ./bash/environment.bash
+    environment:
+      RAILS_ENV: production
     volumes:
       - .:/tooling:cached
       - /tooling/tmp

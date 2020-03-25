@@ -35,3 +35,4 @@ memo.md
 .env
 test.*
 /http
+*.env
