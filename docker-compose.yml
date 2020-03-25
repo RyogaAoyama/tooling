@@ -11,7 +11,7 @@ services:
 
   web:
     build: .
-    command: bundle exec foreman start
+    command: bash ./bash/dev_environment.bash
     volumes:
       - .:/tooling:cached
       - /tooling/tmp

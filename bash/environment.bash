@@ -1,5 +1,3 @@
-# TODO: マージする時は必ずDEVELOPMENTをコメントアウトすること
-
 ## PRODUCTION ##
 
 # DB作成
@@ -13,19 +11,6 @@ bin/rails db:seed RAILS_ENV=production
 
 # コンパイル
 bin/rails assets:precompile RAILS_ENV=production
-
-############################################
-
-## DEVELOPMENT
-
-# # DB作成
-# bin/rails db:create
-
-# # DBマイグレーション
-# bin/rails db:migrate
-
-# # 初期データ作成
-# bin/rails db:seed
 
 
 
