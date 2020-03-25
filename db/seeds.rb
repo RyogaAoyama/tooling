@@ -6,46 +6,46 @@
 # #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 # #   Character.create(name: 'Luke', movie: movies.first)
 
-# # 都道府県データ
-# require 'csv'
-# CSV.foreach('db/data/town.csv', headers: true) do |row|
-#   Town.create(
-#     town_id: row['town_id'],
-#     town_name: row['town_name']
-#   )
-# end
+# 都道府県データ
+require 'csv'
+CSV.foreach('db/data/town.csv', headers: true) do |row|
+  Town.create(
+    town_id: row['town_id'],
+    town_name: row['town_name']
+  )
+end
 
-# # 市区町村の位置データ
-# CSV.foreach('db/data/city.csv', headers: true) do |row|
-#   CityPlace.create(
-#     city_id: row['city_id'],
-#     town_id: row['town_id'],
-#     city_name: row['city_name'],
-#     lat: row['lat'],
-#     lng: row['lng']
-#   )
-# end
+# 市区町村の位置データ
+CSV.foreach('db/data/city.csv', headers: true) do |row|
+  CityPlace.create(
+    city_id: row['city_id'],
+    town_id: row['town_id'],
+    city_name: row['city_name'],
+    lat: row['lat'],
+    lng: row['lng']
+  )
+end
 
-# # ユーザーデータ
-# User.create(
-#   name: 'テストユーザー1',
-#   email: 'test@gmail.com',
-#   password: 'password123',
-#   password_confirmation: 'password123',
-#   authority: 1,
-#   town_id: '13'
-# )
+# ユーザーデータ
+User.create(
+  name: 'テストユーザー1',
+  email: 'test@gmail.com',
+  password: 'password123',
+  password_confirmation: 'password123',
+  authority: 1,
+  town_id: '13'
+)
 
-# 20.times do |i|
-#   user = User.create(
-#     name: "テストユーザー#{ i + 1 }",
-#     email: "test#{ i + 1 }@gmail.com",
-#     password: "password#{ i + 1 }",
-#     password_confirmation: "password#{ i + 1 }",
-#     authority: 1,
-#     town_id: '13'
-#   )
-# end
+20.times do |i|
+  user = User.create(
+    name: "テストユーザー#{ i + 1 }",
+    email: "test#{ i + 1 }@gmail.com",
+    password: "password#{ i + 1 }",
+    password_confirmation: "password#{ i + 1 }",
+    authority: 1,
+    town_id: '13'
+  )
+end
 
 users = User.all
 
