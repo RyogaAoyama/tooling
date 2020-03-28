@@ -11,11 +11,7 @@
           <div class="g-window-size">
             <v-row>
               <v-col cols="6" class="pa-0">
-                <v-img
-                  class="white--text align-end img-height"
-                  width="100%"
-                  :src="item.picture"
-                ></v-img>
+                <v-img class="white--text align-end img-height" width="100%" :src="item.picture"></v-img>
               </v-col>
               <v-col cols="6">
                 <h2 class="mb-2">{{ item.name }}</h2>
@@ -39,19 +35,14 @@
                   size="13"
                   color="#9E9E9E"
                   class="mb-2"
-                  >{{ item.address }}</my-icon-text
-                >
-                <my-icon-text
-                  iconName="mdi-calendar-today"
-                  size="13"
-                  color="#9E9E9E"
-                  class="mb-2"
-                  >{{
-                    item.is_visit
-                      ? `${item.visited_at.substr(0, 10)}に訪れました`
-                      : "まだ訪れていません"
-                  }}</my-icon-text
-                >
+                >{{ item.address }}</my-icon-text>
+                <my-icon-text iconName="mdi-calendar-today" size="13" color="#9E9E9E" class="mb-2">
+                  {{
+                  item.is_visit
+                  ? `${item.visited_at.substr(0, 10)}に訪れました`
+                  : "まだ訪れていません"
+                  }}
+                </my-icon-text>
 
                 <v-divider class="mb-1"></v-divider>
                 <v-row>
@@ -60,16 +51,14 @@
                       iconName="mdi-account"
                       size="13"
                       color="#9E9E9E"
-                      >{{ item.all_destination_num }}</my-icon-text
-                    >
+                    >{{ item.all_destination_num }}</my-icon-text>
                   </v-col>
                   <v-col cols="3">
                     <my-icon-text
                       iconName="mdi-nature-people"
                       size="13"
                       color="#9E9E9E"
-                      >{{ item.all_visit_num }}</my-icon-text
-                    >
+                    >{{ item.all_visit_num }}</my-icon-text>
                   </v-col>
                 </v-row>
               </v-col>
@@ -98,8 +87,7 @@
           class="white--text"
           large
           @click="$router.push('/search').catch(e => {})"
-          >穴場スポットを探す</v-btn
-        >
+        >穴場スポットを探す</v-btn>
       </v-card-text>
     </v-card>
   </div>
@@ -120,7 +108,7 @@ export default {
     return {
       destinations: [],
       notExists: false,
-      center: {},
+      center: { lat: 35.68944, lng: 139.69167 },
       zoom: 11,
       marker_items: [],
       item: {},
@@ -158,8 +146,9 @@ export default {
       this.marker_items.push(marker_data);
     }
     let ok;
-    [this.center, ok] = await Geolocation.getCurrentPosition();
-    console.log(this.center);
+    let center;
+    [center, ok] = await Geolocation.getCurrentPosition();
+    this.$set(this.center, center);
   },
   ////////////////////////////////////////////////////////////////////////////
   methods: {

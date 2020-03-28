@@ -1,16 +1,19 @@
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>Tooling</title>
-    <%= csrf_meta_tags %>
-    <%= csp_meta_tag %>
 
-    <%= stylesheet_link_tag 'application', media: 'all'%>
-    <%= javascript_pack_tag 'application'%>
-    <%= include_gon %>
-  </head>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Tooling</title>
+  <%= csrf_meta_tags %>
+  <%= csp_meta_tag %>
 
-  <body>
-    <%= yield %>
-  </body>
+  <%= stylesheet_link_tag 'application', media: 'all'%>
+  <%= javascript_pack_tag 'application'%>
+  <%= include_gon %>
+</head>
+
+<body>
+  <%= yield %>
+</body>
+
 </html>
