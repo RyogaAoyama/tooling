@@ -108,7 +108,7 @@ export default {
     return {
       destinations: [],
       notExists: false,
-      center: {},
+      center: { lat: 35.68944, lng: 139.69167 },
       zoom: 11,
       marker_items: [],
       item: {},
@@ -146,7 +146,9 @@ export default {
       this.marker_items.push(marker_data);
     }
     let ok;
-    [this.center, ok] = await Geolocation.getCurrentPosition();
+    let center;
+    [center, ok] = await Geolocation.getCurrentPosition();
+    this.$set(this.center, center);
   },
   ////////////////////////////////////////////////////////////////////////////
   methods: {
