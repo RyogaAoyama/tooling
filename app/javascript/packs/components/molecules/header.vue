@@ -90,7 +90,7 @@ export default {
           page: "/destination/index"
         },
         {
-          name: "訪問マップ",
+          name: "行き先マップ",
           icon: "mdi-map-check-outline",
           page: "/map"
         },
