@@ -5,7 +5,7 @@
   >
     <v-row>
       <v-col>
-        <h2>{{ destination.name }}</h2>
+        <h2 class="text-truncate">{{ destination.name }}</h2>
 
         <v-spacer></v-spacer>
         <span class="grey--text">{{ destination.review_rank }}</span>
@@ -28,7 +28,7 @@
       iconName="mdi-home-city"
       size="15"
       color="#9E9E9E"
-      class="mb-1"
+      class="mb-1 text-truncate"
     >{{ destination.address == null ? "住所が登録されていません" : destination.address }}</my-icon-text>
     <my-icon-text
       iconName="mdi-calendar-today"
